@@ -18,6 +18,7 @@ Proyek ini adalah sistem monitoring berbasis web menggunakan **Django** untuk me
 
 1. **Clone repo:**
    ```bash
-git clone https://github.com/TzyProgrammer/Parkwell
-cd Parkwell
-python manage.py runserver
+   git clone https://github.com/TzyProgrammer/Parkwell
+   cd Parkwell
+   python manage.py runserver
+   ``` 
