@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parkwell</title>
+</head>
+<body>
+    <div class="container">
+        <div class="form-box login">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <h1>Login</h1>
+                <div class="input-box">
+                    <p>Username</p>
+                    <input type="text" name="username" placeholder="Username" required>
+                    <p>Password</p>
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="button">
+                    <br><button type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
