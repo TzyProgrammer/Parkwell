@@ -1,27 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parkwell</title>
-</head>
-<body>
-    <div class="container">
-        <div class="form-box login">
-            <form action="" method="POST">
-                {% csrf_token %}
-                <h1>Login</h1>
-                <div class="input-box">
-                    <p>Username</p>
-                    <input type="text" name="username" placeholder="Username" required>
-                    <p>Password</p>
-                    <input type="password" name="password" placeholder="Password" required>
-                </div>
-                <div class="button">
-                    <br><button type="submit">Submit</button>
-                </div>
-            </form>
+{% extends "base_logregist.html" %}
+
+{% load static %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+<title>Sign Up</title>
+<div class="bg-gray-500 dark:bg-gray-900 flex justify-center items-center min-h-screen px-4 min-w-[360px]">
+    <div class="w-full  max-w-4xl flex flex-col md:flex-row bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden">
+      
+        <!-- Kiri -->
+      <div class="hidden  md:flex md:w-1/2 bg-[#141E61] rounded-r-[115px] items-center justify-center">
+        <div class="flex my-12 flex-col mt-24 items-center justify-center text-center text-white space-y-0">
+          
+          <!-- Title -->
+          <div class="text-3xl font-bold">
+            <h1>
+              RESERVE YOUR PARK<br>
+              EASILY!!
+            </h1>
+          </div>
+  
+          <!-- Image -->
+          <div class="-mt-12">
+            <img src="{% static 'main/park.png' %}" alt="Logo" class="w-100 h-auto object-contain" />
+          </div>
         </div>
+      </div>
+
+      <!-- Form Section -->
+      <div class="w-full md:w-1/2 p-8 md:p-8 space-y-6 form-box login">
+        <h5 class="text-lg text-right font-bold text-[#141E61] dark:text-white">Logo</h5>
+        
+  
+        <form action="#" method="POST" class="space-y-4 md:mt-10">
+            <h1 class="text-4xl font-bold text-center text-[#141E61] dark:text-white ">Login</h1>
+          {% csrf_token %}
+          {{ form }}
+  
+          <div>
+            <label for="username" class="block mb-1 md:mt-8 text-sm font-bold text-[#141E61] dark:text-white">Username</label>
+            <input type="text" name="username" id="username" required
+              class="w-full p-2.5 bg-white border border-gray-700 text-gray-900   rounded-lg 
+                     focus:ring-blue-500 focus:border-blue-500 
+                     dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          </div>
+  
+          <div>
+            <label for="password" class="block mb-1 md:mt-8 text-sm font-bold text-[#141E61] dark:text-white">Password</label>
+            <input type="password" name="password" id="password" required
+              class="w-full p-2.5 bg-white border border-gray-700 text-gray-900   rounded-lg 
+                     focus:ring-blue-500 focus:border-blue-500 
+                     dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          </div>
+  
+          <button type="submit"
+            class="w-full text-white font-medium bg-[#141E61] md:mt-8 hover:bg-blue-800 focus:ring-4 
+                   focus:ring-blue-300 rounded-full cursor-pointer text-md px-5 py-3
+                   dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            Sign In
+          </button>
+
+          <div class="justify-center text-sm  font-medium flex text-center">
+            <h6 class="text-[#141E61]">Don’t Have An Account? <a href="{% url 'register' %}" class="text-[#0026FF]">Sign Up</a></h6>
+          </div>
+          
+        </form>
+       
+      </div>
+  
+      
+  
     </div>
-</body>
-</html>
+  </div>
+  
+    {% endblock %}

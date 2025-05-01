@@ -1,74 +1,93 @@
-<!-- {% load static %} -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parkwell</title>
-</head>
-<body>
-    <div class="container">
-        <div class="form-box login">
-            <form action="" method="POST">
-                {% csrf_token %}
-                <h1>Register</h1>
-                <div class="input-box">
-                    <p>Username</p>
-                    <input type="text" name="username" placeholder="Username" required>
-                    <p>Email</p>
-                    <input type="email" name="email" placeholder="Email" required>
-                    <p>Password</p>
-                    <input type="password" name="password" placeholder="Password" required>
-                    <p>Phone Number</p>
-                    <input type="text" name="phone_number" placeholder="Phone number" required>
-                </div>
-                <div class="button">
-                    <br><button type="submit">Submit</button>
-    <title>Document</title>
-    <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Istok+Web&display=swap" rel="stylesheet">
+{% extends "base_logregist.html" %}
 
-   <!-- <style>
-        body {
-            font-family: 'Istok Web', sans-serif;
-        }
-    </style> -->
-</head>
-<body>
-    <section class="bg-gray-50 dark:bg-gray-900">
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-    <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">Get Started</h1>
-            <form action="#" class= "space-y-4 md:space-y-6" method="POST">
-                {% csrf_token %}
-                {{ form }}
+{% load static %}
 
-                    <div>
-                        <label  for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-                        <input type="text" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required>
-                    </div>
-                    <div>
-                        <label  for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required>
-                    </div>
-                    <div>
-                        <label  for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                        <input type="password" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required>
-                    </div>
-                    <div>
-                        <label  for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
-                        <input type="number" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required>
-                    </div>
+{% block title %}Home Page{% endblock %}
 
-                <div class="button">
-                    <br><button type="button" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit</button>
-                </div>
-            </form>
+{% block content %}
+
+<title>Sign Up</title>
+<div class="bg-gray-500 dark:bg-gray-900 flex justify-center items-center min-h-screen px-4 min-w-[360px]">
+    <div class="w-full max-w-5xl flex flex-col md:flex-row bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden">
+      
+      <!-- Form Section -->
+      <div class="w-full md:w-1/2 p-8 md:p-12 space-y-6">
+        <h5 class="text-lg font-bold text-[#141E61] dark:text-white">Logo</h5>
+        <h1 class="text-4xl font-bold text-center text-[#141E61] dark:text-white">Get Started</h1>
+  
+        <form action="#" method="POST" class="space-y-4">
+          {% csrf_token %}
+          {{ form }}
+  
+          <div>
+            <label for="username" class="block mb-1 text-sm font-bold text-[#141E61] dark:text-white">Username</label>
+            <input type="text" name="username" id="username" required
+              class="w-full p-2.5 bg-white border border-gray-700 text-gray-900 rounded-lg 
+                     focus:ring-blue-500 focus:border-blue-500 
+                     dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          </div>
+  
+          <div>
+            <label for="email" class="block mb-1 text-sm font-bold text-[#141E61] dark:text-white">Email</label>
+            <input type="email" name="email" id="email" required
+              class="w-full p-2.5 bg-white border border-gray-700 text-gray-900 rounded-lg 
+                     focus:ring-blue-500 focus:border-blue-500 
+                     dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          </div>
+  
+          <div>
+            <label for="password" class="block mb-1 text-sm font-bold text-[#141E61] dark:text-white">Password</label>
+            <input type="password" name="password" id="password" required
+              class="w-full p-2.5 bg-white border border-gray-700 text-gray-900 rounded-lg 
+                     focus:ring-blue-500 focus:border-blue-500 
+                     dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          </div>
+  
+          <div>
+            <label for="phone_number" class="block mb-1 text-sm font-bold text-[#141E61] dark:text-white">Phone Number</label>
+            <input type="text" name="phone_number" id="phone_number" required
+              class="w-full p-2.5 bg-white border border-gray-700 text-gray-900 rounded-lg 
+                     focus:ring-blue-500 focus:border-blue-500 
+                     dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          </div>
+  
+          <button type="submit"
+            class="w-full text-white font-medium bg-[#141E61] mt-5 hover:bg-blue-800 focus:ring-4 
+                   focus:ring-blue-300 rounded-full cursor-pointer text-md px-5 py-3
+                   dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            Sign Up
+          </button>
+          <div class="justify-center text-sm  font-medium flex text-center">
+            <h6 class="text-[#141E61]">Already Have An Account? <a href="{% url 'login' %}" class="text-[#0026FF]">Sign In</a></h6>
+          </div>
+          
+        </form>
+       
+      </div>
+  
+      <!-- kanan -->
+      <div class="hidden md:flex md:w-1/2 bg-[#141E61] rounded-l-[150px] items-center justify-center">
+        <div class="flex flex-col mt-12 items-center justify-center text-center text-white space-y-0">
+          
+          <!-- Title -->
+          <div class="text-3xl font-bold">
+            <h1>
+              RESERVE YOUR PARK<br>
+              EASILY!!
+            </h1>
+          </div>
+  
+          <!-- Image -->
+          <div class="-mt-12">
+            <img src="{% static 'main/park.png' %}" alt="Logo" class="w-100 h-auto object-contain" />
+          </div>
+  
         </div>
+      </div>
+  
     </div>
-    </div>
-    </section>
-</body>
-</html>
+  </div>
+  
+  
+
+    {% endblock %}
