@@ -2,9 +2,46 @@
 
 {% block title %}Home Page{% endblock %}
 
+{% load static %}
+
 {% block content %}
 
-<h2>Welcome, {{ request.user.username }}</h2>
-<a href="{% url 'logout' %}">logout</a>
+
+<div class="flex py-4 px-4 md:px-8">
+
+    <div class="md:w-1/2 w-full mx-8 md:mx-auto md:grid md:grid-rows-4 md:gap-0 md:min-h-[500px]">
+      <div></div>
+      
+      <div class="flex md:justify-center items-center">
+        <span class="text-[35px] text-[#141E61] md:text-[50px]">
+          Reserve, Park, Relax ~ <br> It’s That Easy!
+        </span>
+      </div>
+      
+      <div class="text-right md:mr-6 md:my-8 my-5">
+        <a href="#" class="w-full text-white text-lg font-medium bg-[#141E61] hover:bg-blue-800 focus:ring-4 
+        focus:ring-blue-300 rounded-full cursor-pointer md:px-8 md:py-3 px-5 py-2">
+          Reserve Now
+        </a>
+      </div>
+      
+      <div></div>
+    </div>
+  
+    <div class="hidden md:w-1/2 md:flex md:justify-center md:items-center">
+      <img src="{% static 'main/parkir3.png' %}" alt="" class="w-full max-w-full md:max-w-[800px] h-auto object-contain">
+    </div>
+  </div>
+
+  <div class="justify-center flex items-center">
+    <p class="text-[#141E61] text-4xl font-medium">Our Features</p>
+  </div>
+  
+  <div class="justify-center flex m-12">
+    <div class="w-20 h-20 rounded-full border-blue-900 border bg-white"></div>
+    <div class="w-20 h-20 rounded-full border-blue-900 border bg-white"></div>
+    <div class="w-20 h-20 rounded-full border-blue-900 border bg-white"></div>
+    
+  </div>
 
 {% endblock %}
