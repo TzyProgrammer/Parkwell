@@ -47,6 +47,11 @@ class Reservation(models.Model):
     spot = models.ForeignKey(Spot, on_delete=models.CASCADE)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+    STATUS_CHOICES = [
+    ('available', 'Available'),
+    ('occupied', 'Occupied'),
+    ]
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='available')
     
     def __str__(self):
         return f"Reservation by {self.user.username} for {self.car.brand} from {self.start_time} to {self.end_time}"
