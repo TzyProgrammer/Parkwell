@@ -1,0 +1,108 @@
+{% extends "headfoot.html" %}
+
+{% block title %}Home Page{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="flex">
+
+    <div class="py-12 flex-col flex w-2/5">
+
+        <div class="pl-12 mt-4 flex flex-col ">
+            <span class="text-[50px] text-[#0F044C] md:text-[clamp(34px,4vw,45px)]">
+                Reserve Your Spot
+            </span>
+        </div>
+        
+        
+        <div class="px-12 my-20 mx-12 flex flex-col">
+        <form action="">
+            <!-- pslot -->
+            <div>   
+                <span class="text-gray-500 text-lg">Parking Slot :</span>
+                <select id="slot" class=" bg-white border border-gray-400 text-[#0F044C] text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option selected disabled hidden >Choose Slot</option>
+                    <option value="Slot1">Slot 1</option>
+                    <option value="Slot2">Slot 2</option>
+                    <option value="Slot3">Slot 3</option>
+                </select>
+            </div>
+
+            <!-- date -->
+            <div class="my-6">
+                <span class="text-gray-500 text-lg">Date :</span>
+                <input disabled type="text" id="default-input" class="bg-gray-100 border border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <!-- booking time -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <span class="text-gray-500 text-lg">From :</span>
+                        <select id="start" class=" bg-white border border-gray-400 text-[#0F044C] text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option selected disabled hidden ></option>
+                            <option value="7">07:00</option>
+                            <option value="8">08:00</option>
+                            <option value="9">09:00</option>
+                            <option value="10">10:00</option>
+                            <option value="11">11:00</option>
+                            <option value="12">12:00</option>
+                            <option value="13">13:00</option>
+                            <option value="14">14:00</option>
+                            <option value="15">15:00</option>
+                            <option value="16">16:00</option>
+                            <option value="17">17:00</option>
+                            <option value="18">18:00</option>
+                            <option value="19">19:00</option>
+                            <option value="20">20:00</option>
+                            <option value="21">21:00</option>
+                            <option value="22">22:00</option>
+                            <option value="23">23:00</option>
+                        </select>
+                </div>
+                <div>
+                    <span class="text-gray-500 text-lg">Until :</span>
+                        <select id="end" class=" bg-white border border-gray-400 text-[#0F044C] text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option selected disabled hidden ></option>
+                            <option value="7">07:00</option>
+                            <option value="8">08:00</option>
+                            <option value="9">09:00</option>
+                            <option value="10">10:00</option>
+                            <option value="11">11:00</option>
+                            <option value="12">12:00</option>
+                            <option value="13">13:00</option>
+                            <option value="14">14:00</option>
+                            <option value="15">15:00</option>
+                            <option value="16">16:00</option>
+                            <option value="17">17:00</option>
+                            <option value="18">18:00</option>
+                            <option value="19">19:00</option>
+                            <option value="20">20:00</option>
+                            <option value="21">21:00</option>
+                            <option value="22">22:00</option>
+                            <option value="23">23:00</option>
+                        </select>
+                </div>
+            </div>
+        
+            <div class="mt-12">
+                <button class="w-full block focus:outline-none text-white bg-[#141E61] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-4xl text-md px-5 py-2.5 me-2 mb-2 text-center" type="submit">Reserve</button>
+            </div>
+
+        </form>
+        </div>
+        
+
+    </div>
+
+
+
+
+    <div class="shadow-sm py-24 bg-white flex w-3/5">
+test
+    </div>
+
+</div>
+
+{% endblock %}
