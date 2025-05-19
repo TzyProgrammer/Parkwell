@@ -8,6 +8,7 @@
 
 <div class="flex">
 
+    <!-- Kiri -->
     <div class="py-12 flex-col flex w-2/5">
 
         <div class="pl-12 mt-4 flex flex-col ">
@@ -22,7 +23,7 @@
             <!-- pslot -->
             <div>   
                 <span class="text-gray-500 text-lg">Parking Slot :</span>
-                <select id="slot" class=" bg-white border border-gray-400 text-[#0F044C] text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select id="slot" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                     <option selected disabled hidden >Choose Slot</option>
                     <option value="Slot1">Slot 1</option>
                     <option value="Slot2">Slot 2</option>
@@ -33,14 +34,14 @@
             <!-- date -->
             <div class="my-6">
                 <span class="text-gray-500 text-lg">Date :</span>
-                <input disabled type="text" id="default-input" class="bg-gray-100 border border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <input disabled type="text" id="default-input" class="bg-gray-100 border border-gray-400 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
             </div>
 
             <!-- booking time -->
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <span class="text-gray-500 text-lg">From :</span>
-                        <select id="start" class=" bg-white border border-gray-400 text-[#0F044C] text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select id="start" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                             <option selected disabled hidden ></option>
                             <option value="7">07:00</option>
                             <option value="8">08:00</option>
@@ -63,7 +64,7 @@
                 </div>
                 <div>
                     <span class="text-gray-500 text-lg">Until :</span>
-                        <select id="end" class=" bg-white border border-gray-400 text-[#0F044C] text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select id="end" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                             <option selected disabled hidden ></option>
                             <option value="7">07:00</option>
                             <option value="8">08:00</option>
@@ -87,7 +88,7 @@
             </div>
         
             <div class="mt-12">
-                <button class="w-full block focus:outline-none text-white bg-[#141E61] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-4xl text-md px-5 py-2.5 me-2 mb-2 text-center" type="submit">Reserve</button>
+                <button class="w-full block focus:outline-none text-white bg-[#141E61] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-[50px] text-lg px-5 py-2.5 me-2 mb-2 text-center" type="submit">Reserve</button>
             </div>
 
         </form>
@@ -98,9 +99,32 @@
 
 
 
+    <!-- Kanan -->
+    <div class="py-12 bg-white flex-col flex w-3/5">
+        
+        <div class="px-12 my-20 mx-12 flex flex-col">
 
-    <div class="shadow-sm py-24 bg-white flex w-3/5">
-test
+            <!-- date -->
+            <div class="mt-4">   
+
+                <div class="text-[#0F044C] font-medium rounded-lg text-sm text-center inline-flex items-center">
+                <input readonly datepicker id="default-datepicker" type="text" class="bg-white border border-gray-600 text-[#0F044C] text-sm rounded-lg placeholder-[#0F044C] focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2" placeholder="Select date">
+                </div>
+
+            </div>
+
+            <!-- date -->
+            <div class="my-4">
+                <div class="border border-2 border-gray-600 grid grid-cols-4">
+                    <div class="border border-8 border-[#B41D1D] m-3 py-32"></div>
+                    <div class="border border-8 border-[#AED100] m-3 py-32"></div>
+                    <div class="border border-8 border-[#13B52B] m-3 py-32"></div>
+                    <div class="border border-8 border-[#13B52B] m-3 py-32"></div>
+                </div>
+            </div>
+        </div>
+        
+
     </div>
 
 </div>
