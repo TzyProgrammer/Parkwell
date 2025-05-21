@@ -98,11 +98,11 @@ def reservation_view(request):
     # GET request fallback
     return render(request, 'reservation.html')
 
-# main/views.py
-from django.shortcuts import render
-
-# Variabel global untuk menyimpan data sementara
 latest_data = {"distance": "Belum ada data"}
 
 def mqtt_data_view(request):
     return render(request, 'mqtt_data.html', {"data": latest_data})
+
+def status_view(request):
+    spots = Spot.objects.all()
+    return render(request, 'status.html', {"spots": spots})

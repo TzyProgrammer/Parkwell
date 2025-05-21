@@ -39,13 +39,21 @@ class CustomUser (AbstractUser):
 class Spot(models.Model):
     spot_number = models.CharField(max_length=20, unique=True)
     STATUS_CHOICES = [
-    ('available', 'Available'),
-    ('occupied', 'Occupied'),
+        ('available', 'Available'),
+        ('occupied', 'Occupied'),
     ]
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='available')
+    last_updated = models.DateTimeField(auto_now=True)
+
+    def update_status_from_distance(self, distance_cm):
+        if distance_cm < 30:
+            self.status = 'occupied'
+        else:
+            self.status = 'available'
+        self.save()
 
     def __str__(self):
-        return f"Spot {self.spot_number}"
+        return f"Spot {self.spot_number} - {self.status}"
     
 class Reservation(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

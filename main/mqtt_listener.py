@@ -1,25 +1,36 @@
-# main/mqtt_listener.py
+import os
+import django
 import paho.mqtt.client as mqtt
-from main import views  # Untuk update latest_data
 import json
 
-# Callback ketika konek ke broker
+# Setup Django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Parkwell.settings")
+django.setup()
+
+from main.models import Spot
+
 def on_connect(client, userdata, flags, rc):
-    print("Terhubung ke broker MQTT dengan kode:", rc)
+    print("Terhubung ke broker MQTT")
     client.subscribe("parkir/slot1")
 
-# Callback ketika pesan diterima
 def on_message(client, userdata, msg):
     try:
         payload = msg.payload.decode()
-        print(f"Pesan diterima: {payload}")
-        views.latest_data["distance"] = payload  # Update tampilan web
+        distance = float(payload)
+        print(f"Jarak diterima: {distance} cm")
+
+        spot = Spot.objects.get(spot_number="1")
+        spot.update_status_from_distance(distance)
+        print(f"Status spot 1 diperbarui menjadi {spot.status}")
+
+    except Spot.DoesNotExist:
+        print("Spot dengan nomor 1 tidak ditemukan.")
     except Exception as e:
-        print("Error parsing message:", e)
+        print("Gagal memproses pesan:", e)
 
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 
-client.connect("localhost", 1883, 60)  # Gunakan IP broker jika tidak di localhost
+client.connect("localhost", 1883, 60)
 client.loop_forever()
