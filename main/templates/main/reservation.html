@@ -19,29 +19,30 @@
         
         
         <div class="px-12 my-20 mx-12 flex flex-col">
-        <form action="">
+        <form action="" method="POST">
+            {% csrf_token %}
             <!-- pslot -->
             <div>   
                 <span class="text-gray-500 text-lg">Parking Slot :</span>
-                <select id="slot" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                <select id="slot" name="slot" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                     <option selected disabled hidden >Choose Slot</option>
-                    <option value="Slot1">Slot 1</option>
-                    <option value="Slot2">Slot 2</option>
-                    <option value="Slot3">Slot 3</option>
+                    <option value="1">Slot 1</option>
+                    <option value="2">Slot 2</option>
+                    <option value="3">Slot 3</option>
                 </select>
             </div>
 
             <!-- date -->
             <div class="my-6">
                 <span class="text-gray-500 text-lg">Date :</span>
-                <input disabled type="text" id="default-input" class="bg-gray-100 border border-gray-400 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                <input readonly type="text" name="date" id="default-date" class="bg-gray-100 border border-gray-400 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
             </div>
 
             <!-- booking time -->
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <span class="text-gray-500 text-lg">From :</span>
-                        <select id="start" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                        <select id="start" name="start_time" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                             <option selected disabled hidden ></option>
                             <option value="7">07:00</option>
                             <option value="8">08:00</option>
@@ -64,7 +65,7 @@
                 </div>
                 <div>
                     <span class="text-gray-500 text-lg">Until :</span>
-                        <select id="end" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                        <select id="end" name="end_time" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                             <option selected disabled hidden ></option>
                             <option value="7">07:00</option>
                             <option value="8">08:00</option>
@@ -108,7 +109,7 @@
             <div class="mt-4">   
 
                 <div class="text-[#0F044C] font-medium rounded-lg text-sm text-center inline-flex items-center">
-                <input readonly datepicker id="default-datepicker" type="text" class="bg-white border border-gray-600 text-[#0F044C] text-sm rounded-lg placeholder-[#0F044C] focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2" placeholder="Select date">
+                <input readonly datepicker id="default-datepicker" name="datepicker" type="text" class="bg-white border border-gray-600 text-[#0F044C] text-sm rounded-lg placeholder-[#0F044C] focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2" placeholder="Select date">
                 </div>
 
             </div>

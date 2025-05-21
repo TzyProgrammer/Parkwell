@@ -1,23 +1,15 @@
 console.log("haziq jomok");
+console.log("yang YTTA YTTA aja")
 
-function buildStartTime() {
-    const dateStr = document.getElementById("default-input").value;
-    const hour = document.getElementById("start").value;
+document.addEventListener("DOMContentLoaded", function(){
+    const datePickerInput = document.getElementById("default-datepicker")
+    const readOnlyInput = document.getElementById("default-date")
 
-    if (!dateStr || !hour) {
-        console.log("Missing date or hour.");
-        return;
-    }
+    datePickerInput.addEventListener("changeDate", function(event){
+        readOnlyInput.value = event.target.value
+    })
 
-    const parsedDate = new Date(dateStr);
-    const year = parsedDate.getFullYear();
-    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
-    const day = String(parsedDate.getDate()).padStart(2, '0');
-    const paddedHour = hour.padStart(2, '0');
-
-    const datetimeStr = `${year}-${month}-${day}T${paddedHour}:00`;
-
-    console.log("Generated start_time:", datetimeStr); // ← this prints to the browser console
-
-    document.getElementById("start_time_field").value = datetimeStr;
-}
+    datePickerInput.addEventListener("change", function(){
+        readOnlyInput.value = datePickerInput.value
+    })
+})
