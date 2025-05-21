@@ -8,4 +8,5 @@ urlpatterns = [
     path('', home_view, name='home'),
     path('home/', home_view, name='home'),
     path('reservation/', reservation_view, name='reservation'),
+    path('mqtt-data/', views.mqtt_data_view, name='mqtt-data'),
 ]
