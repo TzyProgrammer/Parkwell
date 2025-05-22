@@ -1,2 +1,3 @@
 kita akan coba git make vs code 
 tapi kali ini kita coba di terminal 
+lorem ipsum dolor sit amet
