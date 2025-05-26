@@ -5,7 +5,7 @@ from .models import CustomUser, Car, Spot, Reservation
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'phone_number', 'role')
-    search_field = ('username', 'email')
+    search_fields = ('username', 'email')
 
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
@@ -14,11 +14,11 @@ class CarAdmin(admin.ModelAdmin):
 
 @admin.register(Spot)
 class SpotAdmin(admin.ModelAdmin):
-    list_display = ('spot_number',)
+    list_display = ('spot_number', 'status')
     search_fields = ('spot_number',)
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
     list_display = ('user', 'spot', 'start_time', 'end_time')
     list_filter = ('start_time', 'end_time','spot')
-    searcn_fields = ('user__username', 'car__license_plate', 'spot__spot_number')
+    search_fields = ('user__username', 'spot__spot_number')

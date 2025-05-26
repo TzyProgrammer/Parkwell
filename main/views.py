@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .models import CustomUser
+from .models import CustomUser, Spot, Reservation
 from django.contrib import messages
 import logging
+from datetime import datetime, time
+from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger(__name__)
 
@@ -50,3 +52,53 @@ def logout_view(request):
 
 def home_view(request):
     return render(request, 'home.html')
+
+@login_required
+def reservation_view(request):
+    if request.method == 'POST':
+        print("POST request received")
+        date_str = request.POST.get('date')          # from your datepicker
+        start_hour = request.POST.get('start_time')  # from time select
+        end_hour = request.POST.get('end_time')
+        spot_number = request.POST.get('slot')
+        
+        print("Raw POST data:", request.POST)
+        
+        if not (date_str and start_hour and end_hour and spot_number):
+            # Handle missing form data here (maybe send an error)
+            return render(request, 'reservation.html', {'error': 'Please fill all fields'})
+
+        # Convert date to "YYYY-MM-DD"
+        date_obj = datetime.strptime(date_str, "%m/%d/%Y")
+        formatted_date = date_obj.strftime("%Y-%m-%d")
+
+        # Combine date and time
+        start_datetime = datetime.strptime(f"{formatted_date} {start_hour}:00:00", "%Y-%m-%d %H:%M:%S")
+        end_datetime = datetime.strptime(f"{formatted_date} {end_hour}:00:00", "%Y-%m-%d %H:%M:%S")
+        print(start_datetime)
+        print(end_datetime)
+
+        # Get Spot object
+        try:
+            spot = Spot.objects.get(spot_number=spot_number)
+        except Spot.DoesNotExist:
+            return render(request, 'reservation.html', {'error': 'Invalid parking slot selected'})
+        
+        # Create and save reservation
+        Reservation.objects.create(
+            user=request.user,
+            spot=spot,
+            start_time=start_datetime,
+            end_time=end_datetime,
+        )
+
+        # Redirect or return success
+        return redirect('reservationdetails')  # Replace with your success URL or render success message
+
+    # GET request fallback
+    return render(request, 'reservation.html')
+
+
+def reservation_details_view(request):
+    return render(request, 'reservation_details.html')
+    
