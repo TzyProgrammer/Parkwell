@@ -38,6 +38,11 @@ class CustomUser (AbstractUser):
     
 class Spot(models.Model):
     spot_number = models.CharField(max_length=20, unique=True)
+    STATUS_CHOICES = [
+    ('available', 'Available'),
+    ('occupied', 'Occupied'),
+    ]
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='available')
 
     def __str__(self):
         return f"Spot {self.spot_number}"
@@ -49,7 +54,11 @@ class Reservation(models.Model):
     end_time = models.DateTimeField()
     
     def __str__(self):
-        return f"Reservation by {self.user.username} for {self.car.brand} from {self.start_time} to {self.end_time}"
+        car = self.user.car
+        if car:
+            return f"Reservation by {self.user.username} for {car.brand} from {self.start_time} to {self.end_time}"
+        else:
+            return f"Reservation by {self.user.username} from {self.start_time} to {self.end_time}"
 
     def is_active(self):
         now = timezone.now()
