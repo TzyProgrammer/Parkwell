@@ -18,8 +18,7 @@
     <div class=" flex-col flex md:w-2/5 md:order-1 order-2">
         
 
-        <div class="px-8 md:px-12 mt-8 md:mt-16 md:mx-12 flex flex-col">
-        <form action="">
+
         <div class="px-12 my-20 mx-12 flex flex-col">
         <form action="" method="POST">
             {% csrf_token %}
@@ -39,9 +38,6 @@
             <!-- date -->
             <div class="my-6">
                 <span class="text-gray-500 text-lg">Date :</span>
-
-                <input disabled type="text" id="default-input" class="bg-gray-100 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-
                 <input readonly type="text" name="date" id="default-date" class="bg-gray-100 border border-gray-400 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
 
             </div>
@@ -117,8 +113,6 @@
             <div >   
 
 
-                <div class="inline-flex">
-                <input readonly datepicker id="default-datepicker" type="text" class="bg-white text-sm rounded-lg placeholder-[#141E61] border border-2 border-[#141E61] hover:bg-[#141E61] hover:placeholder-white cursor-pointer focus:ring-blue-500 focus:border-blue-500 px-4 py-1.5  w-auto"  size="8" placeholder="Select date" >
                 <div class="text-[#0F044C] font-medium rounded-lg text-sm text-center inline-flex items-center">
                 <input readonly datepicker id="default-datepicker" name="datepicker" type="text" class="bg-white border border-gray-600 text-[#0F044C] text-sm rounded-lg placeholder-[#0F044C] focus:ring-blue-500 focus:border-blue-500 block w-full px-4 py-2" placeholder="Select date">
 
