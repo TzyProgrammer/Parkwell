@@ -55,10 +55,6 @@ def home_view(request):
 
 @login_required
 def reservation_view(request):
-    return render(request, 'reservation.html')
-
-def reservation_details_view(request):
-    return render(request, 'reservation_details.html')
     if request.method == 'POST':
         print("POST request received")
         date_str = request.POST.get('date')          # from your datepicker
@@ -97,8 +93,12 @@ def reservation_details_view(request):
         )
 
         # Redirect or return success
-        return redirect('home')  # Replace with your success URL or render success message
+        return redirect('reservationdetails')  # Replace with your success URL or render success message
 
     # GET request fallback
     return render(request, 'reservation.html')
 
+
+def reservation_details_view(request):
+    return render(request, 'reservation_details.html')
+    

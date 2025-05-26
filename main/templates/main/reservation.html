@@ -28,10 +28,10 @@
                 <span class="text-gray-500 text-lg">Parking Slot :</span>
                 <select id="slot" name="slot" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                     <option selected disabled hidden >Choose Slot</option>
-                    <option value="Slot1">Slot 1</option>
-                    <option value="Slot2">Slot 2</option>
-                    <option value="Slot3">Slot 3</option>
-                    <option value="Slot4">Slot 4</option>
+                    <option value="1">Slot 1</option>
+                    <option value="2">Slot 2</option>
+                    <option value="3">Slot 3</option>
+                    <option value="4">Slot 4</option>
                 </select>
             </div>
 
@@ -132,7 +132,7 @@
                         <!-- Slot 1 -->
                         <div class="py-8 justify-center items-center flex bg-[#8a1616] rounded-2xl mx-3 mt-3">
 
-                            <button onclick="confirmSelection('Slot1')" data-modal-target="popup-modal1" data-modal-toggle="popup-modal1">
+                            <button onclick="confirmSelection('1')" data-modal-target="popup-modal1" data-modal-toggle="popup-modal1">
                                 <img src="{% static 'main/car1.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
                             </button>
 
@@ -164,7 +164,7 @@
                         <!-- Slot 2 -->
                         <div class="py-8 justify-center items-center flex bg-[#afd106] rounded-2xl mx-3 mt-3">
 
-                            <button onclick="confirmSelection('Slot2')" data-modal-target="popup-modal2" data-modal-toggle="popup-modal2">
+                            <button onclick="confirmSelection('2')" data-modal-target="popup-modal2" data-modal-toggle="popup-modal2">
                                 <img src="{% static 'main/car2.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
                             </button>
 
@@ -195,14 +195,14 @@
 
                     <!-- Slot 3 -->
                     <div class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
-                        <button onclick="setSlotDirectly('Slot3')">
+                        <button onclick="setSlotDirectly('3')">
                             <img src="{% static 'main/car3.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
                         </button>
                     </div>
 
                     <!-- Slot 4 -->
                     <div class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
-                        <button onclick="setSlotDirectly('Slot4')" >
+                        <button onclick="setSlotDirectly('4')" >
                             <img src="{% static 'main/car4.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
                         </button>
                     </div>
