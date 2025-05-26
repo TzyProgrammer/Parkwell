@@ -1,0 +1,185 @@
+{% extends "headfoot.html" %}
+
+{% block title %}Home Page{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="overflow-x-hidden bg-gray-100 mb-24">
+
+    
+<div class="flex flex-col md:flex-row mt-12 md:mt-24 mb-2 md:mb-6 md:mx-20 mx-4">
+
+    <!-- Kiri -->
+    <div class="md:order-1 order-2 md:w-3/5 px-8 py-8 md:px-24 md:py-20 shadow-[0_5px_5px_rgba(0,0,0,0.2)]  bg-white rounded-2xl">
+
+        <span class="font-medium text-[clamp(5px,5vw,30px)] text-[#0F044C]">
+            Account Info
+            <hr class="w-44 bg-[#0F044C] border-0 h-0.5 shadow-[0_5px_5px_rgba(0,0,0,0.2)]">
+        </span>
+
+        <form action="POST">
+
+        <div class="flex items-center mt-7 mb-12 gap-4">
+            <input type="text" id="email" name="email" aria-label="disabled input" class="flex-grow shadow-md bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3 " required disabled>
+            <button class="text-md pl-4 pr-6 text-[#00158B] hover:underline font-medium" data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button">Change Account</button>
+
+            <!-- modal -->
+            <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative p-4 w-full max-w-md max-h-full">
+                    <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-hide="popup-modal">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                        <div class="p-4 md:p-5 text-center">
+                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                            </svg>
+                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to log out and switch to a different account?</h3>
+                            <a href="{% url 'logout' %}" data-modal-hide="popup-modal" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                Yes, Logout
+                            </a>
+                            
+                            <button data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 ">No, cancel</button>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <span class="font-medium text-[clamp(5px,5vw,30px)] text-[#0F044C]">
+            Vehicle Details
+            <hr class="w-48 bg-[#0F044C] border-0 h-0.5 shadow-[0_5px_5px_rgba(0,0,0,0.2)]">
+        </span>
+
+        <span class="text-md text-[#0F044C]">
+            Let us know which car you’ll be using today.
+        </span>
+
+        <div class="grid grid-cols-2 gap-2 mt-6">
+            <div class="mr-4">
+                <label for="brand" class="block mb-2 text-sm font-medium text-gray-600">Brand :</label>
+                <input type="text" id="brand" name="brand" class="bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+            </div>
+            <div class="mr-4">
+                <label for="model" class="block mb-2 text-sm font-medium text-gray-600">Model :</label>
+                <input type="text" id="model" name="model" class="bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+            </div>
+
+            <div class="mt-2 mr-4">
+                <label for="colour" class="block mb-2 text-sm font-medium text-gray-600">Colour :</label>
+                <input type="text" id="colour" name="colour" class="bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+            </div>
+            <div class="mt-2 mr-4">
+                <label for="plate" class="block mb-2 text-sm font-medium text-gray-600">License Plate :</label>
+                <input type="text" id="plate" name="plate" class="bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+            </div>
+        </div>
+            
+        <div class="mt-16">
+            <button class="w-full block focus:outline-none text-white bg-[#141E61] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-[50px] text-lg px-5 py-2.5 me-2 mb-2 text-center" type="submit">Continue</button>
+        </div>
+
+        </form>
+
+    </div>
+
+    <!-- Kanan -->
+<div class="md:order-2 order-1 md:w-2/5 width-full md:self-start pt-8 md:pt-12 pb-6 px-8 md:px-12 shadow-[0_5px_5px_rgba(0,0,0,0.2)] md:ml-12 mb-4 md:mb-0 bg-white rounded-2xl">
+
+    <span class="font-medium text-[clamp(5px,5vw,30px)] text-[#0F044C]">
+        Order Details
+        <hr class="w-48 bg-[#0F044C] border-0 h-0.5 shadow-[0_5px_5px_rgba(0,0,0,0.2)]">
+    </span>
+    
+    <div class=" border my-4 border-[#141E61] rounded-lg">
+
+        <div class="flex flex-col items-center mt-2">
+            <span class="text-lg font-medium text-[#141E61]">You're About to Reserve :</span>
+            <span class="text-lg font-medium text-[#141E61]">Slot yang dipilih user</span>
+        </div>
+
+        <div class="mt-2 pl-8">
+            <span class="text-md font-medium text-[#141E61] ">
+                From:
+            </span>
+        </div>
+        
+        <div class="grid grid-cols-3 px-2 mt-1">
+            <div class=" flex justify-center">
+                <span class="text-sm font-medium text-[#141E61] ">Tanggal</span>
+            </div>
+
+            <div class=" flex justify-center">
+                <span class="text-sm font-medium text-[#141E61] ">-</span>
+            </div>
+
+            <div class=" flex justify-center">
+                <span class="text-sm font-medium text-[#141E61] ">Jam</span>
+            </div>
+        </div>
+
+        <div class="mt-4 pl-8">
+            <span class="text-md font-medium text-[#141E61] ">
+                Until:
+            </span>
+        </div>
+        
+        <div class="grid grid-cols-3 px-2 mt-1 mb-4">
+            <div class=" flex justify-center">
+                <span class="text-sm font-medium text-[#141E61] ">Tanggal</span>
+            </div>
+
+            <div class=" flex justify-center">
+                <span class="text-sm font-medium text-[#141E61] ">-</span>
+            </div>
+
+            <div class=" flex justify-center">
+                <span class="text-sm font-medium text-[#141E61] ">Jam</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-flow-col justify-items-end">
+        <button class=" focus:outline-none text-white bg-[#141E61] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-2xl text-md px-12 py-2 text-center" data-modal-target="popup-cancel" data-modal-toggle="popup-cancel" type="button">Cancel</button>
+
+        
+        <!-- modal -->
+            <div id="popup-cancel" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative p-4 w-full max-w-md max-h-full">
+                    <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-hide="popup-cancel">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                        <div class="p-4 md:p-5 text-center">
+                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                            </svg>
+                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"><p class="text-red-700 font-semibold">Warning!</p>This action may remove all your current input.</h3>
+                            <a href="{% url 'reservation' %}" data-modal-hide="popup-cancel" type="button" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                Continue
+                            </a>
+                            
+                            <button data-modal-hide="popup-cancel" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 ">Cancel</button>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

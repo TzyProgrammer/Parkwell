@@ -53,3 +53,6 @@ def home_view(request):
 
 def reservation_view(request):
     return render(request, 'reservation.html')
+
+def reservation_details_view(request):
+    return render(request, 'reservation_details.html')
