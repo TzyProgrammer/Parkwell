@@ -101,4 +101,7 @@ def reservation_view(request):
 
 def reservation_details_view(request):
     return render(request, 'reservation_details.html')
+
+def account_view(request):
+    return render(request, 'account.html')
     
