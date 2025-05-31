@@ -53,7 +53,7 @@ def logout_view(request):
 def home_view(request):
     return render(request, 'home.html')
 
-@login_required
+@login_required(login_url='login')
 def reservation_view(request):
     if request.method == 'POST':
         print("POST request received")
