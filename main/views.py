@@ -53,7 +53,7 @@ def logout_view(request):
 def home_view(request):
     return render(request, 'home.html')
 
-@login_required
+@login_required(login_url='login')
 def reservation_view(request):
     if request.method == 'POST':
         print("POST request received")
@@ -85,7 +85,7 @@ def reservation_view(request):
             return render(request, 'reservation.html', {'error': 'Invalid parking slot selected'})
         
         # Create and save reservation
-        Reservation.objects.create(
+        reservation = Reservation.objects.create(
             user=request.user,
             spot=spot,
             start_time=start_datetime,
@@ -93,12 +93,19 @@ def reservation_view(request):
         )
 
         # Redirect or return success
-        return redirect('reservationdetails')  # Replace with your success URL or render success message
+        return redirect('reservationdetails', reservation_id=reservation.id)  # Replace with your success URL or render success message
 
     # GET request fallback
     return render(request, 'reservation.html')
 
 
-def reservation_details_view(request):
-    return render(request, 'reservation_details.html')
-    
+def reservation_details_view(request, reservation_id):
+    try:
+        reservation = Reservation.objects.get(id=reservation_id)
+    except Reservation.DoesNotExist:
+        return render(request, 'reservation_details.html', {'error': 'Reservation not found'})
+
+    return render(request, 'reservation_details.html', {'reservation': reservation})
+
+def account_view(request):
+    return render(request, 'account.html')

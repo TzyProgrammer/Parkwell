@@ -19,10 +19,11 @@
             <hr class="w-44 bg-[#0F044C] border-0 h-0.5 shadow-[0_5px_5px_rgba(0,0,0,0.2)]">
         </span>
 
-        <form action="POST">
+        <form method="POST">
+            {% csrf_token %}
 
         <div class="flex items-center mt-7 mb-12 gap-4">
-            <input type="text" id="email" name="email" aria-label="disabled input" class="flex-grow shadow-md bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3 " required disabled>
+            <p class="flex-grow shadow-md border border-gray-300 bg-gray-100 text-gray-900 text-sm rounded-lg p-5" id="email" name="email">{{ reservation.user.email }}</p>
             <button class="text-md pl-4 pr-6 text-[#00158B] hover:underline font-medium" data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button">Change Account</button>
 
             <!-- modal -->
@@ -83,7 +84,7 @@
         </div>
             
         <div class="mt-16">
-            <button class="w-full block focus:outline-none text-white bg-[#141E61] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-[50px] text-lg px-5 py-2.5 me-2 mb-2 text-center" type="submit">Continue</button>
+            <button value="add" class="w-full block focus:outline-none text-white bg-[#141E61] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-[50px] text-lg px-5 py-2.5 me-2 mb-2 text-center" type="submit">Continue</button>
         </div>
 
         </form>
@@ -102,7 +103,7 @@
 
         <div class="flex flex-col items-center mt-2">
             <span class="text-lg font-medium text-[#141E61]">You're About to Reserve :</span>
-            <span class="text-lg font-medium text-[#141E61]">Slot yang dipilih user</span>
+            <span class="text-lg font-medium text-[#141E61]">{{ reservation.spot_id }}</span>
         </div>
 
         <div class="mt-2 pl-8">
@@ -113,7 +114,7 @@
         
         <div class="grid grid-cols-3 px-2 mt-1">
             <div class=" flex justify-center">
-                <span class="text-sm font-medium text-[#141E61] ">Tanggal</span>
+                <span class="text-sm font-medium text-[#141E61] ">{{ reservation.start_time|date:"l, d F Y" }}</span>
             </div>
 
             <div class=" flex justify-center">
@@ -121,7 +122,7 @@
             </div>
 
             <div class=" flex justify-center">
-                <span class="text-sm font-medium text-[#141E61] ">Jam</span>
+                <span class="text-sm font-medium text-[#141E61] ">{{ reservation.start_time|time:"H:i" }}</span>
             </div>
         </div>
 
@@ -133,7 +134,7 @@
         
         <div class="grid grid-cols-3 px-2 mt-1 mb-4">
             <div class=" flex justify-center">
-                <span class="text-sm font-medium text-[#141E61] ">Tanggal</span>
+                <span class="text-sm font-medium text-[#141E61] ">{{ reservation.end_time|date:"l, d F Y" }}</span>
             </div>
 
             <div class=" flex justify-center">
@@ -141,7 +142,7 @@
             </div>
 
             <div class=" flex justify-center">
-                <span class="text-sm font-medium text-[#141E61] ">Jam</span>
+                <span class="text-sm font-medium text-[#141E61] ">{{ reservation.end_time|time:"H:i" }}</span>
             </div>
         </div>
     </div>
