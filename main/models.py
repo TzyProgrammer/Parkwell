@@ -54,9 +54,9 @@ class Reservation(models.Model):
     end_time = models.DateTimeField()
     
     def __str__(self):
-        car = self.user.car
-        if car:
-            return f"Reservation by {self.user.username} for {car.brand} from {self.start_time} to {self.end_time}"
+        cars = self.user.cars.all()
+        if cars:
+            return f"Reservation by {self.user.username} for {cars.brand} from {self.start_time} to {self.end_time}"
         else:
             return f"Reservation by {self.user.username} from {self.start_time} to {self.end_time}"
 

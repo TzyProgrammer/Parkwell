@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .models import CustomUser, Spot, Reservation
+from .models import CustomUser, Spot, Reservation, Car
 from django.contrib import messages
 import logging
 from datetime import datetime, time
@@ -104,8 +104,28 @@ def reservation_details_view(request, reservation_id):
         reservation = Reservation.objects.get(id=reservation_id)
     except Reservation.DoesNotExist:
         return render(request, 'reservation_details.html', {'error': 'Reservation not found'})
+    
+    if request.method == 'POST':
+        brand = request.POST.get('brand')
+        model = request.POST.get('model')
+        color = request.POST.get('colour')
+        license_plate = request.POST.get('plate')
+        
+        Car.objects.create(
+            user=request.user,
+            brand=brand,
+            model=model,
+            color=color,
+            license_plate=license_plate,
+        )
+        return redirect('account')
 
     return render(request, 'reservation_details.html', {'reservation': reservation})
 
 def account_view(request):
     return render(request, 'account.html')
+
+def delete_reservation(request, reservation_id):
+    reservation = Reservation.objects.get(id=reservation_id)
+    reservation.delete()
+    return redirect('reservation')
