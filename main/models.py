@@ -8,6 +8,7 @@ class Car(models.Model):
     brand = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     color = models.CharField(max_length=100)
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='cars')
     
     def __str__(self):
         return f"{self.brand} {self.model} ({self.license_plate})"
@@ -19,7 +20,6 @@ class CustomUser (AbstractUser):
         ('user', 'User'),
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')
-    car = models.OneToOneField('Car', on_delete=models.SET_NULL, null=True, blank=True)
 
     groups = models.ManyToManyField(
         'auth.Group',
