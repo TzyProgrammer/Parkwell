@@ -1,0 +1,26 @@
+{% extends "account_base.html" %}
+
+
+{% block akun_content %}
+
+<div class="flex flex-row mt-4">
+            <div>
+                <a href="{% url 'account' %}" class="focus:outline-none text-[#141E61] bg-white hover:bg-[#141E61] hover:text-white focus:ring-2 font-medium rounded-2xl md:text-md text-sm md:px-8 px-4 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">Account</a>
+            </div>
+            <div>
+                <a href="{% url 'history' %}" class="focus:outline-none text-[#141E61] bg-white hover:bg-[#141E61] hover:text-white focus:ring-2 font-medium rounded-2xl md:text-md text-sm md:px-8 px-4 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">Reservations</a>
+            </div>
+            <div>
+                <a href="#" class="focus:outline-none text-white bg-[#141E61] focus:ring-2 font-medium rounded-2xl md:text-md text-sm md:px-8 px-4 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">User Guide</a>
+            </div>
+        </div>
+
+        <div class="mt-4 bg-white rounded-2xl ">
+
+            <div class="md:px-12 px-8 pt-8 md:pt-12 py-12">
+                    <span class="text-[30px] text-[#141E61] underline md:text-[clamp(15px,4vw,34px)]">Getting Started</span>
+            </div>
+
+        </div>
+{% endblock %}
+            

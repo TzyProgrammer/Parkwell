@@ -104,4 +104,9 @@ def reservation_details_view(request):
 
 def account_view(request):
     return render(request, 'account.html')
-    
+
+def history_view(request):
+    return render(request, 'history.html')
+
+def guide_view(request):
+    return render(request, 'guide.html')
