@@ -10,7 +10,8 @@ urlpatterns = [
     path('reservation/', reservation_view, name='reservation'),
     path('reservation/<int:reservation_id>/', reservation_details_view, name='reservationdetails'),
     path('account/', account_view, name='account'),
-    path('reservation/<int:reservation_id>/delete/', delete_reservation, name='delete_reservation')
+    path('reservation/<int:reservation_id>/delete/', delete_reservation, name='delete_reservation'),
     path('history/', history_view, name='history'),
-    path('guide/', guide_view, name='guide'),
+    path('guide/', guide_view, name='guide' ),
+
 ]
