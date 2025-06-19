@@ -129,3 +129,9 @@ def delete_reservation(request, reservation_id):
     reservation = Reservation.objects.get(id=reservation_id)
     reservation.delete()
     return redirect('reservation')
+
+def history_view(request):
+    return render(request, 'history.html')
+
+def guide_view(request):
+    return render(request, 'guide.html')

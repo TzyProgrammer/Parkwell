@@ -12,14 +12,14 @@
             </span>
 </div>
 
-<div class="flex pb-12 md:pb-8 flex-col md:flex-row mb-12 ">
+<div class="flex pb-4 md:pb-8 flex-col md:flex-row mb-12 ">
 
     <!-- Kiri -->
     <div class=" flex-col flex md:w-2/5 md:order-1 order-2">
         
 
 
-        <div class="px-12 my-20 mx-12 flex flex-col">
+        <div class="md:px-12 px-8 md:my-20 my-8 md:mx-12 flex flex-col">
         <form action="" method="POST">
             {% csrf_token %}
 
@@ -38,7 +38,7 @@
             <!-- date -->
             <div class="my-6">
                 <span class="text-gray-500 text-lg">Date :</span>
-                <input readonly type="text" name="date" id="default-date" class="bg-gray-100 border border-gray-400 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                <input readonly type="text" name="date" id="default-date" class="bg-gray-100 border border-gray-400 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " required>
 
             </div>
 
@@ -48,52 +48,84 @@
                     <span class="text-gray-500 text-lg">From :</span>
                         <select id="start" name="start_time" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                             <option selected disabled hidden ></option>
-                            <option value="7">07:00</option>
-                            <option value="8">08:00</option>
-                            <option value="9">09:00</option>
-                            <option value="10">10:00</option>
-                            <option value="11">11:00</option>
-                            <option value="12">12:00</option>
-                            <option value="13">13:00</option>
-                            <option value="14">14:00</option>
-                            <option value="15">15:00</option>
-                            <option value="16">16:00</option>
-                            <option value="17">17:00</option>
-                            <option value="18">18:00</option>
-                            <option value="19">19:00</option>
-                            <option value="20">20:00</option>
-                            <option value="21">21:00</option>
-                            <option value="22">22:00</option>
-                            <option value="23">23:00</option>
+                            <option value="07:00">07:00</option>
+                            <option value="07:30">07:30</option>
+                            <option value="08:00">08:00</option>
+                            <option value="08:30">08:30</option>
+                            <option value="09:00">09:00</option>
+                            <option value="09:30">09:30</option>
+                            <option value="10:00">10:00</option>
+                            <option value="10:30">10:30</option>
+                            <option value="11:00">11:00</option>
+                            <option value="11:30">11:30</option>
+                            <option value="12:00">12:00</option>
+                            <option value="12:30">12:30</option>
+                            <option value="13:00">13:00</option>
+                            <option value="13:30">13:30</option>
+                            <option value="14:00">14:00</option>
+                            <option value="14:30">14:30</option>
+                            <option value="15:00">15:00</option>
+                            <option value="15:30">15:30</option>
+                            <option value="16:00">16:00</option>
+                            <option value="16:30">16:30</option>
+                            <option value="17:00">17:00</option>
+                            <option value="17:30">17:30</option>
+                            <option value="18:00">18:00</option>
+                            <option value="18:30">18:30</option>
+                            <option value="19:00">19:00</option>
+                            <option value="19:30">19:30</option>
+                            <option value="20:00">20:00</option>
+                            <option value="20:30">20:30</option>
+                            <option value="21:00">21:00</option>
+                            <option value="21:30">21:30</option>
+                            <option value="22:00">22:00</option>
+                            <option value="22:30">22:30</option>
+                            <option value="23:00">23:00</option>
                         </select>
                 </div>
                 <div>
                     <span class="text-gray-500 text-lg">Until :</span>
                         <select id="end" name="end_time" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                             <option selected disabled hidden ></option>
-                            <option value="7">07:00</option>
-                            <option value="8">08:00</option>
-                            <option value="9">09:00</option>
-                            <option value="10">10:00</option>
-                            <option value="11">11:00</option>
-                            <option value="12">12:00</option>
-                            <option value="13">13:00</option>
-                            <option value="14">14:00</option>
-                            <option value="15">15:00</option>
-                            <option value="16">16:00</option>
-                            <option value="17">17:00</option>
-                            <option value="18">18:00</option>
-                            <option value="19">19:00</option>
-                            <option value="20">20:00</option>
-                            <option value="21">21:00</option>
-                            <option value="22">22:00</option>
-                            <option value="23">23:00</option>
+                            <option value="07:00">07:00</option>
+                            <option value="07:30">07:30</option>
+                            <option value="08:00">08:00</option>
+                            <option value="08:30">08:30</option>
+                            <option value="09:00">09:00</option>
+                            <option value="09:30">09:30</option>
+                            <option value="10:00">10:00</option>
+                            <option value="10:30">10:30</option>
+                            <option value="11:00">11:00</option>
+                            <option value="11:30">11:30</option>
+                            <option value="12:00">12:00</option>
+                            <option value="12:30">12:30</option>
+                            <option value="13:00">13:00</option>
+                            <option value="13:30">13:30</option>
+                            <option value="14:00">14:00</option>
+                            <option value="14:30">14:30</option>
+                            <option value="15:00">15:00</option>
+                            <option value="15:30">15:30</option>
+                            <option value="16:00">16:00</option>
+                            <option value="16:30">16:30</option>
+                            <option value="17:00">17:00</option>
+                            <option value="17:30">17:30</option>
+                            <option value="18:00">18:00</option>
+                            <option value="18:30">18:30</option>
+                            <option value="19:00">19:00</option>
+                            <option value="19:30">19:30</option>
+                            <option value="20:00">20:00</option>
+                            <option value="20:30">20:30</option>
+                            <option value="21:00">21:00</option>
+                            <option value="21:30">21:30</option>
+                            <option value="22:00">22:00</option>
+                            <option value="22:30">22:30</option>
+                            <option value="23:00">23:00</option>
                         </select>
                 </div>
             </div>
         
             <div class="mt-12">
-                <button class="w-full block focus:outline-none text-white bg-[#141E61] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-[50px] text-lg px-5 py-2.5 me-2 mb-2 text-center" type="submit">Reserve</button>
+                <button class="shadow-[0_5px_5px_rgba(0,0,0,0.2)] w-full block focus:outline-none text-white bg-[#141E61] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-[50px] text-lg px-5 py-2.5 me-2 mb-2 text-center" type="submit">Reserve</button>
             </div>
 
         </form>
@@ -113,27 +145,28 @@
             <div >   
 
 
-                <div class="text-[#0F044C] font-medium rounded-lg text-sm text-center inline-flex items-center">
+                <div class="text-[#0F044C] font-medium rounded-lg text-sm text-center inline-flex items-center ">
                 
-                <input readonly datepicker id="default-datepicker" name="datepicker" type="text" class="bg-white text-sm rounded-lg placeholder-[#141E61] border border-2 border-[#141E61] hover:bg-[#141E61] hover:placeholder-white cursor-pointer focus:ring-blue-500 focus:border-blue-500 px-4 py-1.5  w-auto"  size="8" placeholder="Select date" >                                                                 
+                <input readonly datepicker id="default-datepicker" name="datepicker" type="text" class=" bg-white text-sm rounded-lg placeholder-[#141E61] border border-2 border-[#141E61] hover:bg-[#141E61] hover:placeholder-white cursor-pointer focus:ring-blue-500 focus:border-blue-500 px-4 py-1.5  w-auto"  size="8" placeholder="Select date" >                                                                 
                 </div>
 
             </div>
 
             <!-- park -->
-            <div class=" my-4 border border-4 border-[#141E61] rounded-lg">
+            <div class=" my-4 border border-4 border-[#141E61] rounded-lg shadow-[0_5px_5px_rgba(0,0,0,0.2)]">
 
                     <div class="p-4 justify-center flex text-3xl bg-[#141E61] font-medium text-white">
-                        Select Your Parking Spot
+                        Where would you like to park?
                     </div>
 
                 <div class=" grid grid-cols-4">
 
                         <!-- Slot 1 -->
-                        <div class="py-8 justify-center items-center flex bg-[#8a1616] rounded-2xl mx-3 mt-3">
+                    <div >
+                        <div class=" py-8 justify-center items-center flex bg-[#8a1616] rounded-2xl mx-3 mt-3">
 
                             <button onclick="confirmSelection('1')" data-modal-target="popup-modal1" data-modal-toggle="popup-modal1">
-                                <img src="{% static 'main/car1.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
+                                <img src="{% static 'main/car1.png' %}" alt="" class=" block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
                             </button>
 
                             <!-- modal -->
@@ -160,8 +193,13 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="items-center flex justify-center py-2">
+                            <p class="text-md text-[#8a1616] font-semibold">Occupied</p>
+                        </div>
+                    </div>
 
                         <!-- Slot 2 -->
+                    <div>
                         <div class="py-8 justify-center items-center flex bg-[#afd106] rounded-2xl mx-3 mt-3">
 
                             <button onclick="confirmSelection('2')" data-modal-target="popup-modal2" data-modal-toggle="popup-modal2">
@@ -192,20 +230,34 @@
                                 </div>
                             </div>
                         </div>
-
-                    <!-- Slot 3 -->
-                    <div class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
-                        <button onclick="setSlotDirectly('3')">
-                            <img src="{% static 'main/car3.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
-                        </button>
+                        <div class="items-center flex justify-center py-2">
+                            <p class="text-md text-[#afd106] font-semibold">Reserved</p>
+                        </div>
                     </div>
 
+                    <!-- Slot 3 -->
+                <div>
+                    <div class="md:py-[38.5px] py-[36px] justify-center  flex bg-[#018214] rounded-2xl mx-3 mt-3">
+                        <button onclick="setSlotDirectly('3')" >
+                            <img src="{% static 'main/car3.png' %}" alt="" class=" block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
+                        </button>
+                    </div>
+                    <div class="flex justify-center py-2">
+                            <p class="text-md text-[#018214] font-semibold">Available</p>
+                    </div>
+                </div>
+
                     <!-- Slot 4 -->
-                    <div class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
+                <div>
+                    <div class="md:py-[38.5px] py-[36px] justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
                         <button onclick="setSlotDirectly('4')" >
                             <img src="{% static 'main/car4.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
                         </button>
                     </div>
+                    <div class="items-center flex justify-center py-2">
+                            <p class="text-md text-[#018214] font-semibold">Available</p>
+                    </div>
+                </div>
 
                         <!-- js auto pick slot -->
                         <script>
@@ -236,18 +288,6 @@
                         </script>
                 
             </div>
-
-                <!-- Hint -->
-                <div class=" grid my-2 grid-flow-col justify-items-end me-3">
-                    <button data-tooltip-placement="left" data-tooltip-target="tooltip-click" data-tooltip-trigger="click"><img src="{% static 'main/qstn.png' %}" class="block w-6 h-auto" alt=""></button>
-
-                        <div id="tooltip-click" role="tooltip" class="absolute z-10 invisible inline-block px-4 py-2 text-sm font-medium border border-gray-500 bg-white rounded-lg shadow-xs opacity-0 tooltip ">
-
-                            <p class="text-[#0F044C] text-lg font-medium"><span class="text-[#8a1616] font-semibold">Red </span>: Occupied,<br><span class="text-[#afd106] font-semibold">Yellow </span>: Reserved,<br><span class="text-[#018214] font-semibold">Green </span>: Available</p>
-
-                            <div class="tooltip-arrow order border-gray-500" data-popper-arrow></div>
-                        </div>
-                </div>
 
             </div>
         </div>
