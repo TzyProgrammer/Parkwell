@@ -180,9 +180,9 @@
             </div>
             <div class="mt-2 mr-4 flex gap-2">
                 
-                <div class=" md:w-1/3 w-2/5">
-                    <label for="plate_code" class="block mb-2 text-sm font-medium text-gray-600">Code :</label>
-                    <select name="plate_code" id="plate_code" class="bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                <div class="w-1/3">
+                     <label for="plate1" class="block mb-2 text-sm font-medium text-gray-600">License Plate :</label>
+                    <select name="plate1" id="plate1" class="bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                     <option value="" class="hidden"></option>
 
                     <optgroup label="Sumatra">
@@ -298,10 +298,14 @@
 
                 </div>
 
-                <div class=" md:w-2/3 w-3/5">
-                    <label for="plate" class="block mb-2 text-sm font-medium text-gray-600">Plate :</label>
-                    <input type="text" class="bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500" placeholder="123 XYZ" required>
-                    </select>
+                {% comment %} Plate ANgka {% endcomment %}
+                <div class="relative w-1/3">
+                    <input type="text" name="plate2" class="absolute bottom-0 bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500" placeholder="123" required>
+                </div>
+
+                {% comment %} Plate Huruf setelah angka {% endcomment %}
+                <div class="relative w-1/3">
+                    <input type="text" name="plate3" class="absolute bottom-0 bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500" placeholder="XYZ" required>
                 </div>
 
             </div>
@@ -371,7 +375,7 @@
                 
                 <div class="grid grid-cols-3 px-2 mt-1">
                     <div class=" flex justify-center">
-                        <span class="text-sm font-medium text-[#141E61] ">{{ reservation.start_time|date:"l, d F Y" }}</span>
+                        <span class="text-sm font-medium text-[#141E61] ">{{ reservation.start_time|date:"l, d F " }}</span>
                     </div>
 
                     <div class=" flex justify-center">
@@ -391,7 +395,7 @@
                 
                 <div class="grid grid-cols-3 px-2 mt-1 mb-4">
                     <div class=" flex justify-center">
-                        <span class="text-sm font-medium text-[#141E61] ">{{ reservation.end_time|date:"l, d F Y" }}</span>
+                        <span class="text-sm font-medium text-[#141E61] ">{{ reservation.end_time|date:"l, d F " }}</span>
                     </div>
 
                     <div class=" flex justify-center">

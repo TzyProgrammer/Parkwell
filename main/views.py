@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from .models import CustomUser, Spot, Reservation, Car
 from django.contrib import messages
 import logging
@@ -73,8 +73,8 @@ def reservation_view(request):
         formatted_date = date_obj.strftime("%Y-%m-%d")
 
         # Combine date and time
-        start_datetime = datetime.strptime(f"{formatted_date} {start_hour}:00:00", "%Y-%m-%d %H:%M:%S")
-        end_datetime = datetime.strptime(f"{formatted_date} {end_hour}:00:00", "%Y-%m-%d %H:%M:%S")
+        start_datetime = datetime.strptime(f"{formatted_date} {start_hour}:00", "%Y-%m-%d %H:%M:%S")
+        end_datetime = datetime.strptime(f"{formatted_date} {end_hour}:00", "%Y-%m-%d %H:%M:%S")
         print(start_datetime)
         print(end_datetime)
 
@@ -106,10 +106,12 @@ def reservation_details_view(request, reservation_id):
         return render(request, 'reservation_details.html', {'error': 'Reservation not found'})
     
     if request.method == 'POST':
-        brand = request.POST.get('brand')
-        model = request.POST.get('model')
-        color = request.POST.get('colour')
-        license_plate = request.POST.get('plate')
+        brand = request.POST.get('dropdown1')
+        model = request.POST.get('dropdown2')
+        color = request.POST.get('color')
+        plate_number = request.POST.get('plate')
+        plate_code = request.POST.get('plate_code')
+        license_plate = f"{plate_code} {plate_number.strip().upper()}"
         
         Car.objects.create(
             user=request.user,
