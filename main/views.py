@@ -98,6 +98,11 @@ def reservation_view(request):
     # GET request fallback
     return render(request, 'reservation.html')
 
+latest_data = {"distance": "Belum ada data"}
+
+def status_view(request):
+    spots = Spot.objects.all()
+    return render(request, 'status.html', {"spots": spots})
 
 def reservation_details_view(request, reservation_id):
     try:

@@ -43,7 +43,15 @@ class Spot(models.Model):
     ('occupied', 'Occupied'),
     ]
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='available')
+    last_updated = models.DateTimeField(auto_now=True)
 
+    def update_status_from_distance(self, distance_cm):
+        if distance_cm < 30:
+            self.status = 'occupied'
+        else:
+            self.status = 'available'
+        self.save()
+        
     def __str__(self):
         return f"Spot {self.spot_number}"
     

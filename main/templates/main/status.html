@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Status Slot Parkir</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            margin: 20px;
+            display: inline-block;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            line-height: 100px;
+            border-radius: 10px;
+        }
+        .occupied {
+            background-color: red;
+        }
+        .available {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Status Slot Parkir</h1>
+    {% for spot in spots %}
+        <div class="box {{ spot.status }}">
+            Spot {{ spot.spot_number }}
+        </div>
+    {% endfor %}
+</body>
+</html>
+
+<script>
+    setInterval(function() {
+        location.reload();
+    }, 2000); // 5000ms = 5 detik
+</script>
