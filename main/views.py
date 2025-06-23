@@ -6,6 +6,7 @@ import logging
 from datetime import datetime, time
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
@@ -145,5 +146,16 @@ def guide_view(request):
     return render(request, 'guide.html')
 
 def spots_status_json(request):
-    spots = list(Spot.objects.values('spot_number', 'status'))
-    return JsonResponse(spots, safe=False)
+    today = timezone.now().date()
+    spots_data = []
+    for spot in Spot.objects.all():
+        reserved_today = Reservation.objects.filter(
+            spot=spot,
+            start_time__date=today
+        ).exists()
+        spots_data.append({
+            "spot_number": spot.spot_number,
+            "status": spot.status,  # occupied/available
+            "reserved_today": reserved_today,
+        })
+    return JsonResponse(spots_data, safe=False)
