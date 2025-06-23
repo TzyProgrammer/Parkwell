@@ -18,7 +18,7 @@
             Account Info
         </span>
 
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
         <div class="flex items-center mt-7 mb-12 gap-4">
@@ -314,7 +314,7 @@
 
         <div class="mt-2 mr-4">
                 <label for="imageUpload" class="block mb-2 text-sm font-medium text-gray-600">Car Image :</label>
-                        <input required class="block w-full text-sm text-gray-900 border border-[#0F044C] rounded-md cursor-pointer bg-white focus:outline-none" aria-describedby="file_input_help" type="file" id="imageUpload" accept=".jpg, .jpeg, .png, image/jpeg, image/png">
+                        <input required class="block w-full text-sm text-gray-900 border border-[#0F044C] rounded-md cursor-pointer bg-white focus:outline-none" aria-describedby="file_input_help" type="file" name="imageUpload" id="imageUpload" accept=".jpg, .jpeg, .png, image/jpeg, image/png">
                         <p id="fileInfo" class="mt-2 text-sm text-red-600"></p>
                 </div>
                     
@@ -406,6 +406,9 @@
                         <span class="text-sm font-medium text-[#141E61] ">{{ reservation.end_time|time:"H:i" }}</span>
                     </div>
                 </div>
+                <div>
+                    <img src="" alt="Image preview" id="preview_image" class="mt-4 hidden w-64 h-auto border border-gray-300 rounded">
+                </div>
         </div>
 
         <div class="grid grid-flow-col justify-items-end">
@@ -447,6 +450,8 @@
 </div>
 </div>
 </div>
+
+<script src="{% static 'main/app.js' %}"></script>
 
 {% endblock %}
 

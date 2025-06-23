@@ -9,6 +9,7 @@ class Car(models.Model):
     model = models.CharField(max_length=100)
     color = models.CharField(max_length=100)
     user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='cars')
+    image = models.ImageField(upload_to='car_image/', null=True, blank=True)
     
     def __str__(self):
         return f"{self.brand} {self.model} ({self.license_plate})"

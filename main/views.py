@@ -114,9 +114,14 @@ def reservation_details_view(request, reservation_id):
         brand = request.POST.get('dropdown1')
         model = request.POST.get('dropdown2')
         color = request.POST.get('color')
-        plate_number = request.POST.get('plate')
-        plate_code = request.POST.get('plate_code')
-        license_plate = f"{plate_code} {plate_number.strip().upper()}"
+        plate1 = request.POST.get('plate1')
+        plate2 = request.POST.get('plate2')
+        plate3 = request.POST.get('plate3')
+        uploaded_image = request.FILES.get('imageUpload')
+        
+        license_plate = f"{plate1} {plate2} {plate3.strip().upper()}"
+
+        print("reservation details data: ", request.POST, request.FILES)
         
         Car.objects.create(
             user=request.user,
@@ -124,6 +129,7 @@ def reservation_details_view(request, reservation_id):
             model=model,
             color=color,
             license_plate=license_plate,
+            image=uploaded_image,
         )
         return redirect('account')
 
