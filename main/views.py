@@ -5,6 +5,7 @@ from django.contrib import messages
 import logging
 from datetime import datetime, time
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 logger = logging.getLogger(__name__)
 
@@ -142,3 +143,7 @@ def history_view(request):
 
 def guide_view(request):
     return render(request, 'guide.html')
+
+def spot_status_json(request):
+    spots = Spot.objects.values('spot_number', 'status')
+    return JsonResponse(list(spots), safe=False)
