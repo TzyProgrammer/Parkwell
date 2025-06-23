@@ -144,6 +144,6 @@ def history_view(request):
 def guide_view(request):
     return render(request, 'guide.html')
 
-def spot_status_json(request):
-    spots = Spot.objects.values('spot_number', 'status')
-    return JsonResponse(list(spots), safe=False)
+def spots_status_json(request):
+    spots = list(Spot.objects.values('spot_number', 'status'))
+    return JsonResponse(spots, safe=False)

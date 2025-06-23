@@ -158,11 +158,41 @@
                         Where would you like to park?
                     </div>
 
+                    <script>
+                        function updateSlotColor(slotNumber, status) {
+                            const slotDiv = document.getElementById(`slot-${slotNumber}`);
+                            if (!slotDiv) return;
+                        
+                            // Reset classes
+                            slotDiv.classList.remove('bg-[#8a1616]', 'bg-[#afd106]', 'bg-[#018214]');
+                        
+                            if (status === 'occupied') {
+                                slotDiv.classList.add('bg-[#8a1616]');
+                            } else if (status === 'available') {
+                                slotDiv.classList.add('bg-[#018214]');
+                            } else if (status === 'reserved') {
+                                slotDiv.classList.add('bg-[#afd106]');
+                            }
+                        }
+                        
+                        // Fetch status slots every 3 seconds
+                        setInterval(() => {
+                            fetch("{% url 'spots_status_json' %}")
+                                .then(response => response.json())
+                                .then(data => {
+                                    data.forEach(spot => {
+                                        updateSlotColor(spot.spot_number, spot.status);
+                                    });
+                                })
+                                .catch(err => console.error('Error fetching slot status:', err));
+                        }, 3000);
+                        </script>
+                        
                 <div class=" grid grid-cols-4">
 
                         <!-- Slot 1 -->
                     <div >
-                        <div class=" py-8 justify-center items-center flex bg-[#8a1616] rounded-2xl mx-3 mt-3">
+                        <div id="slot-1" class=" py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
 
                             <button onclick="confirmSelection('1')" data-modal-target="popup-modal1" data-modal-toggle="popup-modal1">
                                 <img src="{% static 'main/car1.png' %}" alt="" class=" block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
@@ -199,7 +229,7 @@
 
                         <!-- Slot 2 -->
                     <div>
-                        <div class="py-8 justify-center items-center flex bg-[#afd106] rounded-2xl mx-3 mt-3">
+                        <div id="slot-2" class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
 
                             <button onclick="confirmSelection('2')" data-modal-target="popup-modal2" data-modal-toggle="popup-modal2">
                                 <img src="{% static 'main/car2.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
@@ -236,7 +266,7 @@
 
                     <!-- Slot 3 -->
                 <div>
-                    <div class="md:py-[38.5px] py-[36px] justify-center  flex bg-[#018214] rounded-2xl mx-3 mt-3">
+                    <div id="slot-3" class="md:py-[38.5px] py-[36px] justify-center  flex bg-[#018214] rounded-2xl mx-3 mt-3">
                         <button onclick="setSlotDirectly('3')" >
                             <img src="{% static 'main/car3.png' %}" alt="" class=" block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
                         </button>
@@ -248,7 +278,7 @@
 
                     <!-- Slot 4 -->
                 <div>
-                    <div class="md:py-[38.5px] py-[36px] justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
+                    <div id="slot-4" class="md:py-[38.5px] py-[36px] justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
                         <button onclick="setSlotDirectly('4')" >
                             <img src="{% static 'main/car4.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
                         </button>
