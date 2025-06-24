@@ -145,17 +145,27 @@ def history_view(request):
 def guide_view(request):
     return render(request, 'guide.html')
 
-def spots_status_json(request):
-    today = timezone.now().date()
-    spots_data = []
+def spots_dynamic_status_json(request):
+    spots = []
+    now = timezone.now().replace(second=0, microsecond=0)
+
     for spot in Spot.objects.all():
+        # Cek reservasi hari ini
         reserved_today = Reservation.objects.filter(
             spot=spot,
-            start_time__date=today
+            start_time__date=now.date()
         ).exists()
-        spots_data.append({
-            "spot_number": spot.spot_number,
-            "status": spot.status,  # occupied/available
-            "reserved_today": reserved_today,
-        })
-    return JsonResponse(spots_data, safe=False)
+
+        # Sensor status dari field Spot.status
+        sensor_occupied = spot.status == "occupied"
+
+        if sensor_occupied:
+            status = "occupied"
+        elif reserved_today:
+            status = "reserved"
+        else:
+            status = "available"
+
+        spots.append({"spot_number": spot.spot_number, "status": status})
+
+    return JsonResponse(spots, safe=False)

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register_view, login_view, logout_view, home_view, reservation_view, reservation_details_view, account_view, delete_reservation, history_view, guide_view, status_view, spot_status_json
+from .views import register_view, login_view, logout_view, home_view, reservation_view, reservation_details_view, account_view, delete_reservation, history_view, guide_view, status_view, spots_dynamic_status_json
 
 urlpatterns = [
     path('register/', register_view, name='register'),
@@ -14,5 +14,5 @@ urlpatterns = [
     path('history/', history_view, name='history'),
     path('guide/', guide_view, name='guide' ),
     path('status/', status_view, name='status'),
-    path('api/spot-status/', spot_status_json, name='spot_status_json'),
+    path('api/spots-dynamic-status/', spots_dynamic_status_json, name='spots_dynamic_status_json'),
 ]
