@@ -157,114 +157,99 @@
                     <div class="p-4 justify-center flex text-3xl bg-[#141E61] font-medium text-white">
                         Where would you like to park?
                     </div>
-                        
-                <div class=" grid grid-cols-4">
+                    
+                    <div class="grid grid-cols-4">
 
-                        <!-- Slot 1 -->
-                    <div >
-                        <div id="slot-1-box" class=" py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
-
-                            <button id="slot-1-btn" onclick="confirmSelection('1')" data-modal-target="popup-modal1" data-modal-toggle="popup-modal1">
-                                <img src="{% static 'main/car1.png' %}" alt="" class=" block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
-                            </button>
-
-                            <!-- modal -->
-                            <div id="popup-modal1" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        {% for i in "1234" %}
+                        <!-- ==================== SLOT {{ i }} ==================== -->
+                        <div>
+                            <!-- BOX -->
+                            <div id="slot-{{ i }}-box" class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
+                                <button id="slot-{{ i }}-btn" onclick="setSlotDirectly('{{ i }}')">
+                                    <img src="{% static 'main/car'|add:i|add:'.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
+                                </button>
+                            </div>
+                            <!-- LABEL -->
+                            <div class="items-center flex justify-center py-2">
+                                <p id="slot-{{ i }}-label" class="text-md text-[#018214] font-semibold">Available</p>
+                            </div>
+                    
+                            <!-- ==================== Modal OCCUPIED ==================== -->
+                            <div id="popup-modal{{ i }}" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div class="relative p-4 w-full max-w-md max-h-full">
                                     <div class="relative bg-white rounded-lg shadow-sm">
-                                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="popup-modal1">
-                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                            </svg>
+                                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                                        data-modal-hide="popup-modal{{ i }}">
+                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" /></svg>
                                             <span class="sr-only">Close modal</span>
                                         </button>
                                         <div class="p-4 md:p-5 text-center">
-                                            <svg class="mx-auto mb-4 text-[#8a1616] w-12 h-12" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                            </svg>
-                                            <h3 class="mb-5 text-lg font-normal text-gray-500">This parking slot is currently <span class="font-semibold text-[#8a1616]">Occupied</span>. However, you can still make a reservation for available time.</h3>
-                                            <button onclick="setSelection()" data-modal-hide="popup-modal1" type="button" class="text-white bg-[#8a1616] hover:bg-[#731212] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                            <svg class="mx-auto mb-4 text-[#8a1616] w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                                            <h3 class="mb-5 text-lg font-normal text-gray-500">
+                                                This parking slot is currently
+                                                <span class="font-semibold text-[#8a1616]">Occupied</span>.
+                                                However, you can still make a reservation for available time.
+                                            </h3>
+                                            <button onclick="setSelection()" data-modal-hide="popup-modal{{ i }}" type="button"
+                                                class="text-white bg-[#8a1616] hover:bg-[#731212] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                                                 Reserve Anyway
                                             </button>
-                                            <button onclick="closeModal()" data-modal-hide="popup-modal1" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 ">No, cancel</button>
+                                            <button onclick="closeModal()" data-modal-hide="popup-modal{{ i }}" type="button"
+                                                class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                                                No, cancel
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="items-center flex justify-center py-2">
-                            <p id="slot-1-label" class="text-md text-[#8a1616] font-semibold">Occupied</p>
-                        </div>
-                    </div>
-
-                        <!-- Slot 2 -->
-                    <div>
-                        <div id="slot-2-box" class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
-
-                            <button id="slot-2-btn" onclick="confirmSelection('2')" data-modal-target="popup-modal2" data-modal-toggle="popup-modal2">
-                                <img src="{% static 'main/car2.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
-                            </button>
-
-                            <!-- modal -->
-                            <div id="popup-modal2" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                <div class="relative p-4 w-full max-w-md max-h-full">
-                                    <div class="relative bg-white rounded-lg shadow-sm ">
-                                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="popup-modal2">
-                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                            </svg>
-                                            <span class="sr-only">Close modal</span>
-                                        </button>
-                                        <div class="p-4 md:p-5 text-center">
-                                            <svg class="mx-auto mb-4 text-[#afd106] w-12 h-12" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                            </svg>
-                                            <h3 class="mb-5 text-lg font-normal text-gray-500">This parking slot has already been <Span class="text-[#afd106] font-semibold">Reserved</Span> by other users today. However, you can still reserve it for other available time slots.</h3>
-                                            <button onclick="setSelection()" data-modal-hide="popup-modal2" type="button" class="text-white bg-[#afd106] hover:bg-[#91ad05] focus:ring-4 focus:outline-none focus:ring-[#d3fa14] font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                                                Reserve Anyway
-                                            </button>
-                                            <button onclick="closeModal()" data-modal-hide="popup-modal2" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 ">No, cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="items-center flex justify-center py-2">
-                            <p id="slot-2-label" class="text-md text-[#afd106] font-semibold">Reserved</p>
-                        </div>
-                    </div>
-
-                    <!-- Slot 3 -->
-                <div>
-                    <div id="slot-3-box" class="md:py-[38.5px] py-[36px] justify-center  flex bg-[#018214] rounded-2xl mx-3 mt-3">
-                        <button id="slot-3-btn" onclick="setSlotDirectly('3')" >
-                            <img src="{% static 'main/car3.png' %}" alt="" class=" block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
-                        </button>
-                    </div>
-                    <div class="flex justify-center py-2">
-                            <p id="slot-3-label" class="text-md text-[#018214] font-semibold">Available</p>
-                    </div>
-                </div>
-
-                    <!-- Slot 4 -->
-                <div>
-                    <div id="slot-4-box" class="md:py-[38.5px] py-[36px] justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
-                        <button id="slot-4-btn" onclick="setSlotDirectly('4')" >
-                            <img src="{% static 'main/car4.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
-                        </button>
-                    </div>
-                    <div class="items-center flex justify-center py-2">
-                            <p id="slot-4-label" class="text-md text-[#018214] font-semibold">Available</p>
-                    </div>
-                </div>
-
-                <script>
-                    function updateSlotDisplay(spotNumber, status) {
-                        const box = document.getElementById(`slot-${spotNumber}-box`);
-                        const label = document.getElementById(`slot-${spotNumber}-label`);
-                        const btn = document.getElementById(`slot-${spotNumber}-btn`);
                     
-                        if (!box || !label || !btn) return;
+                            <!-- ==================== Modal RESERVED ==================== -->
+                            <div id="popup-modal{{ i }}-reserved" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div class="relative p-4 w-full max-w-md max-h-full">
+                                    <div class="relative bg-white rounded-lg shadow-sm">
+                                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                                        data-modal-hide="popup-modal{{ i }}-reserved">
+                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" /></svg>
+                                            <span class="sr-only">Close modal</span>
+                                        </button>
+                                        <div class="p-4 md:p-5 text-center">
+                                            <svg class="mx-auto mb-4 text-[#afd106] w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                                            <h3 class="mb-5 text-lg font-normal text-gray-500">
+                                                This parking slot has already been
+                                                <span class="text-[#afd106] font-semibold">Reserved</span>
+                                                by other users today. However, you can still reserve it for other available time slots.
+                                            </h3>
+                                            <button onclick="setSelection()" data-modal-hide="popup-modal{{ i }}-reserved" type="button"
+                                                class="text-white bg-[#afd106] hover:bg-[#91ad05] focus:ring-4 focus:outline-none focus:ring-[#d3fa14] font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                                Reserve Anyway
+                                            </button>
+                                            <button onclick="closeModal()" data-modal-hide="popup-modal{{ i }}-reserved" type="button"
+                                                class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                                                No, cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                        </div>
+                        {% endfor %}
+                    
+                    </div>
+                    
+                    <script>
+                    let selectedSlotValue;
+                    const selectElement = document.getElementById('slot');
+                    
+                    function setSlotDirectly(value) {
+                        if (selectElement) selectElement.value = value;
+                    }
+                    
+                    // ==================== AJAX Fetch Status ==================== //
+                    function updateSlotDisplay(slotNumber, status) {
+                        const box = document.getElementById(`slot-${slotNumber}-box`);
+                        const label = document.getElementById(`slot-${slotNumber}-label`);
+                        const btn = document.getElementById(`slot-${slotNumber}-btn`);
                     
                         // Reset classes
                         box.className = "py-8 justify-center items-center flex rounded-2xl mx-3 mt-3";
@@ -275,67 +260,34 @@
                             label.classList.add('text-[#8a1616]');
                             label.innerText = "Occupied";
                             btn.onclick = function() {
-                                // munculkan modal occupied
-                                document.getElementById(`popup-modal${spotNumber}`).classList.remove('hidden');
+                                document.getElementById(`popup-modal${slotNumber}`).classList.remove('hidden');
                             };
                         } else if (status === "reserved") {
                             box.classList.add('bg-[#afd106]');
                             label.classList.add('text-[#afd106]');
                             label.innerText = "Reserved";
                             btn.onclick = function() {
-                                document.getElementById(`popup-modal${spotNumber}`).classList.remove('hidden');
+                                document.getElementById(`popup-modal${slotNumber}-reserved`).classList.remove('hidden');
                             };
                         } else {
                             box.classList.add('bg-[#018214]');
                             label.classList.add('text-[#018214]');
                             label.innerText = "Available";
                             btn.onclick = function() {
-                                setSlotDirectly(spotNumber); // langsung set slot
+                                setSlotDirectly(slotNumber);
                             };
                         }
                     }
                     
-                    // Fetch status every 3 seconds
+                    // Fetch every 3s
                     setInterval(() => {
                         fetch("{% url 'spots_dynamic_status_json' %}")
                             .then(res => res.json())
-                            .then(data => {
-                                data.forEach(spot => {
-                                    updateSlotDisplay(spot.spot_number, spot.status);
-                                })
-                            })
+                            .then(data => data.forEach(spot => updateSlotDisplay(spot.spot_number, spot.status)))
                             .catch(err => console.error(err));
                     }, 3000);
                     </script>
                     
-                        <!-- js auto pick slot -->
-                        <script>
-                            let selectedSlotValue;
-                            const selectElement = document.getElementById('slot');
-
-                            function confirmSelection(value) {
-                                selectedSlotValue = value;
-                            }
-
-                            function setSelection() {
-                                if (selectElement) {
-                                selectElement.value = selectedSlotValue;
-                                }
-                            }
-
-                            window.setSlotDirectly = function (value) {
-                            const selectElement = document.getElementById('slot');
-                            if (selectElement) {
-                                selectElement.value = value;
-                            }
-                            }
-
-                            function closeModal() {
-                          
-                        }
-
-                        </script>
-                
             </div>
 
             </div>
