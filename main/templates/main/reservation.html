@@ -157,36 +157,6 @@
                     <div class="p-4 justify-center flex text-3xl bg-[#141E61] font-medium text-white">
                         Where would you like to park?
                     </div>
-
-                    <script>
-                        function updateSlotColor(slotNumber, status) {
-                            const slotDiv = document.getElementById(`slot-${slotNumber}`);
-                            if (!slotDiv) return;
-                        
-                            // Reset classes
-                            slotDiv.classList.remove('bg-[#8a1616]', 'bg-[#afd106]', 'bg-[#018214]');
-                        
-                            if (status === 'occupied') {
-                                slotDiv.classList.add('bg-[#8a1616]');
-                            } else if (status === 'available') {
-                                slotDiv.classList.add('bg-[#018214]');
-                            } else if (status === 'reserved') {
-                                slotDiv.classList.add('bg-[#afd106]');
-                            }
-                        }
-                        
-                        // Fetch status slots every 3 seconds
-                        setInterval(() => {
-                            fetch("{% url 'spots_status_json' %}")
-                                .then(response => response.json())
-                                .then(data => {
-                                    data.forEach(spot => {
-                                        updateSlotColor(spot.spot_number, spot.status);
-                                    });
-                                })
-                                .catch(err => console.error('Error fetching slot status:', err));
-                        }, 3000);
-                        </script>
                         
                 <div class=" grid grid-cols-4">
 
