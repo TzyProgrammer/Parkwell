@@ -5,6 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <link rel="icon" href="{% static 'main/iconweb.ico' %}" type="image/x-icon">
+
   <!-- Tailwind + Flowbite CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
@@ -23,8 +25,8 @@
 
   <nav class=" bg-[#141E61] fixed w-full z-20 top-0 start-0 border-b border-gray-200 ">
     <div class="max-w-screen flex flex-wrap items-center justify-between mx-8 p-3">
-      <a href="{% url 'home' %}" class="items-center space-x-3">
-        <span class="text-white text-2xl font-semibold">Logo</span>
+      <a href="{% url 'home' %}" class="items-center space-x-3 md:ml-6">
+        <img src="{% static 'main/LogoTeks.png' %}" class="md:w-[165px] w-[140px]" alt="">
       </a>
     <div class="flex md:order-1 space-x-3 md:space-x-0 rtl:space-x-reverse">
         <button data-collapse-toggle="navbar-sticky" type="button" class=" inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-sticky" aria-expanded="false">
@@ -40,7 +42,7 @@
         <li class="order-1 md:order-3">
           <a href="{% url 'account' %}" class="block transition-all ease-in duration-300  md:flex md:items-center md:ml-14 block py-2 px-3 hover:bg-gray-400 w-full hover:text-white text-gray-900 rounded-lg  md:text-white md:hover:bg-transparent md:hover:text-gray-500 md:p-0">
             <span class="capitalize">My Account</span>
-            <img src="{% static 'main/wlee.jpeg' %}" alt="" class="hidden md:block md:rounded-full md:w-10 h-10 md:mx-4">
+            <img src="{% static 'main/man.png' %}" alt="" class="hidden hover:transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75 md:block md:rounded-full md:w-10 h-10 md:mx-4">
           </a>
         </li>
 
@@ -72,20 +74,32 @@
 
 
   <!-- Icon Contact Us -->
-<div class="mb-8  flex justify-center">
-    <div>
-    <a href="#" class="text-gray-900 bg-white border border-gray-400 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 text-sm px-5 py-2.5 me-2 mb-2 rounded-full"></a>
-    <a href="#" class="text-gray-900 bg-white border border-gray-400 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 text-sm px-5 py-2.5 me-2 mb-2 rounded-full"></a>
-    <a href="#" class="text-gray-900 bg-white border border-gray-400 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 text-sm px-5 py-2.5 me-2 mb-2 rounded-full"></a>
-    </div>
+<div class="md:mb-8 mb-4">
+    
+<div class="flex justify-center md:me-6 mb-4">
+    <p class="text-sm text-gray-500">Contact Us :</p>
+</div>
+
+<div class=" flex  justify-center">
+    <a href="#" class="px-5 py-2.5 md:me-6 mb-2">
+      <img src="{% static 'main/Whats-App.png' %}" class="shadow-xl rounded-full md:w-[60px] w-[50px] hover:transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75" alt="">
+    </a>
+    <a href="#" class="px-5 py-2.5 md:me-6 mb-2">
+      <img src="{% static 'main/Facebook.png' %}" class="shadow-xl rounded-full md:w-[60px] w-[50px] hover:transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75" alt="">
+    </a>
+    <a href="#" class="px-5 py-2.5 md:me-6 mb-2">
+      <img src="{% static 'main/social.png' %}" class="shadow-xl rounded-full md:w-[60px] w-[50px] hover:transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75" alt="">
+    </a>
+</div>
+    
     
 </div>
 
 <footer class="w-full bg-[#141E61] shadow-sm">
     <div class="w-full max-w-screen-xl mx-auto p-4 py-12">
         <div class="flex items-center justify-center">
-            <a href="#" class=" items-center mb-4 space-x-3 rtl:space-x-reverse">
-                <span class="self-center text-4xl font-semibold whitespace-nowrap text-white">LOGO</span>
+            <a href="{% url 'home' %}" class=" items-center mb-4 space-x-3 rtl:space-x-reverse">
+                <img src="{% static 'main/Logo1.png' %}" class="md:w-[165px] w-[150px]" alt="">
             </a>
         </div>
         

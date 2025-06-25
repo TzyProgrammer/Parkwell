@@ -9,10 +9,10 @@
 <div class="overflow-x-hidden bg-gray-100 mb-24">
 
     
-<div class="flex flex-col md:flex-row mt-12 md:mt-24 mb-2 md:mb-6 md:mx-20 mx-4">
+<div class="flex flex-col md:flex-row mt-12 md:mt-24 mb-2 md:mb-6 md:mx-16 mx-4">
 
     <!-- Kiri -->
-    <div class="md:order-1 order-2 md:w-3/5 px-6 py-8 md:px-16 md:py-12 shadow-[0_5px_5px_rgba(0,0,0,0.2)]  bg-white rounded-2xl">
+    <div class="md:order-1 order-2 md:w-3/5 px-6 py-8 md:px-10 md:py-12 shadow-[0_5px_5px_rgba(0,0,0,0.2)]  bg-white rounded-2xl">
 
         <span class="font-medium underline text-[clamp(5px,5vw,30px)] text-[#0F044C]">
             Account Info
@@ -64,7 +64,7 @@
         <div class="grid grid-cols-2 mt-6">
             
             <div class="mr-4">
-                <label for="brand" class="block mb-2 text-sm font-medium text-gray-600">Brand :</label>
+                <label for="brand" class="block mb-2 text-sm font-medium text-gray-600">Brand:</label>
                 <select name="dropdown1" id="id_dropdown1" class="bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                     <option value="0" class="hidden">Choose Brand</option>
                     <option value="Audi">Audi</option>
@@ -98,7 +98,7 @@
                 </select>
             </div>
             <div class="mr-4">
-                <label for="model" class="block mb-2 text-sm font-medium text-gray-600">Model :</label>
+                <label for="model" class="block mb-2 text-sm font-medium text-gray-600">Model:</label>
                 <select name="dropdown2" id="id_dropdown2" class="bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
 
                 </select>
@@ -163,7 +163,7 @@
         </script>
 
             <div class="mt-2 mr-4">
-                <label for="colour" class="block mb-2 text-sm font-medium text-gray-600">Colour :</label>
+                <label for="colour" class="block mb-2 text-sm font-medium text-gray-600">Color:</label>
                 <select name="color" id="color" class="bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                     <option value="" class="hidden"></option>
                     <option value="White">White</option>
@@ -181,7 +181,7 @@
             <div class="mt-2 mr-4 flex gap-2">
                 
                 <div class="w-1/3">
-                     <label for="plate1" class="block mb-2 text-sm font-medium text-gray-600">License Plate :</label>
+                     <label for="plate1" class="block mb-2 text-sm font-medium text-gray-600">Plate:</label>
                     <select name="plate1" id="plate1" class="bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                     <option value="" class="hidden"></option>
 
@@ -268,7 +268,7 @@
                     </select>
 
                     <script>
-                        const plateSelect = document.getElementById('plate_code');
+                        const plateSelect = document.getElementById('plate1');
 
                         plateSelect.addEventListener('change', function () {
                             const selectedValue = plateSelect.value;
@@ -298,12 +298,12 @@
 
                 </div>
 
-                {% comment %} Plate ANgka {% endcomment %}
+                <!-- Plate Angka -->
                 <div class="relative w-1/3">
                     <input type="text" name="plate2" class="absolute bottom-0 bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500" placeholder="123" required>
                 </div>
 
-                {% comment %} Plate Huruf setelah angka {% endcomment %}
+                <!-- Plate huruf setelah angka -->
                 <div class="relative w-1/3">
                     <input type="text" name="plate3" class="absolute bottom-0 bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-500" placeholder="XYZ" required>
                 </div>
@@ -313,7 +313,7 @@
         </div>
 
         <div class="mt-2 mr-4">
-                <label for="imageUpload" class="block mb-2 text-sm font-medium text-gray-600">Car Image :</label>
+                <label for="imageUpload" class="block mb-2 text-sm font-medium text-gray-600">Car Image:</label>
                         <input required class="block w-full text-sm text-gray-900 border border-[#0F044C] rounded-md cursor-pointer bg-white focus:outline-none" aria-describedby="file_input_help" type="file" id="imageUpload" accept=".jpg, .jpeg, .png, image/jpeg, image/png">
                         <p id="fileInfo" class="mt-2 text-sm text-red-600"></p>
                 </div>
@@ -352,7 +352,7 @@
     </div>
 
     <!-- Kanan -->
-<div class="md:order-2 order-1 md:w-2/5 width-full md:self-start pt-8 md:pt-12 pb-6 px-8 md:px-12 shadow-[0_5px_5px_rgba(0,0,0,0.2)] md:ml-12 mb-4 md:mb-0 bg-white rounded-2xl">
+<div class="md:order-2 order-1 md:w-2/5 width-full md:self-start pt-8 md:pt-12 pb-6 px-8 md:px-8 shadow-[0_5px_5px_rgba(0,0,0,0.2)] md:ml-12 mb-4 md:mb-0 bg-white rounded-2xl">
 
     <span class="font-medium underline text-[clamp(5px,5vw,30px)] text-[#0F044C]">
         Order Details
