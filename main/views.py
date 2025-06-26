@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from .models import CustomUser, Spot, Reservation, Car
 from django.contrib import messages
 import logging
-from datetime import datetime, time
+from datetime import datetime, time, date, timedelta
 from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger(__name__)
@@ -55,6 +55,9 @@ def home_view(request):
 
 @login_required(login_url='login')
 def reservation_view(request):
+    today = date.today()
+    two_weeks = today + timedelta(days=14)
+    
     if request.method == 'POST':
         print("POST request received")
         date_str = request.POST.get('date')          # from your datepicker
@@ -96,7 +99,10 @@ def reservation_view(request):
         return redirect('reservationdetails', reservation_id=reservation.id)  # Replace with your success URL or render success message
 
     # GET request fallback
-    return render(request, 'reservation.html')
+    return render(request, 'reservation.html', {
+        'today': today.strftime('%Y-%m-%d'),
+        'two_weeks': two_weeks.strftime('%Y-%m-%d'),
+    })
 
 latest_data = {"distance": "Belum ada data"}
 

@@ -145,9 +145,44 @@
             <div >   
 
                 <div class="text-[#0F044C] font-medium rounded-lg text-sm text-center inline-flex items-center ">
-                
-                <input readonly datepicker id="default-datepicker" name="datepicker" type="text" class=" bg-white text-sm rounded-lg placeholder-[#141E61] border border-2 border-[#141E61] hover:bg-[#141E61] hover:placeholder-white cursor-pointer focus:ring-blue-500 focus:border-blue-500 px-4 py-1.5  w-auto"  size="8" placeholder="Select date" >                                                                 
+                <!--
+                <input readonly datepicker datepicker-format="mm/dd/yyyy" data-date-min="{{ today }}" data-date-max="{{ two_weeks }}" id="default-datepicker" name="datepicker" type="text" class=" bg-white text-sm rounded-lg placeholder-[#141E61] border border-2 border-[#141E61] hover:bg-[#141E61] hover:placeholder-white cursor-pointer focus:ring-blue-500 focus:border-blue-500 px-4 py-1.5  w-auto"  size="8" placeholder="Select date" >                                                                 
+                -->
+                <input
+                    id="default-datepicker"
+                    name="date"
+                    type="text"
+                    data-datepicker
+                    data-date-format="mm/dd/yyyy"
+                    min="{{ today }}"
+                    max="{{ two_weeks }}"
+                    class="bg-white text-sm rounded-lg border border-2 border-[#141E61] px-4 py-1.5 placeholder-[#141E61] hover:bg-[#141E61] hover:placeholder-white cursor-pointer focus:ring-blue-500 focus:border-blue-500 w-auto" size="8"
+                    placeholder="Select date"
+                    readonly
+                    />
                 </div>
+                <!-- script ini harus disini, tak bisa di app.js -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const input = document.getElementById('default-datepicker');
+
+                        if (window.Datepicker && input) {
+                            const today = new Date("{{ today|escapejs }}");
+                            const maxDate = new Date("{{ two_weeks|escapejs }}");
+
+                            new Datepicker(input, {
+                                format: 'mm/dd/yyyy',
+                                minDate: today,
+                                maxDate: maxDate,
+                                autohide: true,
+                            });
+
+                            console.log("Datepicker initialized with:", today, maxDate);
+                        } else {
+                            console.error('Datepicker or input not found.');
+                        }
+                    });
+                </script>
 
             </div>
 

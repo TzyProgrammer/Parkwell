@@ -1,6 +1,7 @@
 console.log("haziq jomok");
 console.log("yang YTTA YTTA aja")
 
+// transfer datepicker into readonly input box
 document.addEventListener("DOMContentLoaded", function(){
     const datePickerInput = document.getElementById("default-datepicker")
     const readOnlyInput = document.getElementById("default-date")
@@ -43,8 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 */
 
+// previewing car image
 console.log("JS file is loaded")
-
 document.addEventListener('DOMContentLoaded', function () {
     const imageInput = document.getElementById('imageUpload');
     const preview = document.getElementById('preview_image');
