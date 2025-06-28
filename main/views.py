@@ -5,6 +5,8 @@ from django.contrib import messages
 import logging
 from datetime import datetime, time, date, timedelta
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
@@ -154,3 +156,29 @@ def history_view(request):
 
 def guide_view(request):
     return render(request, 'guide.html')
+
+
+def spots_dynamic_status_json(request):
+    spots = []
+    now = timezone.now().replace(second=0, microsecond=0)
+
+    for spot in Spot.objects.all():
+        # Cek reservasi hari ini
+        reserved_today = Reservation.objects.filter(
+            spot=spot,
+            start_time__date=now.date()
+        ).exists()
+
+        # Sensor status dari field Spot.status
+        sensor_occupied = spot.status == "occupied"
+
+        if sensor_occupied:
+            status = "occupied"
+        elif reserved_today:
+            status = "reserved"
+        else:
+            status = "available"
+
+        spots.append({"spot_number": spot.spot_number, "status": status})
+
+    return JsonResponse(spots, safe=False)

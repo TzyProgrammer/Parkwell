@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register_view, login_view, logout_view, home_view, reservation_view, reservation_details_view, account_view, delete_reservation, history_view, guide_view, status_view
+from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -16,5 +16,6 @@ urlpatterns = [
     path('history/', history_view, name='history'),
     path('guide/', guide_view, name='guide' ),
     path('status/', status_view, name='status'),
+    path('api/spots-dynamic-status/', spots_dynamic_status_json, name='spots_dynamic_status_json'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
