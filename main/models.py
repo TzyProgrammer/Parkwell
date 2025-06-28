@@ -42,6 +42,7 @@ class Spot(models.Model):
     STATUS_CHOICES = [
     ('available', 'Available'),
     ('occupied', 'Occupied'),
+    ('reserved', 'Reserved'),
     ]
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='available')
     last_updated = models.DateTimeField(auto_now=True)

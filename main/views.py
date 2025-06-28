@@ -7,6 +7,7 @@ from datetime import datetime, time, date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils import timezone
+from django.utils.dateparse import parse_date
 
 logger = logging.getLogger(__name__)
 
@@ -159,14 +160,27 @@ def guide_view(request):
 
 
 def spots_dynamic_status_json(request):
+    
+    selected_date_str = request.GET.get('date')
+    if not selected_date_str:
+        return JsonResponse({'error': 'No date provided'}, status=400)
+    selected_date = parse_date(selected_date_str)
+    if not selected_date:
+        return JsonResponse({'error': 'Invalid date format'}, status=400)
     spots = []
     now = timezone.now().replace(second=0, microsecond=0)
 
     for spot in Spot.objects.all():
         # Cek reservasi hari ini
+        """
         reserved_today = Reservation.objects.filter(
             spot=spot,
             start_time__date=now.date()
+        ).exists()
+        """
+        reserved_on_day = Reservation.objects.filter(
+            spot=spot,
+            start_time__date=selected_date
         ).exists()
 
         # Sensor status dari field Spot.status
@@ -174,7 +188,7 @@ def spots_dynamic_status_json(request):
 
         if sensor_occupied:
             status = "occupied"
-        elif reserved_today:
+        elif reserved_on_day:
             status = "reserved"
         else:
             status = "available"

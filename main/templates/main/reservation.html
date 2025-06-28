@@ -287,10 +287,22 @@
                             btn.onclick = () => setSlotDirectly(slotNumber);
                         }
                     }
+
+                    function formatDateToISO(dateStr) {
+                        const [month, day, year] = dateStr.split('/');
+                        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                    }
                     
                     // Fetch every 3s
                     setInterval(() => {
-                        fetch("{% url 'spots_dynamic_status_json' %}")
+                        const dateInput = document.getElementById('default-datepicker');
+                        const selectedDate = dateInput ? dateInput.value : '';
+
+                        if (!selectedDate) return; 
+
+                        const formattedDate = formatDateToISO(selectedDate)
+
+                        fetch(`/api/spots-dynamic-status/?date=${formattedDate}`)
                             .then(res => res.json())
                             .then(data => {
                                 data.forEach(spot => updateSlotDisplay(spot.spot_number, spot.status));
