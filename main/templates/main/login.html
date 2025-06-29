@@ -53,6 +53,10 @@
                      focus:ring-blue-500 focus:border-blue-500 
                      dark:bg-gray-700 dark:border-gray-600 dark:text-white">
           </div>
+
+          {% if error %}
+              <p class="text-red-600 text-sm mb-2">{{ error }}</p>
+          {% endif %}
   
           <button type="submit"
             class="w-full text-white font-medium bg-[#141E61] md:mt-8 hover:bg-blue-800 focus:ring-4 
