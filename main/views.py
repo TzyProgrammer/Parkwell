@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils import timezone
 from django.utils.dateparse import parse_date
+from django.utils.timezone import localdate
 
 logger = logging.getLogger(__name__)
 
@@ -211,35 +212,40 @@ def history_view(request):
 def guide_view(request):
     return render(request, 'guide.html')
 
-
 def spots_dynamic_status_json(request):
-    
     selected_date_str = request.GET.get('date')
     if not selected_date_str:
         return JsonResponse({'error': 'No date provided'}, status=400)
+
     selected_date = parse_date(selected_date_str)
     if not selected_date:
         return JsonResponse({'error': 'Invalid date format'}, status=400)
-    spots = []
-    now = timezone.now().replace(second=0, microsecond=0)
 
+    today = localdate()  # Hari ini (bukan timezone.now().date())
+
+    spots = []
     for spot in Spot.objects.all():
-        # Cek reservasi hari ini
-        reserved_on_day = Reservation.objects.filter(
+        # Cek apakah ada reservasi pada tanggal yang diminta
+        reserved_on_date = Reservation.objects.filter(
             spot=spot,
             start_time__date=selected_date
         ).exists()
 
-        # Sensor status dari field Spot.status
-        sensor_occupied = spot.status == "occupied"
-
-        if sensor_occupied:
-            status = "occupied"
-        elif reserved_on_day:
-            status = "reserved"
+        # Jika tanggal yang dipilih adalah hari ini, sensor aktif
+        if selected_date == today:
+            if spot.status == "occupied":
+                status = "occupied"
+            elif reserved_on_date:
+                status = "reserved"
+            else:
+                status = "available"
         else:
-            status = "available"
+            # Untuk tanggal lain, hanya berdasarkan reservasi
+            status = "reserved" if reserved_on_date else "available"
 
-        spots.append({"spot_number": spot.spot_number, "status": status})
+        spots.append({
+            "spot_number": spot.spot_number,
+            "status": status
+        })
 
     return JsonResponse(spots, safe=False)

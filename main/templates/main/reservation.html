@@ -297,15 +297,10 @@
                     setInterval(() => {
                         const dateInput = document.getElementById('default-datepicker');
                         const selectedDate = dateInput ? dateInput.value : '';
-                        if (!selectedDate) return;
 
-                        const formattedDate = formatDateToISO(selectedDate);
+                        if (!selectedDate) return; 
 
-                        // Bandingkan dengan hari ini (format: yyyy-mm-dd)
-                        const today = new Date();
-                        const todayStr = today.toISOString().split('T')[0];
-
-                        if (formattedDate !== todayStr) return;  // Hanya aktif untuk hari ini
+                        const formattedDate = formatDateToISO(selectedDate)
 
                         fetch(`/api/spots-dynamic-status/?date=${formattedDate}`)
                             .then(res => res.json())
