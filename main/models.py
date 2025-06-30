@@ -66,7 +66,7 @@ class Reservation(models.Model):
     def __str__(self):
         cars = self.user.cars.all()
         if cars:
-            return f"Reservation by {self.user.username} for {cars.brand} from {self.start_time} to {self.end_time}"
+            return f"Reservation by {self.user.username} from {self.start_time} to {self.end_time}"
         else:
             return f"Reservation by {self.user.username} from {self.start_time} to {self.end_time}"
 

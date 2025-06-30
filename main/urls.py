@@ -18,5 +18,6 @@ urlpatterns = [
     path('guide/', guide_view, name='guide' ),
     path('status/', status_view, name='status'),
     path('api/spots-dynamic-status/', spots_dynamic_status_json, name='spots_dynamic_status_json'),
+    path('api/reserved-intervals/', reserved_intervals_view, name='reserved_intervals'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

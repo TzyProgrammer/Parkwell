@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils import timezone
 from django.utils.dateparse import parse_date
-from django.utils.timezone import localdate
+from django.utils.timezone import localdate, make_aware, localtime
 
 logger = logging.getLogger(__name__)
 
@@ -249,3 +249,61 @@ def spots_dynamic_status_json(request):
         })
 
     return JsonResponse(spots, safe=False)
+"""
+def reserved_hours_view(request):
+    spot_number = request.GET.get('spot')
+    date_str = request.GEt.get('date')
+
+    date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+    reservations = Reservation.objects.filter(
+        spot__spot_number=spot_number,
+        start_time__date=date_obj
+    )
+    
+    reserved_hours = []
+    for r in reservations:
+        start_hour = r.start_time.hour
+        end_hour = r.end_time.hour
+        reserved_hours.extend(list(range(start_hour, end_hour)))
+
+    return JsonResponse({'reserved_hours': sorted(set(reserved_hours))})
+"""
+def get_reserved_times(start, end):
+    blocked = []
+    current = start
+    while current <= end:
+        blocked.append(current.strftime("%H:%M"))
+        current += timedelta(minutes=30)
+    return blocked
+
+def reserved_intervals_view(request):
+    from django.utils.timezone import localtime
+
+    date_str = request.GET.get('date')
+    spot_id = request.GET.get('spot')
+
+    if not date_str or not spot_id:
+        return JsonResponse({'error': 'Missing parameters'}, status=400)
+
+    from .models import Spot  # adjust if needed
+    try:
+        spot = Spot.objects.get(spot_number=spot_id)
+    except Spot.DoesNotExist:
+        return JsonResponse({'error': 'Spot not found'}, status=404)
+
+    # Use naive date for filtering
+    target_date = parse_date(date_str)
+
+    reservations = Reservation.objects.filter(
+        spot=spot,
+        start_time__date=target_date
+    )
+
+    all_blocked = []
+    for r in reservations:
+        start = localtime(r.start_time)  # Convert to local time
+        end = localtime(r.end_time)
+        blocked = get_reserved_times(start, end)
+        all_blocked.extend(blocked)
+
+    return JsonResponse({'reserved_times': all_blocked})
