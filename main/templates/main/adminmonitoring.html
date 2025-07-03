@@ -1,0 +1,163 @@
+{% extends "admin_base.html" %}
+
+{% load static %}
+
+{% block akun_content %}
+<title>Current</title>
+<div class="flex flex-row mt-4">
+            <div>
+                <a href="{% url 'adminhome' %}" class="focus:outline-none text-[#141E61] bg-white hover:bg-[#141E61] hover:text-white focus:ring-2 font-medium rounded-2xl md:text-md text-sm md:px-8 px-2 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">Current Reservation</a>
+            </div>
+            <div>
+                <a href="" class="focus:outline-none text-white bg-[#141E61] focus:ring-2 font-medium rounded-2xl md:text-md text-sm md:px-8 px-2 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">Park Monitoring</a>
+            </div>
+            <div>
+                <a href="{% url 'adminreservation' %}" class="focus:outline-none text-[#141E61] bg-white hover:bg-[#141E61] hover:text-white focus:ring-2 font-medium rounded-2xl md:text-md text-sm md:px-8 px-2 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">All Reservations</a>
+            </div>
+        </div>
+
+        <div class="mt-4 bg-white rounded-2xl animate-fade-up">
+
+              <!-- Park spot 1 -->
+            <div class="md:px-12 px-8 pt-8 md:pt-12 flex justify-center">
+              <h2 class="text-2xl md:text-4xl font-semibold tracking-wide text-[#141E61] fade-up border-b-2 border-gray-500 pb-1">
+                Parking Spot 1
+              </h2>
+            </div>
+
+            <div class="flex justify-center pb-4">
+                <div class="mx-2 my-4 border px-4 border-4 border-[#141E61] rounded-lg shadow-[0_5px_5px_rgba(0,0,0,0.2)]">
+
+                  <!-- selal -->
+                   <div class="grid justify-items-end mx-4 mt-2">
+                    <label class="gap-2 mb-4 border border-gray-600 cursor-pointer px-2 py-1 rounded-xl ">
+                      <input type="checkbox" id="selectAll" class="w-4 h-4 text-purple-600 bg-gray-300 border-gray-300 rounded-sm focus:ring-purple-500 dark:focus:ring-purple-600">
+                      <span class="text-gray-700 font-medium">Select All</span>
+                    </label>
+                    </div>
+
+                <ul class=" grid grid-cols-4 md:gap-8 gap-2">
+                    
+                        <!-- Slot 1 -->
+                    <li>
+                      <label for="slot1" class="flex justify-center text-sm font-semibold text-[#141E61]">Slot 1</label>
+                      <div class="flex justify-center py-2">
+                        <input type="checkbox" id="box1" class="hidden peer box-checkbox">
+                        <label for="box1" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
+                          <img src="{% static 'main/car1.png' %}" class="w-20 md:w-28" alt="">
+                        </label>
+                      </div>
+                      <div class="flex justify-center">
+                        <p class="text-md text-[#018214] font-semibold">Available</p>
+                        </div>
+                    </li>
+
+                        <!-- Slot 2 -->
+                    <li>
+                      <label for="slot2" class="flex justify-center text-sm font-semibold text-[#141E61]">Slot 2</label>
+                      <div class="flex justify-center py-2">
+                        <input type="checkbox" id="box2" class="hidden peer box-checkbox">
+                      <label for="box2" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
+                        <img src="{% static 'main/car2.png' %}" class="w-20 md:w-28" alt="">
+                      </label>
+                      </div>
+                      <div class="flex justify-center">
+                      <p class="text-md text-[#018214] font-semibold">Available</p>
+                      </div>
+                    </li>
+
+
+                    <!-- Slot 3 -->
+                  <li>
+                    <label for="slot3" class="flex justify-center text-sm font-semibold text-[#141E61]">Slot 3</label>
+                    <div class="flex justify-center py-2">
+                      <input type="checkbox" id="box3" class="hidden peer box-checkbox">
+                    <label for="box3" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
+                      <img src="{% static 'main/car3.png' %}" class="w-[85px] md:w-[120px]" alt="">
+                    </label>
+                    </div>
+                    <div class="flex justify-center">
+                    <p class="text-md text-[#018214] font-semibold">Available</p>
+                    </div>
+                  </li>
+
+                    <!-- Slot 4 -->
+                  <li>
+                    <label for="slot4" class="flex justify-center text-sm font-semibold text-[#141E61]">Slot 4</label>
+                    <div class="flex justify-center py-2">
+                      <input type="checkbox" id="box4" class="hidden peer box-checkbox">
+                    <label for="box4" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
+                      <img src="{% static 'main/car4.png' %}" class="w-[84px] md:w-[119px]" alt="">
+                    </label>
+                    </div>
+                    <div class="flex justify-center">
+                    <p class="text-md text-[#018214] font-semibold">Available</p>
+                    </div>
+                  </li>
+              </ul>
+
+              <div class="flex justify-end mt-6">
+                <div class=" gap-4 mb-4">
+                  <label for="colorSelect" class="text-gray-700 text-sm font-medium">Reason:</label>
+                  <select id="colorSelect" class="px-4 md:pr-12 pr-8 md:text-md text-sm md:py-2 py-1.5 border rounded">
+                    <option value="bg-[#018214]">Available</option>
+                    <option value="bg-[#8a1616]">Occupied</option>
+                    <option value="bg-gray-300">Disabled</option>
+                  </select>
+                </div>
+                <div class="ml-6">
+                    <button onclick="updateSelectedColors()" class="bg-[#141E61] md:text-md text-sm text-white md:px-20 px-12 md:py-2 py-1.5 rounded hover:bg-blue-700 hover:focus:ring-blue-300">Update</button>
+                </div>
+                
+              </div>
+            </div>
+            </div>
+
+  <script>
+    // Fungsi update warna kotak
+   function updateSelectedColors() {
+  const selectedColor = document.getElementById('colorSelect').value;
+  const checkboxes = document.querySelectorAll('.box-checkbox');
+
+  // Mapping warna ke teks status
+  const statusMap = {
+    "bg-[#8a1616]": "Occupied",
+    "bg-[#018214]": "Available",
+    "bg-gray-300": "Disabled"
+  };
+
+  const selectedText = statusMap[selectedColor] || "Unknown";
+
+  checkboxes.forEach(cb => {
+    if (cb.checked) {
+      const label = cb.nextElementSibling;
+      const statusText = label.parentElement.nextElementSibling.querySelector("p");
+
+      // Reset warna sebelumnya
+      label.classList.remove('bg-[#8a1616]', 'bg-[#018214]', 'bg-gray-300');
+      label.classList.add(selectedColor);
+
+      // Update teks status
+      statusText.textContent = selectedText;
+      statusText.classList.remove("text-[#8a1616]", "text-[#018214]", "text-gray-300");
+      if (selectedColor === "bg-[#8a1616]") {
+        statusText.classList.add("text-[#8a1616]");
+      } else if (selectedColor === "bg-[#018214]") {
+        statusText.classList.add("text-[#018214]");
+      } else {
+        statusText.classList.add("text-gray-400");
+      }
+    }
+  });
+}
+    // Fungsi untuk pilih semua
+    document.getElementById('selectAll').addEventListener('change', function () {
+      const checkboxes = document.querySelectorAll('.box-checkbox');
+      checkboxes.forEach(cb => cb.checked = this.checked);
+    });
+  </script>
+            
+
+        </div>
+{% endblock %}
+            
