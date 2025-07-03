@@ -88,3 +88,33 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("📤 Reading file as data URL...");
     });
 });
+
+// status on history
+function updateStatusLabels() {
+    const labels = document.querySelectorAll('.status-label');
+    const now = new Date();
+    const thirtyMin = 30 * 60 * 1000;
+
+    labels.forEach(label => {
+        const start = new Date(label.dataset.start);
+        const end = new Date(label.dataset.end);
+        let status = "";
+
+        if (now < start) {
+            status = "Reserved"
+        } else if (now >= start && now < end - thirtyMin) {
+            status = "Placed";
+        } else if (now >= end - thirtyMin && now < end) {
+            status = "About to end";
+        } else {
+            status = "Expired"
+        }
+
+        label.innerText = status;
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    updateStatusLabels();
+    setInterval(updateStatusLabels, 30000) // update every 30 second
+});

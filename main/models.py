@@ -62,6 +62,7 @@ class Reservation(models.Model):
     spot = models.ForeignKey(Spot, on_delete=models.CASCADE)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+    car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
         cars = self.user.cars.all()

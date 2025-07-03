@@ -129,6 +129,7 @@ def status_view(request):
     spots = Spot.objects.all()
     return render(request, 'status.html', {"spots": spots})
 
+@login_required(login_url='login')
 def reservation_details_view(request, reservation_id):
     try:
         reservation = Reservation.objects.get(id=reservation_id)
@@ -148,7 +149,7 @@ def reservation_details_view(request, reservation_id):
 
         print("reservation details data: ", request.POST, request.FILES)
         
-        Car.objects.create(
+        car = Car.objects.create(
             user=request.user,
             brand=brand,
             model=model,
@@ -156,6 +157,10 @@ def reservation_details_view(request, reservation_id):
             license_plate=license_plate,
             image=uploaded_image,
         )
+        
+        reservation.car = car
+        reservation.save()
+        
         return redirect('account')
 
     return render(request, 'reservation_details.html', {'reservation': reservation})
@@ -207,7 +212,9 @@ def delete_reservation(request, reservation_id):
     return redirect('reservation')
 
 def history_view(request):
-    return render(request, 'history.html')
+    reservations = Reservation.objects.filter(user=request.user).order_by('-start_time').select_related('car')
+    return render(request, 'history.html', {
+        'reservations': reservations})
 
 def guide_view(request):
     return render(request, 'guide.html')

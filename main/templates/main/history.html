@@ -57,16 +57,17 @@
                                 </thead>
 
                                 <form action="POST" method="post">
+                                {%  for reservation in reservations %}
                                     <tbody>
                                         <tr class="bg-white  hover:bg-gray-50 ">
                                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                            Mon, 23 Mar
+                                            {{ reservation.start_time|date:"l, d F" }}
                                             </th>
                                             <td class="px-6 py-4">
-                                                07:00 - 11:00
+                                                {{ reservation.start_time|time:"H:i" }} - {{ reservation.end_time|time:"H:i" }}
                                             </td>
                                             <td class="px-6 py-4">
-                                                1
+                                                {{ reservation.spot_id }}
                                             </td>
                                             <td class="px-6 py-4">
                                                 <button data-modal-target="view1" data-modal-toggle="view1" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-900 hover:underline focus:ring-2 font-medium rounded-xl md:text-md text-sm md:px-6 px-4 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">View</button>
@@ -92,19 +93,19 @@
                                                             <div class="p-5 grid grid-cols-2 gap-4">
                                                                 <div>
                                                                     <label for="" class="text-sm text-gray-500">Brand:</label>
-                                                                    <p class="flex-grow shadow-md border border-gray-300 bg-gray-100 text-gray-900 text-sm rounded-lg p-4">Toyota</p>
+                                                                    <p class="flex-grow shadow-md border border-gray-300 bg-gray-100 text-gray-900 text-sm rounded-lg p-4">{{ reservation.car.brand }}</p>
                                                                 </div>
                                                                 <div>
                                                                     <label for="" class="text-sm text-gray-500">Model:</label>
-                                                                    <p class="flex-grow shadow-md border border-gray-300 bg-gray-100 text-gray-900 text-sm rounded-lg p-4">AVANZA</p>
+                                                                    <p class="flex-grow shadow-md border border-gray-300 bg-gray-100 text-gray-900 text-sm rounded-lg p-4">{{ reservation.car.model }}</p>
                                                                 </div>
                                                                 <div>
                                                                     <label for="" class="text-sm text-gray-500">Color:</label>
-                                                                    <p class="flex-grow shadow-md border border-gray-300 bg-gray-100 text-gray-900 text-sm rounded-lg p-4">Red</p>
+                                                                    <p class="flex-grow shadow-md border border-gray-300 bg-gray-100 text-gray-900 text-sm rounded-lg p-4">{{ reservation.car.color }}</p>
                                                                 </div>
                                                                 <div>
                                                                     <label for="" class="text-sm text-gray-500">License Plate:</label>
-                                                                    <p class="flex-grow shadow-md border border-gray-300 bg-gray-100 text-gray-900 text-sm rounded-lg p-4">BP 123 XYZ</p>
+                                                                    <p class="flex-grow shadow-md border border-gray-300 bg-gray-100 text-gray-900 text-sm rounded-lg p-4">{{ reservation.car.license_plate }}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="px-5 flex flex-col">
@@ -123,7 +124,7 @@
                                                 <span>04:00:00</span>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <span class="text-[#afd106] font-semibold">Reserved</span>
+                                                <span class="text-[#afd106] font-semibold" data-start="{{ reservation.start_time|date:'c' }}" data-end="{{ reservation.end_time|date:'c' }}">sdfd</span>
                                             </td>
                                             <td class="px-6 py-4 ">
                                                 <button type="button" data-modal-target="cancel1" data-modal-toggle="cancel1" class="focus:outline-none text-white bg-red-700 hover:bg-red-900 hover:underline focus:ring-2 font-medium rounded-xl md:text-md text-sm px-4 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">Cancel</button>
@@ -534,6 +535,7 @@
                                             </td>
                                         </tr>
                                     </tbody>
+                                {% endfor %}
                                 </form>
 
                             </table>
