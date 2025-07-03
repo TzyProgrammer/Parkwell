@@ -1,6 +1,7 @@
 console.log("haziq jomok");
 console.log("yang YTTA YTTA aja")
 
+// transfer datepicker into readonly input box
 document.addEventListener("DOMContentLoaded", function(){
     const datePickerInput = document.getElementById("default-datepicker")
     const readOnlyInput = document.getElementById("default-date")
@@ -43,8 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 */
 
+// previewing car image
 console.log("JS file is loaded")
-
 document.addEventListener('DOMContentLoaded', function () {
     const imageInput = document.getElementById('imageUpload');
     const preview = document.getElementById('preview_image');
@@ -86,4 +87,34 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.readAsDataURL(file);
         console.log("📤 Reading file as data URL...");
     });
+});
+
+// status on history
+function updateStatusLabels() {
+    const labels = document.querySelectorAll('.status-label');
+    const now = new Date();
+    const thirtyMin = 30 * 60 * 1000;
+
+    labels.forEach(label => {
+        const start = new Date(label.dataset.start);
+        const end = new Date(label.dataset.end);
+        let status = "";
+
+        if (now < start) {
+            status = "Reserved"
+        } else if (now >= start && now < end - thirtyMin) {
+            status = "Placed";
+        } else if (now >= end - thirtyMin && now < end) {
+            status = "About to end";
+        } else {
+            status = "Expired"
+        }
+
+        label.innerText = status;
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    updateStatusLabels();
+    setInterval(updateStatusLabels, 30000) // update every 30 second
 });

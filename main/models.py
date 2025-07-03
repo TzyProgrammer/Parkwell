@@ -42,6 +42,7 @@ class Spot(models.Model):
     STATUS_CHOICES = [
     ('available', 'Available'),
     ('occupied', 'Occupied'),
+    ('reserved', 'Reserved'),
     ]
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='available')
     last_updated = models.DateTimeField(auto_now=True)
@@ -61,11 +62,12 @@ class Reservation(models.Model):
     spot = models.ForeignKey(Spot, on_delete=models.CASCADE)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+    car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
         cars = self.user.cars.all()
         if cars:
-            return f"Reservation by {self.user.username} for {cars.brand} from {self.start_time} to {self.end_time}"
+            return f"Reservation by {self.user.username} from {self.start_time} to {self.end_time}"
         else:
             return f"Reservation by {self.user.username} from {self.start_time} to {self.end_time}"
 

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register_view, login_view, logout_view, home_view, reservation_view, reservation_details_view, account_view, delete_reservation, history_view, guide_view, status_view, adminlogin_view, adminhome_view, adminreservation_view, adminmonitoring_view
+from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -12,14 +12,17 @@ urlpatterns = [
     path('reservation/', reservation_view, name='reservation'),
     path('reservation/<int:reservation_id>/', reservation_details_view, name='reservationdetails'),
     path('account/', account_view, name='account'),
+    path('update-account/', update_account_view, name='update_account'),
     path('reservation/<int:reservation_id>/delete/', delete_reservation, name='delete_reservation'),
     path('history/', history_view, name='history'),
     path('guide/', guide_view, name='guide' ),
     path('status/', status_view, name='status'),
+  
+    path('api/spots-dynamic-status/', spots_dynamic_status_json, name='spots_dynamic_status_json'),
+    path('api/reserved-intervals/', reserved_intervals_view, name='reserved_intervals'),
     # admin
     path('adminlogin/', adminlogin_view, name='adminlogin'),
     path('adminhome/', adminhome_view, name='adminhome'),
     path('adminreservation/', adminreservation_view, name='adminreservation'),
     path('adminmonitoring/', adminmonitoring_view, name='adminmonitoring'),
-    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
