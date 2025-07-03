@@ -219,6 +219,19 @@ def history_view(request):
 def guide_view(request):
     return render(request, 'guide.html')
 
+# ADMIN SECTION
+def adminlogin_view(request):
+    return render(request, 'adminlogin.html')
+
+def adminhome_view(request):
+    return render(request, 'adminhome.html')
+
+def adminreservation_view(request):
+    return render(request, 'adminreservation.html')
+
+def adminmonitoring_view(request):
+    return render(request, 'adminmonitoring.html')
+  
 def spots_dynamic_status_json(request):
     selected_date_str = request.GET.get('date')
     if not selected_date_str:

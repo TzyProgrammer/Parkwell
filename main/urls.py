@@ -17,7 +17,12 @@ urlpatterns = [
     path('history/', history_view, name='history'),
     path('guide/', guide_view, name='guide' ),
     path('status/', status_view, name='status'),
+  
     path('api/spots-dynamic-status/', spots_dynamic_status_json, name='spots_dynamic_status_json'),
     path('api/reserved-intervals/', reserved_intervals_view, name='reserved_intervals'),
-
+    # admin
+    path('adminlogin/', adminlogin_view, name='adminlogin'),
+    path('adminhome/', adminhome_view, name='adminhome'),
+    path('adminreservation/', adminreservation_view, name='adminreservation'),
+    path('adminmonitoring/', adminmonitoring_view, name='adminmonitoring'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
