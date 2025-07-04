@@ -89,32 +89,42 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// status on history
-function updateStatusLabels() {
-    const labels = document.querySelectorAll('.status-label');
-    const now = new Date();
-    const thirtyMin = 30 * 60 * 1000;
+// countdown and status on history
+function formatTime(ms) {
+    const totalSec = Math.max(0, Math.floor(ms / 1000));
+    const hours = Math.floor(totalSec / 3600).toString().padStart(2, '0');
+    const minutes = Math.floor((totalSec % 3600) / 60).toString().padStart(2, '0');
+    const seconds = (totalSec % 60).toString().padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+}
 
-    labels.forEach(label => {
-        const start = new Date(label.dataset.start);
-        const end = new Date(label.dataset.end);
-        let status = "";
+function updateCountdown() {
+    const now = new Date();
+
+    document.querySelectorAll('.countdown').forEach(span => {
+        const start = new Date(span.dataset.start);
+        const end = new Date(span.dataset.end);
+        const statusSpan = span.closest('tr').querySelector('.status');
+
+        let countdownTime;
+        let statusText;
 
         if (now < start) {
-            status = "Reserved"
-        } else if (now >= start && now < end - thirtyMin) {
-            status = "Placed";
-        } else if (now >= end - thirtyMin && now < end) {
-            status = "About to end";
+            countdownTime = end - start;
+            statusText = 'Reserved';
+        } else if (now >= start && now <= end) {
+            countdownTime = end - now;
+            const diffMin = Math.floor((end - now) / 60000);
+            statusText = diffMin <= 30 ? 'About to end' : 'Placed';
         } else {
-            status = "Expired"
+            countdownTime = 0;
+            statusText = 'Finished';
         }
 
-        label.innerText = status;
+        span.textContent = formatTime(countdownTime);
+        if (statusSpan) statusSpan.textContent = statusText;
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    updateStatusLabels();
-    setInterval(updateStatusLabels, 30000) // update every 30 second
-});
+setInterval(updateCountdown, 1000);
+document.addEventListener('DOMContentLoaded', updateCountdown);

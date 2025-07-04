@@ -209,10 +209,13 @@ def update_account_view(request):
 def delete_reservation(request, reservation_id):
     reservation = Reservation.objects.get(id=reservation_id)
     reservation.delete()
-    return redirect('reservation')
+    
+    next_page = request.GET.get('next', 'history')
+    return redirect(next_page)
 
 def history_view(request):
-    reservations = Reservation.objects.filter(user=request.user).order_by('-start_time').select_related('car')
+    now = timezone.now()
+    reservations = Reservation.objects.filter(user=request.user, end_time__gte=now).order_by('-start_time').select_related('car')
     return render(request, 'history.html', {
         'reservations': reservations})
 
