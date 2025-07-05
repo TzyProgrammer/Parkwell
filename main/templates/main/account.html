@@ -2,7 +2,7 @@
 
 
 {% block akun_content %}
-
+<title>Account</title>
 <div class="flex flex-row mt-4">
             <div>
                 <a href="#" class="focus:outline-none text-white bg-[#141E61] focus:ring-2 font-medium rounded-2xl md:text-md text-sm md:px-8 px-4 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">Account</a>
@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <div class="mt-4 bg-white rounded-2xl ">
+        <div class="mt-4 bg-white rounded-2xl animate-fade-up">
 
     <div class="md:px-12 px-8 pt-8 md:pt-12">
             <span class="text-[30px] text-[#141E61] underline md:text-[clamp(15px,4vw,34px)]">Profile</span>
@@ -70,7 +70,7 @@
                         <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="focus:outline-none text-white bg-[#141E61] hover:bg-[#00158B] focus:ring-2 focus:ring-blue-500 font-medium rounded-2xl text-md md:px-8 mx-6 py-2 w-full shadow-md mb-4 md:mb-2 transition-all ease-in duration-300">Update</button>
                         
                         <!-- Main modal -->
-                        <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="{% if errors %}flex{% else %}hidden{% endif %} overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                             <div class="relative p-4 w-full max-w-md max-h-full">
                                 <!-- Modal content -->
                                 <div class="relative bg-white rounded-lg shadow-sm ">
@@ -88,13 +88,13 @@
                                     </div>
                                     <!-- Modal body -->
                                     <div class="p-4 md:p-5">
-                                        <form class="space-y-4" action="{% url 'update_account' %}" method="POST">
+                                        <form class="space-y-4"  action="{% url 'update_account' %}" method="POST">
                                             {% csrf_token %}
                                             <div>
                                                 <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
-                                                <input type="text" name="username" id="username"
-                                                    value="{{ user.username }}"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                                <input type="text" name="username" id="username" maxlength="15"
+                                                        value="{% if input.username %}{{ input.username }}{% else %}{{ user.username }}{% endif %}"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                                                     {% if errors.username %}
                                                         <p class="text-red-600 text-sm mt-1">{{ errors.username }}</p>
                                                     {% endif %}
@@ -107,8 +107,8 @@
                                             </div>
                                             <div>
                                                 <label for="password" class="block mb-2 text-sm font-medium text-gray-900">New Password</label>
-                                                <input type="password" name="password" id="password"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
+                                                <input type="password" name="password" id="password" minlength="8"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
                                                     {% if errors.password %}
                                                         <p class="text-red-600 text-sm mt-1">{{ errors.password }}</p>
                                                     {% endif %}
@@ -116,13 +116,13 @@
                                             <div>
                                             <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900">Confirm New Password</label>
                                             <input type="password" name="confirm_password" id="confirm_password"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
                                             </div>
                                             <div>
                                                 <label for="phone_number" class="block mb-2 text-sm font-medium text-gray-900">Phone Number</label>
-                                                <input type="text" name="phone_number" id="phone_number"
-                                                    value="{{ user.phone_number }}"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
+                                                <input type="text" name="phone_number" id="phone_number" maxlength="12"
+                                                        value="{% if input.phone_number %}{{ input.phone_number }}{% else %}{{ user.phone_number }}{% endif %}"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required />
                                             </div>
                                             <div class="grid grid-cols-2 gap-2">
                                                 <button type="button" data-modal-hide="authentication-modal"

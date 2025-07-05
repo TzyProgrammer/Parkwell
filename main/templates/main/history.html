@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block akun_content %}
-
+<title>Current Reservation</title>
 <div class="flex flex-row mt-4">
             <div>
                 <a href="{% url 'account' %}" class="focus:outline-none text-[#141E61] bg-white hover:bg-[#141E61] hover:text-white focus:ring-2 font-medium rounded-2xl md:text-md text-sm md:px-8 px-4 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">Account</a>
@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <div class="mt-4 bg-white rounded-2xl ">
+        <div class="mt-4 bg-white rounded-2xl animate-fade-up">
 
                 <div class="md:px-12 px-8 pt-8 md:pt-12 ">
                         <span class="text-[30px] text-[#141E61] underline md:text-[clamp(15px,4vw,34px)]">Reservation Records</span>            
@@ -439,46 +439,6 @@
                                                             </div>
                                                             <!-- Modal body -->
                                                             <div class="p-4 md:p-5">
-                                                                <div class="grid grid-cols-2 gap-4">
-                                                                    <div>
-                                                                        <label for="username" class="block mb-2 text-sm font-medium text-gray-900 ">From:</label>
-                                                                        <select id="start" name="start_time" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " required>
-                                                                            <option selected disabled hidden ></option>
-                                                                            <option value="07:00">07:00</option>
-                                                                            <option value="07:30">07:30</option>
-                                                                            <option value="08:00">08:00</option>
-                                                                            <option value="08:30">08:30</option>
-                                                                            <option value="09:00">09:00</option>
-                                                                            <option value="09:30">09:30</option>
-                                                                            <option value="10:00">10:00</option>
-                                                                            <option value="10:30">10:30</option>
-                                                                            <option value="11:00">11:00</option>
-                                                                            <option value="11:30">11:30</option>
-                                                                            <option value="12:00">12:00</option>
-                                                                            <option value="12:30">12:30</option>
-                                                                            <option value="13:00">13:00</option>
-                                                                            <option value="13:30">13:30</option>
-                                                                            <option value="14:00">14:00</option>
-                                                                            <option value="14:30">14:30</option>
-                                                                            <option value="15:00">15:00</option>
-                                                                            <option value="15:30">15:30</option>
-                                                                            <option value="16:00">16:00</option>
-                                                                            <option value="16:30">16:30</option>
-                                                                            <option value="17:00">17:00</option>
-                                                                            <option value="17:30">17:30</option>
-                                                                            <option value="18:00">18:00</option>
-                                                                            <option value="18:30">18:30</option>
-                                                                            <option value="19:00">19:00</option>
-                                                                            <option value="19:30">19:30</option>
-                                                                            <option value="20:00">20:00</option>
-                                                                            <option value="20:30">20:30</option>
-                                                                            <option value="21:00">21:00</option>
-                                                                            <option value="21:30">21:30</option>
-                                                                            <option value="22:00">22:00</option>
-                                                                            <option value="22:30">22:30</option>
-                                                                            <option value="23:00">23:00</option>
-                                                                        </select>
-                                                                    </div>
                                                                     <div>
                                                                         <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Until: </label>
                                                                         <select id="start" name="start_time" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " required>
@@ -518,7 +478,7 @@
                                                                             <option value="23:00">23:00</option>
                                                                         </select>
                                                                     </div>
-                                                                </div>
+                                                                
                                                                 <div class="flex flex-row mt-4">
                                                                     <div class="w-1/4">
                                                                         <button data-modal-hide="extend3" type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100  ">Cancel</button>

@@ -5,14 +5,14 @@
 {% load static %}
 
 {% block content %}
-
+<title>Reservation</title>
 <div class="md:pl-16 py-1 pt-12 md:text-left text-center">
             <span class="text-[50px] text-[#141E61] md:text-[clamp(34px,4vw,50px)]">
                 Reserve Your Spot
             </span>
 </div>
 
-<div class="flex pb-4 md:pb-8 flex-col md:flex-row mb-12 ">
+<div class="flex pb-4 animate-fade-up md:pb-8 flex-col md:flex-row mb-12 ">
 
     <!-- Kiri -->
     <div class=" flex-col flex md:w-2/5 md:order-1 order-2">
@@ -23,8 +23,16 @@
         <form action="" method="POST">
             {% csrf_token %}
 
+
+            <!-- date -->
+            <div >
+                <span class="text-gray-500 text-lg">Date :</span>
+                <input readonly type="text" name="date" id="default-date" class="bg-gray-100 border border-gray-400 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " required>
+
+            </div>
+
             <!-- pslot -->
-            <div>   
+            <div class="my-6">   
                 <span class="text-gray-500 text-lg">Parking Slot :</span>
                 <select id="slot" name="slot" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                     <option selected disabled hidden >Choose Slot</option>
@@ -35,12 +43,7 @@
                 </select>
             </div>
 
-            <!-- date -->
-            <div class="my-6">
-                <span class="text-gray-500 text-lg">Date :</span>
-                <input readonly type="text" name="date" id="default-date" class="bg-gray-100 border border-gray-400 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " required>
-
-            </div>
+            
 
             <!-- booking time -->
             <div class="grid grid-cols-2 gap-4">
@@ -288,7 +291,7 @@
                         <div>
                             <div id="slot-{{ i }}-box" class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
                                 <button id="slot-{{ i }}-btn" onclick="setSlotDirectly('{{ i }}')">
-                                    <img src="{% static 'main/car'|add:i|add:'.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
+                                    <img src="{% static 'main/car'|add:i|add:'.png' %}" alt="" class="block md:w-28 w-20 transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
                                 </button>
                             </div>
                             <div class="items-center flex justify-center py-2">

@@ -20,11 +20,6 @@
         </a>
     </div>
   </div>
-  <!-- loding -->
-    <div id="loading-spinner" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
-        <div class="animate-spin rounded-full h-16 w-16 border-4 border-white border-t-transparent"></div>
-    </div>
-
 
   <div class="absolute inset-0 flex flex-col items-center justify-center px-6 mx-auto z-10">
     <div class="w-full animate-fade-in-down bg-white/50 backdrop-blur-2xl rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 shadow-2xl transition-all duration-500 hover:scale-105">
@@ -47,14 +42,5 @@
   </div>
 </section>
 
-
-<script>
-  const form = document.querySelector("form");
-  const spinner = document.getElementById("loading-spinner");
-
-  form.addEventListener("submit", function (e) {
-    spinner.classList.remove("hidden"); // Tampilkan spinner
-  });
-</script>
   
     {% endblock %}  
