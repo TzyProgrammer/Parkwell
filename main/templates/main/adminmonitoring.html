@@ -21,7 +21,7 @@
               <!-- Park spot 1 -->
             <div class="md:px-12 px-8 pt-8 md:pt-12 flex justify-center">
               <h2 class="text-2xl md:text-4xl font-semibold tracking-wide text-[#141E61] fade-up border-b-2 border-gray-500 pb-1">
-                Parking Spot 1
+                Parking Spot
               </h2>
             </div>
 
@@ -43,12 +43,12 @@
                       <label for="slot1" class="flex justify-center text-sm font-semibold text-[#141E61]">Slot 1</label>
                       <div class="flex justify-center py-2">
                         <input type="checkbox" id="box1" class="hidden peer box-checkbox">
-                        <label for="box1" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
+                        <label id="slot1-box" for="box1" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
                           <img src="{% static 'main/car1.png' %}" class="w-20 md:w-28" alt="">
                         </label>
                       </div>
                       <div class="flex justify-center">
-                        <p class="text-md text-[#018214] font-semibold">Available</p>
+                        <p id="slot1-label" class="text-md text-[#018214] font-semibold">Available</p>
                         </div>
                     </li>
 
@@ -57,12 +57,12 @@
                       <label for="slot2" class="flex justify-center text-sm font-semibold text-[#141E61]">Slot 2</label>
                       <div class="flex justify-center py-2">
                         <input type="checkbox" id="box2" class="hidden peer box-checkbox">
-                      <label for="box2" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
+                      <label id="slot2-box" for="box2" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
                         <img src="{% static 'main/car2.png' %}" class="w-20 md:w-28" alt="">
                       </label>
                       </div>
                       <div class="flex justify-center">
-                      <p class="text-md text-[#018214] font-semibold">Available</p>
+                      <p id="slot2-label" class="text-md text-[#018214] font-semibold">Available</p>
                       </div>
                     </li>
 
@@ -72,12 +72,12 @@
                     <label for="slot3" class="flex justify-center text-sm font-semibold text-[#141E61]">Slot 3</label>
                     <div class="flex justify-center py-2">
                       <input type="checkbox" id="box3" class="hidden peer box-checkbox">
-                    <label for="box3" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
+                    <label id="slot3-box" for="box3" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
                       <img src="{% static 'main/car3.png' %}" class="w-20 md:w-28" alt="">
                     </label>
                     </div>
                     <div class="flex justify-center">
-                    <p class="text-md text-[#018214] font-semibold">Available</p>
+                    <p id="slot3-label" class="text-md text-[#018214] font-semibold">Available</p>
                     </div>
                   </li>
 
@@ -86,12 +86,12 @@
                     <label for="slot4" class="flex justify-center text-sm font-semibold text-[#141E61]">Slot 4</label>
                     <div class="flex justify-center py-2">
                       <input type="checkbox" id="box4" class="hidden peer box-checkbox">
-                    <label for="box4" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
+                    <label id="slot4-box" for="box4" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
                       <img src="{% static 'main/car4.png' %}" class="w-20 md:w-28" alt="">
                     </label>
                     </div>
                     <div class="flex justify-center">
-                    <p class="text-md text-[#018214] font-semibold">Available</p>
+                    <p id="slot4-label" class="text-md text-[#018214] font-semibold">Available</p>
                     </div>
                   </li>
               </ul>
@@ -101,7 +101,6 @@
                   <label for="colorSelect" class="text-gray-700 text-sm font-medium">Reason:</label>
                   <select id="colorSelect" class="px-4 md:pr-12 pr-8 md:text-md text-sm md:py-2 py-1.5 border rounded">
                     <option value="bg-[#018214]">Available</option>
-                    <option value="bg-[#8a1616]">Occupied</option>
                     <option value="bg-gray-300">Disabled</option>
                   </select>
                 </div>
@@ -156,7 +155,47 @@
       checkboxes.forEach(cb => cb.checked = this.checked);
     });
   </script>
-            
+  
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* === warna & label map === */
+  const COLORS = {
+    occupied : { bg:'#8a1616', text:'#8a1616', label:'Occupied' },
+    reserved : { bg:'#afd106', text:'#afd106', label:'Reserved' },
+    available: { bg:'#018214', text:'#018214', label:'Available'}
+  };
+
+  /* helper tanggal ISO hari ini */
+  const todayISO = () => new Date().toISOString().slice(0,10);
+
+  /* render satu slot */
+  function renderSlot(n, status){
+    const box   = document.getElementById(`slot${n}-box`);
+    const label = document.getElementById(`slot${n}-label`);
+    if(!box || !label) return;
+
+    /* reset kelas warna lalu set baru */
+    box.classList.remove('bg-[#8a1616]','bg-[#afd106]','bg-[#018214]');
+    box.classList.add(`bg-[${COLORS[status].bg}]`);
+
+    label.classList.remove('text-[#8a1616]','text-[#afd106]','text-[#018214]');
+    label.classList.add(`text-[${COLORS[status].text}]`);
+    label.textContent = COLORS[status].label;
+  }
+
+  /* polling tiap 3 detik */
+  function poll(){
+    fetch(`/api/spots-dynamic-status/?date=${todayISO()}`)
+      .then(r => r.json())
+      .then(data => data.forEach(s => renderSlot(s.spot_number, s.status)))
+      .catch(console.error);
+  }
+
+  poll();                 // load pertama
+  setInterval(poll,3000); // update berkala
+});
+</script>
 
         </div>
 {% endblock %}

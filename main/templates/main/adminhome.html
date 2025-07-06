@@ -33,14 +33,14 @@
                         <div class="flex justify-center md:my-2 my-1">
                             <p class="md:text-md text-sm text-[#141E61] font-semibold">Slot 1</p>
                         </div>
-                        <div class=" py-8 justify-center items-center flex bg-[#8a1616] rounded-2xl mx-3">
+                        <div id="slot1-box" class=" py-8 justify-center items-center flex bg-[#8a1616] rounded-2xl mx-3">
 
                             <a href="#slot1" class="md:px-6" data-modal-target="popup-modal1" data-modal-toggle="popup-modal1">
                                 <img src="{% static 'main/car1.png' %}" alt="" class=" block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
                             </a>
                         </div>
                         <div class="items-center flex justify-center py-2">
-                            <p class="text-md text-[#8a1616] font-semibold">Occupied</p>
+                            <p id="slot1-label" class="text-md text-[#8a1616] font-semibold">Occupied</p>
                         </div>
                     </div>
 
@@ -49,14 +49,14 @@
                         <div class="flex justify-center md:my-2 my-1">
                             <p class="md:text-md text-sm text-[#141E61] font-semibold">Slot 2</p>
                         </div>
-                        <div class="py-8 justify-center items-center flex bg-[#afd106] rounded-2xl mx-3">
+                        <div id="slot2-box" class="py-8 justify-center items-center flex bg-[#afd106] rounded-2xl mx-3">
 
                             <a href="#slot2" class="md:px-6" data-modal-target="popup-modal2" data-modal-toggle="popup-modal2">
                                 <img src="{% static 'main/car2.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
                             </a>
                         </div>
                         <div class="items-center flex justify-center py-2">
-                            <p class="text-md text-[#afd106] font-semibold">Reserved</p>
+                            <p id="slot2-label" class="text-md text-[#afd106] font-semibold">Reserved</p>
                         </div>
                     </div>
 
@@ -65,13 +65,13 @@
                     <div class="flex justify-center md:my-2 my-1">
                             <p class="md:text-md text-sm text-[#141E61] font-semibold">Slot 3</p>
                         </div>
-                    <div class="py-8 justify-center  flex bg-[#018214] rounded-2xl mx-3">
+                    <div id="slot3-box" class="py-8 justify-center  flex bg-[#018214] rounded-2xl mx-3">
                         <a href="#slot3" class="md:px-6" >
                             <img src="{% static 'main/car3.png' %}" alt="" class=" block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
                         </a>
                     </div>
                     <div class="flex justify-center py-2">
-                            <p class="text-md text-[#018214] font-semibold">Available</p>
+                            <p id="slot3-label" class="text-md text-[#018214] font-semibold">Available</p>
                     </div>
                 </div>
 
@@ -80,13 +80,13 @@
                     <div class="flex justify-center md:my-2 my-1">
                             <p class="md:text-md text-sm text-[#141E61] font-semibold">Slot 4</p>
                         </div>
-                    <div class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3">
+                    <div id="slot4-box" class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3">
                         <a href="#slot4" class="md:px-6" >
                             <img src="{% static 'main/car4.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
                         </a>
                     </div>
                     <div class="items-center flex justify-center py-2">
-                            <p class="text-md text-[#018214] font-semibold">Available</p>
+                            <p id="slot4-label" class="text-md text-[#018214] font-semibold">Available</p>
                     </div>
                 </div>
             </div>
@@ -155,5 +155,52 @@
             
 
         </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ---------- util ---------- */
+  function getTodayISO () {
+    const d = new Date();
+    return d.toISOString().slice(0,10);          // YYYY-MM-DD
+  }
+
+  /* ---------- mapping warna ---------- */
+  const COLORS = {
+    occupied : { bg:'#8a1616', text:'#8a1616', label:'Occupied' },
+    reserved : { bg:'#afd106', text:'#afd106', label:'Reserved' },
+    available: { bg:'#018214', text:'#018214', label:'Available'}
+  };
+
+  /* ---------- render satu slot ---------- */
+  function renderSlot(n, status){
+    const box   = document.getElementById(`slot${n}-box`);
+    const label = document.getElementById(`slot${n}-label`);
+    if(!box || !label) return;
+
+    // reset → buang semua bg utility sebelumnya
+    box.className = "py-8 flex justify-center items-center rounded-2xl mx-3";
+    label.className = "text-md font-semibold";
+
+    box.classList.add(`bg-[${COLORS[status].bg}]`);
+    label.classList.add(`text-[${COLORS[status].text}]`);
+    label.textContent = COLORS[status].label;
+  }
+
+  /* ---------- polling tiap 3 detik ---------- */
+  function poll(){
+    fetch(`/api/spots-dynamic-status/?date=${getTodayISO()}`)
+      .then(r => r.json())
+      .then(data => {
+        data.forEach(s => renderSlot(s.spot_number, s.status));
+      })
+      .catch(console.error);
+  }
+
+  poll();                    // load pertama
+  setInterval(poll, 3000);   // update tiap 3 detik
+});
+</script>
+
 {% endblock %}
             
