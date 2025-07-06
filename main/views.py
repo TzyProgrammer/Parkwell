@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from django.utils.timezone import localdate, make_aware, localtime
+from django.conf import settings
 
 
 logger = logging.getLogger(__name__)
@@ -222,7 +223,23 @@ def guide_view(request):
 
 # ADMIN SECTION
 def adminlogin_view(request):
+    if request.method == 'POST':
+        password = request.POST.get('password')
+
+        if password == 'ardian123':
+            request.session['is_admin'] = True
+            return redirect('adminhome')  
+        else:
+            return render(request, 'adminlogin.html', {
+                'error': "* Invalid password.",
+                'input': request.POST
+            })
+
     return render(request, 'adminlogin.html')
+
+def adminlogout_view(request):
+    request.session.flush()
+    return redirect('adminlogin')
 
 def adminhome_view(request):
     return render(request, 'adminhome.html')

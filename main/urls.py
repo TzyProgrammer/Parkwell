@@ -22,6 +22,7 @@ urlpatterns = [
     path('api/reserved-intervals/', reserved_intervals_view, name='reserved_intervals'),
     # admin
     path('adminlogin/', adminlogin_view, name='adminlogin'),
+    path('adminlogout/', adminlogout_view, name='adminlogout'),
     path('adminhome/', adminhome_view, name='adminhome'),
     path('adminreservation/', adminreservation_view, name='adminreservation'),
     path('adminmonitoring/', adminmonitoring_view, name='adminmonitoring'),
