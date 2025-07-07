@@ -95,61 +95,99 @@
             </div>
 
             <!-- slot1 -->
-            <div id="slot2" class=" px-8 md:px-12 pb-8">
+            <div id="slot1" class=" px-8 md:px-12 pb-8">
                 <span class="text-[30px] text-[#141E61] underline md:text-[clamp(15px,4vw,33px)]">Slot 1</span>
 
-                <div class=" rounded-2xl border border-gray-400 md:flex md:flex-row md:justify-between items-center">
+                <div class=" rounded-2xl border border-gray-400 items-center">
                     <div class="m-4">
-                        <p class="md:text-2xl text-xl text-gray-900">Status:</p>
-                        <p class="md:text-2xl text-xl text-gray-900">username: Whathepark</p>
-                        <p class="md:text-2xl text-xl text-gray-900">Time: 07:00 - 11:00</p>
+                        <p class="md:text-2xl text-xl text-gray-900">
+                            Status: <span id="slot1-status"           ></span>
+                        </p>
+                        <p class="md:text-2xl text-xl text-gray-900">
+                            Username: <span id="slot1-username"       ></span>
+                        </p>
+                        <p class="md:text-2xl text-xl text-gray-900">
+                            Time: <span id="slot1-time"               ></span>
+                        </p>
+                        </div>
+                                    <div class="flex mb-2 justify-center">
+                        <a href="{% url 'adminreservation' %}" class="text-blue-700 underline">
+                            See all Reservations
+                        </a>
                     </div>            
                 </div>
             </div>
 
             <!-- slot2 -->
-            <div id="slot3" class=" px-8 md:px-12 pb-8">
+            <div id="slot2" class=" px-8 md:px-12 pb-8">
                 <span class="text-[30px] text-[#141E61] underline md:text-[clamp(15px,4vw,33px)]">Slot 2</span>
 
                 <div class=" rounded-2xl border border-gray-400 items-center">
                     <div class="m-4">
-                        <p class="md:text-2xl text-xl text-gray-900">Status:</p>
-                        <p class="md:text-2xl text-xl text-gray-900">username: Whathepark</p>
-                        <p class="md:text-2xl text-xl text-gray-900">Time: 07:00 - 11:00</p>
-                        <p class="md:text-2xl text-xl text-gray-900">Actions:</p>
-                    </div>            
-                    <div class="flex mb-2 justify-center">
-                    <a href="{% url 'adminreservation' %}" class="text-blue-700 underline">See All Reservations.</a>
-                </div>
+                        <p class="md:text-2xl text-xl text-gray-900">
+                            Status: <span id="slot2-status"           ></span>
+                        </p>
+                        <p class="md:text-2xl text-xl text-gray-900">
+                            Username: <span id="slot2-username"       ></span>
+                        </p>
+                        <p class="md:text-2xl text-xl text-gray-900">
+                            Time: <span id="slot2-time"               ></span>
+                        </p>
+                                    </div>
+                                    <div class="flex mb-2 justify-center">
+                        <a href="{% url 'adminreservation' %}" class="text-blue-700 underline">
+                            See all Reservations
+                        </a>
+                    </div> 
                 </div>
                 
             </div>
 
             <!-- slot3 -->
-            <div id="slot4" class=" px-8 md:px-12 pb-8">
+            <div id="slot3" class=" px-8 md:px-12 pb-8">
                 <span class="text-[30px] text-[#141E61] underline md:text-[clamp(15px,4vw,33px)]">Slot 3</span>
 
-                <div class=" rounded-2xl border border-gray-400 md:flex md:flex-row md:justify-between items-center">
+                <div class=" rounded-2xl border border-gray-400 items-center">
                     <div class="m-4">
-                        <p class="md:text-2xl text-xl text-gray-900">Status:</p>
-                        <p class="md:text-2xl text-xl text-gray-900">username: Whathepark</p>
-                        <p class="md:text-2xl text-xl text-gray-900">Time: 07:00 - 11:00</p>
-                        <p class="md:text-2xl text-xl text-gray-900">Actions:</p>
-                    </div>            
+                        <p class="md:text-2xl text-xl text-gray-900">
+                            Status: <span id="slot3-status"           ></span>
+                        </p>
+                        <p class="md:text-2xl text-xl text-gray-900">
+                            Username: <span id="slot3-username"       ></span>
+                        </p>
+                        <p class="md:text-2xl text-xl text-gray-900">
+                            Time: <span id="slot3-time"               ></span>
+                        </p>
+                                    </div>
+                                    <div class="flex mb-2 justify-center">
+                        <a href="{% url 'adminreservation' %}" class="text-blue-700 underline">
+                            See all Reservations
+                        </a>
+                    </div>           
                 </div>
             </div>
 
             <!-- slot4 -->
-            <div id="slot5" class=" px-8 md:px-12 pb-8">
+            <div id="slot4" class=" px-8 md:px-12 pb-8">
                 <span class="text-[30px] text-[#141E61] underline md:text-[clamp(15px,4vw,33px)]">Slot 4</span>
 
-                <div class=" rounded-2xl border border-gray-400 md:flex md:flex-row md:justify-between items-center">
+                <div class=" rounded-2xl border border-gray-400 items-center">
                     <div class="m-4">
-                        <p class="md:text-2xl text-xl text-gray-900">Status:</p>
-                        <p class="md:text-2xl text-xl text-gray-900">username: Whathepark</p>
-                        <p class="md:text-2xl text-xl text-gray-900">Time: 07:00 - 11:00</p>
-                        <p class="md:text-2xl text-xl text-gray-900">Actions:</p>
-                    </div>            
+                    <p class="md:text-2xl text-xl text-gray-900">
+                        Status: <span id="slot4-status"           ></span>
+                    </p>
+                    <p class="md:text-2xl text-xl text-gray-900">
+                        Username: <span id="slot4-username"       ></span>
+                    </p>
+                    <p class="md:text-2xl text-xl text-gray-900">
+                        Time: <span id="slot4-time"               ></span>
+                    </p>
+                                </div>
+                                <div class="flex mb-2 justify-center">
+                    <a href="{% url 'adminreservation' %}" class="text-blue-700 underline">
+                        See all Reservations
+                    </a>
+                </div>             
                 </div>
             </div>
             
@@ -159,48 +197,55 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ---------- util ---------- */
-  function getTodayISO () {
-    const d = new Date();
-    return d.toISOString().slice(0,10);          // YYYY-MM-DD
-  }
+  /* ---------- utils ---------- */
+  const todayISO = () => new Date().toISOString().slice(0,10);
 
-  /* ---------- mapping warna ---------- */
+  /* ---------- visual warna box ---------- */
   const COLORS = {
     occupied : { bg:'#8a1616', text:'#8a1616', label:'Occupied' },
     reserved : { bg:'#afd106', text:'#afd106', label:'Reserved' },
     available: { bg:'#018214', text:'#018214', label:'Available'}
   };
 
-  /* ---------- render satu slot ---------- */
-  function renderSlot(n, status){
+  /* ---------- render kotak + label ---------- */
+  function renderBox(n, status){
     const box   = document.getElementById(`slot${n}-box`);
     const label = document.getElementById(`slot${n}-label`);
     if(!box || !label) return;
 
-    // reset → buang semua bg utility sebelumnya
-    box.className = "py-8 flex justify-center items-center rounded-2xl mx-3";
+    box.className   = "py-8 flex justify-center items-center rounded-2xl mx-3";
     label.className = "text-md font-semibold";
 
-    box.classList.add(`bg-[${COLORS[status].bg}]`);
-    label.classList.add(`text-[${COLORS[status].text}]`);
-    label.textContent = COLORS[status].label;
+    box.style.backgroundColor   = COLORS[status].bg;
+    label.style.color           = COLORS[status].text;
+    label.textContent           = COLORS[status].label;
+  }
+
+  /* ---------- render detail (status/username/time) ---------- */
+  function renderDetail(n, status, username, time){
+    document.getElementById(`slot${n}-status`).textContent   = status.charAt(0).toUpperCase()+status.slice(1);
+    document.getElementById(`slot${n}-username`).textContent = (status === 'reserved') ? username : '';
+    document.getElementById(`slot${n}-time`).textContent     = (status === 'reserved') ? time     : '';
   }
 
   /* ---------- polling tiap 3 detik ---------- */
   function poll(){
-    fetch(`/api/spots-dynamic-status/?date=${getTodayISO()}`)
+    fetch(`/api/slot-details/?date=${todayISO()}`)
       .then(r => r.json())
-      .then(data => {
-        data.forEach(s => renderSlot(s.spot_number, s.status));
+      .then(list => {
+        list.forEach(s => {
+          renderBox(s.spot_number, s.status);
+          renderDetail(s.spot_number, s.status, s.username, s.time);
+        });
       })
       .catch(console.error);
   }
 
-  poll();                    // load pertama
-  setInterval(poll, 3000);   // update tiap 3 detik
+  poll();                    // initial load
+  setInterval(poll, 3000);   // every 3 seconds
 });
 </script>
+
 
 {% endblock %}
             

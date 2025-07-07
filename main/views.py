@@ -6,7 +6,6 @@ import logging
 from datetime import datetime, time, date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.utils import timezone
 from django.utils.dateparse import parse_date
 from django.utils.timezone import localdate, make_aware, localtime
 
@@ -328,3 +327,55 @@ def reserved_intervals_view(request):
         all_blocked.extend(blocked)
 
     return JsonResponse({'reserved_times': all_blocked})
+
+def slot_details_json(request):
+    """
+    Return detail (status, username, time) untuk semua slot di tanggal yg diminta.
+    """
+    date_str = request.GET.get('date')
+    if not date_str:
+        return JsonResponse({'error': 'No date provided'}, status=400)
+
+    selected_date = parse_date(date_str)
+    if not selected_date:
+        return JsonResponse({'error': 'Invalid date format'}, status=400)
+
+    today = localdate()          # ← gunakan helper ini
+
+    results = []
+    for spot in Spot.objects.all().order_by('spot_number'):
+        # default kosong
+        data = {
+            "spot_number": spot.spot_number,
+            "status": "available",   # fallback
+            "username": "",
+            "time": ""
+        }
+
+        # --- status sensor / existing logic ---
+        if selected_date == today:
+            data["status"] = spot.status       # occupied / reserved / available
+        else:
+            data["status"] = "reserved" if Reservation.objects.filter(
+                spot=spot,
+                start_time__date=selected_date
+            ).exists() else "available"
+
+        # --- cari reservasi terdekat pada tanggal tsb ---
+        res = Reservation.objects.filter(
+            spot=spot,
+            start_time__date=selected_date
+        ).order_by('start_time').first()
+
+        if res:                                              # ⇒ Reserved
+            start = localtime(res.start_time).strftime("%H:%M")
+            end   = localtime(res.end_time).strftime("%H:%M")
+            data.update({
+                "username": res.user.username,
+                "time": f"{start} - {end}",
+                "status": "reserved"        # paksa reserved utk konsistensi label
+            })
+
+        results.append(data)
+
+    return JsonResponse(results, safe=False)
