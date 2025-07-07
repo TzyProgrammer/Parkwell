@@ -5,11 +5,12 @@ from django.contrib import messages
 import logging
 from datetime import datetime, time, date, timedelta
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.utils.timezone import now, localdate, make_aware, localtime
 from django.views.decorators.http import require_POST
+from functools import wraps
 import json
 
 logger = logging.getLogger(__name__)
@@ -245,14 +246,38 @@ def guide_view(request):
 
 # ADMIN SECTION
 def adminlogin_view(request):
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        if password == 'parkircerdas':
+            request.session['admin_logged_in'] = True
+            return redirect('adminhome')  # pastikan URL name ini benar
+        else:
+            return render(request, 'adminlogin.html', {
+                'error': 'Password salah. Coba lagi.'
+            })
     return render(request, 'adminlogin.html')
 
+def admin_login_required(view_func):
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        if not request.session.get('admin_logged_in'):
+            return redirect('adminlogin')  # pastikan URL name ini sesuai
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
+def adminlogout_view(request):
+    request.session.flush()  # hapus semua data session
+    return redirect('adminlogin')
+
+@admin_login_required
 def adminhome_view(request):
     return render(request, 'adminhome.html')
 
+@admin_login_required
 def adminreservation_view(request):
     return render(request, 'adminreservation.html')
 
+@admin_login_required
 def adminmonitoring_view(request):
     return render(request, 'adminmonitoring.html')
   

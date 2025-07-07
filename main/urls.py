@@ -27,4 +27,5 @@ urlpatterns = [
     path('adminhome/', adminhome_view, name='adminhome'),
     path('adminreservation/', adminreservation_view, name='adminreservation'),
     path('adminmonitoring/', adminmonitoring_view, name='adminmonitoring'),
+    path('adminlogout/', adminlogout_view, name='adminlogout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
