@@ -113,64 +113,36 @@
             </div>
 
   <script>
-    // Fungsi update warna kotak
-   function updateSelectedColors() {
-  const disable = document.getElementById('colorSelect').value === 'bg-gray-300';
-  const selected = [...document.querySelectorAll('.box-checkbox')]
-                   .filter(cb => cb.checked)
-                   .map(cb => cb.id.replace('box',''));   // ['1','2',...]
-
-  if (selected.length === 0) return;
-
-  fetch('/api/toggle-spot-disable/', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json','X-CSRFToken': '{{ csrf_token }}'},
-    body: JSON.stringify({ spot_numbers: selected, disable })
-  })
-  .then(r => r.json())
-  .then(() => {
-     // perbarui UI lokal
-     selected.forEach(n => renderSlot(n, disable ? 'disabled' : 'available'));
-  })
-  .catch(console.error);
-}
-    // Fungsi untuk pilih semua
-    document.getElementById('selectAll').addEventListener('change', function () {
-      const checkboxes = document.querySelectorAll('.box-checkbox');
-      checkboxes.forEach(cb => cb.checked = this.checked);
-    });
-  </script>
-  
-  <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* === warna & label map === */
+  /* ───────────────── COLOR MAP ───────────────── */
   const COLORS = {
-    occupied : { bg:'#8a1616', text:'#8a1616', label:'Occupied' },
-    reserved : { bg:'#afd106', text:'#afd106', label:'Reserved' },
-    available: { bg:'#018214', text:'#018214', label:'Available'},
-    disabled : { bg:'#A0A0A0', text:'#A0A0A0', label:'Disabled' } 
+    occupied : { bg:'#8a1616', text:'#8a1616', label:'Occupied'  },
+    reserved : { bg:'#afd106', text:'#afd106', label:'Reserved'  },
+    available: { bg:'#018214', text:'#018214', label:'Available' },
+    disabled : { bg:'#A0A0A0', text:'#A0A0A0', label:'Disabled'  },
   };
 
-  /* helper tanggal ISO hari ini */
-  const todayISO = () => new Date().toISOString().slice(0,10);
+  /* ───────────────── HELPERS ───────────────── */
+  const todayISO = () => new Date().toISOString().slice(0, 10);
 
-  /* render satu slot */
+  function getCookie(name) {                // ambil CSRF utk fetch POST
+    const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return v ? v.pop() : '';
+  }
+
+  /* ───────────────── RENDER SLOT ───────────────── */
   function renderSlot(n, status){
     const box   = document.getElementById(`slot${n}-box`);
     const label = document.getElementById(`slot${n}-label`);
     if(!box || !label) return;
 
-    /* reset kelas warna lalu set baru */
-    box.classList.remove('bg-[#8a1616]','bg-[#afd106]','bg-[#018214]');
-    box.classList.add(`bg-[${COLORS[status].bg}]`);
-
-    label.classList.remove('text-[#8a1616]','text-[#afd106]','text-[#018214]');
-    label.classList.add(`text-[${COLORS[status].text}]`);
-    label.textContent = COLORS[status].label;
+    box.style.backgroundColor = COLORS[status].bg;
+    label.style.color         = COLORS[status].text;
+    label.textContent         = COLORS[status].label;
   }
 
-  /* polling tiap 3 detik */
+  /* ───────────────── POLL STATUS ───────────────── */
   function poll(){
     fetch(`/api/spots-dynamic-status/?date=${todayISO()}`)
       .then(r => r.json())
@@ -178,14 +150,49 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(console.error);
   }
 
-  if (status === 'disabled') {
-  box.classList.add(`bg-[#A0A0A0]`);
-  label.classList.add(`text-[#A0A0A0]`);
-  label.textContent = 'Disabled';
-}
+  /* langsung panggil & set interval */
+  poll();
+  const pollInterval = setInterval(poll, 3000);
 
-  poll();                 // load pertama
-  setInterval(poll,3000); // update berkala
+  /* ───────────────── UPDATE SELECTED ───────────────── */
+  window.updateSelectedColors = function () {
+    const disableOption = document.getElementById('colorSelect').value === 'bg-gray-300';
+    const selectedSlots = [...document.querySelectorAll('.box-checkbox')]
+                            .filter(cb => cb.checked)
+                            .map(cb => cb.id.replace('box',''));   // ['1','2',...]
+
+    if (selectedSlots.length === 0) return;
+
+    fetch('/api/toggle-spot-disable/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken' : getCookie('csrftoken'),
+      },
+      body: JSON.stringify({ spot_numbers: selectedSlots, disable: disableOption })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success){
+        /* refresh tampilan dengan memanggil poll sekali */
+        poll();
+        /* kosongkan centang supaya admin jelas update selesai */
+        document.querySelectorAll('.box-checkbox').forEach(cb => cb.checked = false);
+      } else {
+        alert('Update failed: ' + (data.error || 'Unknown error'));
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Request failed. Check console.');
+    });
+  };
+
+  /* ───────────────── SELECT ALL ───────────────── */
+  document.getElementById('selectAll').addEventListener('change', function(){
+    document.querySelectorAll('.box-checkbox').forEach(cb => cb.checked = this.checked);
+  });
+
 });
 </script>
 

@@ -419,6 +419,7 @@ def toggle_spot_disable(request):
             Spot.objects.filter(spot_number__in=spot_nums).update(status='disabled')
         else:
             Spot.objects.filter(spot_number__in=spot_nums, status='disabled').update(status='available')
+            
 
         return JsonResponse({"success": True})
     except Exception as e:
