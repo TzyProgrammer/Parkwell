@@ -115,39 +115,24 @@
   <script>
     // Fungsi update warna kotak
    function updateSelectedColors() {
-  const selectedColor = document.getElementById('colorSelect').value;
-  const checkboxes = document.querySelectorAll('.box-checkbox');
+  const disable = document.getElementById('colorSelect').value === 'bg-gray-300';
+  const selected = [...document.querySelectorAll('.box-checkbox')]
+                   .filter(cb => cb.checked)
+                   .map(cb => cb.id.replace('box',''));   // ['1','2',...]
 
-  // Mapping warna ke teks status
-  const statusMap = {
-    "bg-[#8a1616]": "Occupied",
-    "bg-[#018214]": "Available",
-    "bg-gray-300": "Disabled"
-  };
+  if (selected.length === 0) return;
 
-  const selectedText = statusMap[selectedColor] || "Unknown";
-
-  checkboxes.forEach(cb => {
-    if (cb.checked) {
-      const label = cb.nextElementSibling;
-      const statusText = label.parentElement.nextElementSibling.querySelector("p");
-
-      // Reset warna sebelumnya
-      label.classList.remove('bg-[#8a1616]', 'bg-[#018214]', 'bg-gray-300');
-      label.classList.add(selectedColor);
-
-      // Update teks status
-      statusText.textContent = selectedText;
-      statusText.classList.remove("text-[#8a1616]", "text-[#018214]", "text-gray-300");
-      if (selectedColor === "bg-[#8a1616]") {
-        statusText.classList.add("text-[#8a1616]");
-      } else if (selectedColor === "bg-[#018214]") {
-        statusText.classList.add("text-[#018214]");
-      } else {
-        statusText.classList.add("text-gray-400");
-      }
-    }
-  });
+  fetch('/api/toggle-spot-disable/', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json','X-CSRFToken': '{{ csrf_token }}'},
+    body: JSON.stringify({ spot_numbers: selected, disable })
+  })
+  .then(r => r.json())
+  .then(() => {
+     // perbarui UI lokal
+     selected.forEach(n => renderSlot(n, disable ? 'disabled' : 'available'));
+  })
+  .catch(console.error);
 }
     // Fungsi untuk pilih semua
     document.getElementById('selectAll').addEventListener('change', function () {
@@ -163,7 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const COLORS = {
     occupied : { bg:'#8a1616', text:'#8a1616', label:'Occupied' },
     reserved : { bg:'#afd106', text:'#afd106', label:'Reserved' },
-    available: { bg:'#018214', text:'#018214', label:'Available'}
+    available: { bg:'#018214', text:'#018214', label:'Available'},
+    disabled : { bg:'#A0A0A0', text:'#A0A0A0', label:'Disabled' } 
   };
 
   /* helper tanggal ISO hari ini */
@@ -191,6 +177,12 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(data => data.forEach(s => renderSlot(s.spot_number, s.status)))
       .catch(console.error);
   }
+
+  if (status === 'disabled') {
+  box.classList.add(`bg-[#A0A0A0]`);
+  label.classList.add(`text-[#A0A0A0]`);
+  label.textContent = 'Disabled';
+}
 
   poll();                 // load pertama
   setInterval(poll,3000); // update berkala

@@ -43,15 +43,16 @@ class Spot(models.Model):
     ('available', 'Available'),
     ('occupied', 'Occupied'),
     ('reserved', 'Reserved'),
+    ('disabled',  'Disabled'), 
     ]
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='available')
+    is_disabled = models.BooleanField(default=False)
     last_updated = models.DateTimeField(auto_now=True)
 
     def update_status_from_distance(self, distance_cm):
-        if distance_cm < 30:
-            self.status = 'occupied'
-        else:
-            self.status = 'available'
+        if self.is_disabled:                  # ← abaikan sensor jika disabled
+            return
+        self.status = 'occupied' if distance_cm < 30 else 'available'
         self.save()
         
     def __str__(self):

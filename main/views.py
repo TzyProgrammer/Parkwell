@@ -8,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.dateparse import parse_date
 from django.utils.timezone import localdate, make_aware, localtime
-
+from django.views.decorators.http import require_POST
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -76,37 +77,58 @@ def home_view(request):
 def reservation_view(request):
     today = date.today()
     two_weeks = today + timedelta(days=14)
-    
+
     if request.method == 'POST':
         print("POST request received")
-        date_str = request.POST.get('date')          # from your datepicker
-        start_hour = request.POST.get('start_time')  # from time select
-        end_hour = request.POST.get('end_time')
-        spot_number = request.POST.get('slot')
-        
         print("Raw POST data:", request.POST)
-        
-        if not (date_str and start_hour and end_hour and spot_number):
-            # Handle missing form data here (maybe send an error)
-            return render(request, 'reservation.html', {'error': 'Please fill all fields'})
 
-        # Convert date to "YYYY-MM-DD"
-        date_obj = datetime.strptime(date_str, "%m/%d/%Y")
-        formatted_date = date_obj.strftime("%Y-%m-%d")
+        # Ambil data dari form
+        date_str = request.POST.get('date')
+        start_hour = request.POST.get('start_time')
+        end_hour = request.POST.get('end_time')
+        spot_number = request.POST.get('slot')  # name="slot" di HTML
 
-        # Combine date and time
-        start_datetime = datetime.strptime(f"{formatted_date} {start_hour}:00", "%Y-%m-%d %H:%M:%S")
-        end_datetime = datetime.strptime(f"{formatted_date} {end_hour}:00", "%Y-%m-%d %H:%M:%S")
-        print(start_datetime)
-        print(end_datetime)
+        # Validasi form kosong
+        if not all([date_str, start_hour, end_hour, spot_number]):
+            return render(request, 'reservation.html', {
+                'error': 'Please fill all fields',
+                'today': today.strftime('%Y-%m-%d'),
+                'two_weeks': two_weeks.strftime('%Y-%m-%d')
+            })
 
-        # Get Spot object
+        # Validasi tipe spot_number
+        try:
+            spot_number = int(spot_number)
+        except ValueError:
+            messages.error(request, "Invalid slot selected.")
+            return redirect('reservation')
+
+        # Ambil objek Spot
         try:
             spot = Spot.objects.get(spot_number=spot_number)
         except Spot.DoesNotExist:
-            return render(request, 'reservation.html', {'error': 'Invalid parking slot selected'})
-        
-        # Create and save reservation
+            messages.error(request, "Selected slot not found.")
+            return redirect('reservation')
+
+        # Cek apakah spot dinonaktifkan
+        if spot.is_disabled:
+            return render(request, 'reservation.html', {
+                'error': 'This parking slot is currently disabled by admin.',
+                'today': today.strftime('%Y-%m-%d'),
+                'two_weeks': two_weeks.strftime('%Y-%m-%d')
+            })
+
+        # Konversi waktu
+        try:
+            date_obj = datetime.strptime(date_str, "%m/%d/%Y")
+            formatted_date = date_obj.strftime("%Y-%m-%d")
+            start_datetime = datetime.strptime(f"{formatted_date} {start_hour}:00", "%Y-%m-%d %H:%M:%S")
+            end_datetime = datetime.strptime(f"{formatted_date} {end_hour}:00", "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            messages.error(request, "Invalid date or time format.")
+            return redirect('reservation')
+
+        # Simpan reservasi
         reservation = Reservation.objects.create(
             user=request.user,
             spot=spot,
@@ -114,10 +136,9 @@ def reservation_view(request):
             end_time=end_datetime,
         )
 
-        # Redirect or return success
-        return redirect('reservationdetails', reservation_id=reservation.id)  # Replace with your success URL or render success message
+        return redirect('reservationdetails', reservation_id=reservation.id)
 
-    # GET request fallback
+    # GET request: tampilkan form kosong
     return render(request, 'reservation.html', {
         'today': today.strftime('%Y-%m-%d'),
         'two_weeks': two_weeks.strftime('%Y-%m-%d'),
@@ -233,6 +254,7 @@ def adminmonitoring_view(request):
     return render(request, 'adminmonitoring.html')
   
 def spots_dynamic_status_json(request):
+    # ───────────────────────── validasi querystring ─────────────────────────
     selected_date_str = request.GET.get('date')
     if not selected_date_str:
         return JsonResponse({'error': 'No date provided'}, status=400)
@@ -241,53 +263,41 @@ def spots_dynamic_status_json(request):
     if not selected_date:
         return JsonResponse({'error': 'Invalid date format'}, status=400)
 
-    today = localdate()  # Hari ini (bukan timezone.now().date())
+    # ───────────────────────── core logic ─────────────────────────
+    today  = localdate()
+    result = []
 
-    spots = []
-    for spot in Spot.objects.all():
-        # Cek apakah ada reservasi pada tanggal yang diminta
-        reserved_on_date = Reservation.objects.filter(
-            spot=spot,
-            start_time__date=selected_date
-        ).exists()
+    for spot in Spot.objects.all().order_by('spot_number'):
+        # 1) Jika admin men‑disable spot → selalu "disabled"
+        if spot.is_disabled:
+            status = "disabled"
 
-        # Jika tanggal yang dipilih adalah hari ini, sensor aktif
-        if selected_date == today:
-            if spot.status == "occupied":
-                status = "occupied"
-            elif reserved_on_date:
-                status = "reserved"
-            else:
-                status = "available"
         else:
-            # Untuk tanggal lain, hanya berdasarkan reservasi
-            status = "reserved" if reserved_on_date else "available"
+            # 2) Ada/tidaknya reservasi pada tanggal yang diminta
+            reserved_on_date = Reservation.objects.filter(
+                spot=spot,
+                start_time__date=selected_date
+            ).exists()
 
-        spots.append({
+            if selected_date == today:
+                # Hari ini: pertimbangkan sensor live
+                if spot.status == "occupied":
+                    status = "occupied"
+                elif reserved_on_date:
+                    status = "reserved"
+                else:
+                    status = "available"
+            else:
+                # Tanggal lain: hanya lihat reservasi
+                status = "reserved" if reserved_on_date else "available"
+
+        result.append({
             "spot_number": spot.spot_number,
-            "status": status
+            "status":      status,
         })
 
-    return JsonResponse(spots, safe=False)
-"""
-def reserved_hours_view(request):
-    spot_number = request.GET.get('spot')
-    date_str = request.GEt.get('date')
+    return JsonResponse(result, safe=False)
 
-    date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
-    reservations = Reservation.objects.filter(
-        spot__spot_number=spot_number,
-        start_time__date=date_obj
-    )
-    
-    reserved_hours = []
-    for r in reservations:
-        start_hour = r.start_time.hour
-        end_hour = r.end_time.hour
-        reserved_hours.extend(list(range(start_hour, end_hour)))
-
-    return JsonResponse({'reserved_hours': sorted(set(reserved_hours))})
-"""
 def get_reserved_times(start, end):
     blocked = []
     current = start
@@ -379,3 +389,25 @@ def slot_details_json(request):
         results.append(data)
 
     return JsonResponse(results, safe=False)
+
+@require_POST
+def toggle_spot_disable(request):
+    """
+    Body JSON = { "spot_numbers": [1,2], "disable": true }
+    """
+    try:
+        body = json.loads(request.body.decode())
+        spot_nums = body.get("spot_numbers", [])
+        disable   = bool(body.get("disable", False))
+
+        Spot.objects.filter(spot_number__in=spot_nums).update(is_disabled=disable)
+
+        # Update status kolom status → 'disabled' / 'available'
+        if disable:
+            Spot.objects.filter(spot_number__in=spot_nums).update(status='disabled')
+        else:
+            Spot.objects.filter(spot_number__in=spot_nums, status='disabled').update(status='available')
+
+        return JsonResponse({"success": True})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)

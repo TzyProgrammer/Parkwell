@@ -21,6 +21,7 @@ urlpatterns = [
     path('api/spots-dynamic-status/', spots_dynamic_status_json, name='spots_dynamic_status_json'),
     path('api/reserved-intervals/', reserved_intervals_view, name='reserved_intervals'),
     path('api/slot-details/', slot_details_json, name='slot_details_json'),
+    path('api/toggle-spot-disable/', toggle_spot_disable, name='toggle_spot_disable'),
     # admin
     path('adminlogin/', adminlogin_view, name='adminlogin'),
     path('adminhome/', adminhome_view, name='adminhome'),
