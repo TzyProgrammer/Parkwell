@@ -204,7 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const COLORS = {
     occupied : { bg:'#8a1616', text:'#8a1616', label:'Occupied' },
     reserved : { bg:'#afd106', text:'#afd106', label:'Reserved' },
-    available: { bg:'#018214', text:'#018214', label:'Available'}
+    available: { bg:'#018214', text:'#018214', label:'Available'},
+    disabled : { bg:'#A0A0A0', text:'#A0A0A0', label:'Disabled' }
   };
 
   /* ---------- render kotak + label ---------- */
@@ -241,6 +242,12 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(console.error);
   }
 
+  if (status === 'disabled') {
+  box.classList.add(`bg-[#A0A0A0]`);
+  label.classList.add(`text-[#A0A0A0]`);
+  label.textContent = 'Disabled';
+  }
+  
   poll();                    // initial load
   setInterval(poll, 3000);   // every 3 seconds
 });

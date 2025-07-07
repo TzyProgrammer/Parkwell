@@ -7,6 +7,7 @@ from datetime import datetime, time, date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.dateparse import parse_date
+from django.utils import timezone
 from django.utils.timezone import localdate, make_aware, localtime
 from django.views.decorators.http import require_POST
 import json
@@ -230,10 +231,12 @@ def update_account_view(request):
 def delete_reservation(request, reservation_id):
     reservation = Reservation.objects.get(id=reservation_id)
     reservation.delete()
-    return redirect('reservation')
+    next_page = request.GET.get('next', 'history')
+    return redirect(next_page)
 
 def history_view(request):
-    reservations = Reservation.objects.filter(user=request.user).order_by('-start_time').select_related('car')
+    now = timezone.now()
+    reservations = Reservation.objects.filter(user=request.user, end_time__gte=now).order_by('-start_time').select_related('car')
     return render(request, 'history.html', {
         'reservations': reservations})
 
