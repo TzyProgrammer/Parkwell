@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.dateparse import parse_date
 from django.utils import timezone
-from django.utils.timezone import localdate, make_aware, localtime
+from django.utils.timezone import now, localdate, make_aware, localtime
 from django.views.decorators.http import require_POST
 import json
 
@@ -341,57 +341,66 @@ def reserved_intervals_view(request):
 
     return JsonResponse({'reserved_times': all_blocked})
 
-def slot_details_json(request):
+def admin_home_details_json(request):
     """
-    Return detail (status, username, time) untuk semua slot di tanggal yg diminta.
+    Kembalikan JSON berisi status, username, dan time (hari ini) untuk tiap slot.
+    GET /api/admin-home-details/?date=YYYY-MM-DD   ← date opsional (default: hari ini)
     """
+    # ── ambil tanggal ──────────────────────────────────────────────────────
     date_str = request.GET.get('date')
-    if not date_str:
-        return JsonResponse({'error': 'No date provided'}, status=400)
+    target_date = parse_date(date_str) if date_str else localdate()
+    if target_date is None:
+        return JsonResponse({'error': 'Invalid date'}, status=400)
 
-    selected_date = parse_date(date_str)
-    if not selected_date:
-        return JsonResponse({'error': 'Invalid date format'}, status=400)
+    today = localdate()
+    now   = localtime()
 
-    today = localdate()          # ← gunakan helper ini
+    result = []
 
-    results = []
     for spot in Spot.objects.all().order_by('spot_number'):
-        # default kosong
         data = {
             "spot_number": spot.spot_number,
-            "status": "available",   # fallback
-            "username": "",
-            "time": ""
+            "status":      "available",   # default
+            "username":    "",
+            "time":        ""
         }
 
-        # --- status sensor / existing logic ---
-        if selected_date == today:
-            data["status"] = spot.status       # occupied / reserved / available
+        # 1. prioritas tertinggi: Disabled
+        if spot.is_disabled:
+            data["status"] = "disabled"
+
         else:
-            data["status"] = "reserved" if Reservation.objects.filter(
+            # 2. cek ada reservasi pada target_date
+            reservation_qs = Reservation.objects.filter(
                 spot=spot,
-                start_time__date=selected_date
-            ).exists() else "available"
+                start_time__date=target_date
+            ).order_by('start_time')
 
-        # --- cari reservasi terdekat pada tanggal tsb ---
-        res = Reservation.objects.filter(
-            spot=spot,
-            start_time__date=selected_date
-        ).order_by('start_time').first()
+            has_reservation = reservation_qs.exists()
 
-        if res:                                              # ⇒ Reserved
-            start = localtime(res.start_time).strftime("%H:%M")
-            end   = localtime(res.end_time).strftime("%H:%M")
-            data.update({
-                "username": res.user.username,
-                "time": f"{start} - {end}",
-                "status": "reserved"        # paksa reserved utk konsistensi label
-            })
+            # 3. tentukan status untuk hari ini
+            if target_date == today:
+                if spot.status == "occupied":
+                    data["status"] = "occupied"
+                elif has_reservation:
+                    data["status"] = "reserved"
+                else:
+                    data["status"] = "available"
+            else:
+                data["status"] = "reserved" if has_reservation else "available"
 
-        results.append(data)
+            # 4. masukkan detail user & time kalau reserved
+            if data["status"] == "reserved":
+                r = reservation_qs.first()
+                if r:
+                    data["username"] = r.user.username
+                    st = localtime(r.start_time).strftime("%H:%M")
+                    et = localtime(r.end_time).strftime("%H:%M")
+                    data["time"] = f"{st} - {et}"
 
-    return JsonResponse(results, safe=False)
+        result.append(data)
+
+    return JsonResponse(result, safe=False)
 
 @require_POST
 def toggle_spot_disable(request):

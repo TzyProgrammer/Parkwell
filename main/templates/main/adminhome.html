@@ -197,59 +197,55 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ---------- utils ---------- */
-  const todayISO = () => new Date().toISOString().slice(0,10);
-
-  /* ---------- visual warna box ---------- */
+  /* ===========  COLOR MAP  =========== */
   const COLORS = {
-    occupied : { bg:'#8a1616', text:'#8a1616', label:'Occupied' },
-    reserved : { bg:'#afd106', text:'#afd106', label:'Reserved' },
-    available: { bg:'#018214', text:'#018214', label:'Available'},
-    disabled : { bg:'#A0A0A0', text:'#A0A0A0', label:'Disabled' }
+    occupied : { bg:'#8a1616', text:'#8a1616', label:'Occupied'  },
+    reserved : { bg:'#afd106', text:'#afd106', label:'Reserved'  },
+    available: { bg:'#018214', text:'#018214', label:'Available' },
+    disabled : { bg:'#A0A0A0', text:'#A0A0A0', label:'Disabled'  },
   };
 
-  /* ---------- render kotak + label ---------- */
+  /* ===========  HELPERS  =========== */
+  const todayISO = () => new Date().toISOString().slice(0, 10);    // YYYY-MM-DD
+
+  /* ===========  UI RENDERERS  =========== */
   function renderBox(n, status){
     const box   = document.getElementById(`slot${n}-box`);
     const label = document.getElementById(`slot${n}-label`);
     if(!box || !label) return;
 
+    // reset
     box.className   = "py-8 flex justify-center items-center rounded-2xl mx-3";
     label.className = "text-md font-semibold";
 
-    box.style.backgroundColor   = COLORS[status].bg;
-    label.style.color           = COLORS[status].text;
-    label.textContent           = COLORS[status].label;
+    box.style.backgroundColor = COLORS[status].bg;
+    label.style.color         = COLORS[status].text;
+    label.textContent         = COLORS[status].label;
   }
 
-  /* ---------- render detail (status/username/time) ---------- */
   function renderDetail(n, status, username, time){
-    document.getElementById(`slot${n}-status`).textContent   = status.charAt(0).toUpperCase()+status.slice(1);
+    // id di anchor section: slot2 → slotN‐status|username|time
+    document.getElementById(`slot${n}-status`).textContent   = COLORS[status].label;
     document.getElementById(`slot${n}-username`).textContent = (status === 'reserved') ? username : '';
     document.getElementById(`slot${n}-time`).textContent     = (status === 'reserved') ? time     : '';
   }
 
-  /* ---------- polling tiap 3 detik ---------- */
+  /* ===========  POLLING  =========== */
   function poll(){
-    fetch(`/api/slot-details/?date=${todayISO()}`)
+    fetch(`/api/admin-home-details/?date=${todayISO()}`)
       .then(r => r.json())
       .then(list => {
         list.forEach(s => {
-          renderBox(s.spot_number, s.status);
-          renderDetail(s.spot_number, s.status, s.username, s.time);
+          const n = s.spot_number;                 // 1 … 4
+          renderBox(n,     s.status);              // kotak atas
+          renderDetail(n,  s.status, s.username, s.time);   // anchor bawah
         });
       })
       .catch(console.error);
   }
 
-  if (status === 'disabled') {
-  box.classList.add(`bg-[#A0A0A0]`);
-  label.classList.add(`text-[#A0A0A0]`);
-  label.textContent = 'Disabled';
-  }
-  
   poll();                    // initial load
-  setInterval(poll, 3000);   // every 3 seconds
+  setInterval(poll, 3000);   // update setiap 3 detik
 });
 </script>
 
