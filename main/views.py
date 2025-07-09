@@ -167,6 +167,7 @@ def reservation_details_view(request, reservation_id):
 
     return render(request, 'reservation_details.html', {'reservation': reservation})
 
+@login_required(login_url='login')
 def account_view(request):
     return render(request, 'account.html')
 
@@ -220,6 +221,9 @@ def history_view(request):
 
 def guide_view(request):
     return render(request, 'guide.html')
+
+def contact_view(request):
+    return render(request, 'contact.html')
 
 # ADMIN SECTION
 def adminlogin_view(request):

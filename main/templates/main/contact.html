@@ -1,0 +1,104 @@
+{% extends "headfoot.html" %}
+
+{% block title %}Home Page{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<title>Contact Us</title>
+
+
+<div class="md:mt-24 md:mb-32 mb-8 animate-fade-up">
+
+  <div class="text-center mt-12 mb-6 px-4">
+    <h2 class="text-4xl font-bold text-gray-800 mb-4">Contact Us</h2>
+    <p class="text-gray-600 max-w-xl mx-auto">
+      Whether you have questions, feedback, or just want to say hi — we’re here for you. Choose your favorite way to reach us!
+    </p>
+  </div>
+
+  <!-- Subheading -->
+  <div class="text-center mb-6 ">
+    <p class="text-lg text-gray-500 tracking-wide">Reach us through:</p>
+  </div>
+
+  <!-- Cards -->
+  <div class="flex flex-wrap justify-center items-center gap-4 sm:gap-6 px-4">
+
+    <!-- Email -->
+    <div class="w-full floating-1 grid items-center sm:w-64 sm:h-[250px] bg-white rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 p-6">
+      <div class="flex justify-center mb-4">
+        <img src="{% static 'main/Email.png' %}" alt="" class="w-[50px]">
+      </div>
+      <h3 class="text-xl font-semibold text-center text-gray-800">Email</h3>
+      <p class="text-gray-600 text-sm text-center mt-2">Send us detailed messages anytime.</p>
+      <div class="mt-6 flex justify-center">
+        <a href="mailto:email@example.com" class="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1">
+          <i class="fas fa-arrow-right"></i> Send Email
+        </a>
+      </div>
+    </div>
+
+    <!-- Telegram -->
+    <div class="w-full floating-2 grid items-center sm:w-64 sm:h-[270px] bg-white rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 p-6">
+      <div class="flex justify-center mb-4">
+        <img src="{% static 'main/telegram.png' %}" alt="" class="w-[56px]">
+      </div>
+      <h3 class="text-xl font-semibold text-center text-gray-800">Telegram</h3>
+      <p class="text-gray-600 text-sm text-center mt-2">Join our channel for updates and support.</p>
+      <div class="mt-6 flex justify-center">
+        <a href="https://t.me/username" target="_blank" class="text-blue-500 hover:text-blue-600 font-medium flex items-center gap-1">
+          <i class="fas fa-arrow-right"></i> Open Telegram
+        </a>
+      </div>
+    </div>
+
+    <!-- WhatsApp -->
+    <div class="w-full floating-3 grid items-center sm:w-64 sm:h-72 bg-white rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 p-6 ">
+      <div class="flex justify-center items-center mb-4">
+        <img src="{% static 'main/Whats-App.png' %}" alt="" class="w-[60px]">
+      </div>
+      <h3 class="text-xl font-semibold text-center text-gray-800">WhatsApp</h3>
+      <p class="text-gray-600 text-sm text-center mt-2">Chat with us instantly for fast replies.</p>
+      <div class="mt-6 flex justify-center">
+        <a href="https://wa.me/6281234567890" target="_blank" class="text-green-600 hover:text-green-700 font-medium flex items-center gap-1">
+          <i class="fas fa-arrow-right"></i> Start Chat
+        </a>
+      </div>
+    </div>
+
+    <!-- Instagram -->
+    <div class="w-full floating-4 grid items-center sm:w-64 sm:h-[270px] bg-white rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 p-6">
+      <div class="flex justify-center mb-4">
+        <img src="{% static 'main/social.png' %}" alt="" class="w-[56px]">
+      </div>
+      <h3 class="text-xl font-semibold text-center text-gray-800">Instagram</h3>
+      <p class="text-gray-600 text-sm text-center mt-2">DM us anytime or see our latest updates.</p>
+      <div class="mt-6 flex justify-center">
+        <a href="https://instagram.com/yourhandle" target="_blank" class="text-pink-500 hover:text-pink-600 font-medium flex items-center gap-1">
+          <i class="fas fa-arrow-right"></i> Visit IG
+        </a>
+      </div>
+    </div>
+
+    <!-- Phone --> 
+    <div class="w-full floating-5 grid items-center sm:w-64 sm:h-[250px] bg-white rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 p-6">
+      <div class="flex justify-center mb-4">
+        <div class="flex justify-center mb-4">
+        <img src="{% static 'main/phone.png' %}" alt="" class="w-[50px]">
+      </div>
+      </div>
+      <h3 class="text-xl font-semibold text-center text-gray-800">Phone Call</h3>
+      <p class="text-gray-600 text-sm text-center mt-2">Available 9am–5pm for direct calls.</p>
+      <div class="mt-6 flex justify-center">
+        <a href="tel:+6281234567890" class="text-yellow-600 hover:text-yellow-700 font-medium flex items-center gap-1">
+          <i class="fas fa-arrow-right"></i> Call Us
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  </div>
+{% endblock %}

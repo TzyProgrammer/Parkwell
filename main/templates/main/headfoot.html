@@ -15,6 +15,10 @@
   <!-- font -->
   <link href="https://fonts.googleapis.com/css2?family=Istok+Web&display=swap" rel="stylesheet" />
 
+  <!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-y4vO1YqrlC+bku0OHOM9bR9qj1gA0ZoCTiD+UeWzL0pvV8npTfF7S4yVcNm9pOhBJY0H5a7ZB3czQOqITQkz9w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  
   <style>
     body {
       font-family: 'Istok Web', sans-serif;
@@ -51,6 +55,29 @@
   .float-animation {
     animation: float 3s ease-in-out infinite;
   }
+
+  @keyframes float {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-6px); }
+    100% { transform: translateY(0); }
+  }
+  /* Matikan animasi default */
+  .floating-1,
+  .floating-2,
+  .floating-3,
+  .floating-4,
+  .floating-5 {
+    animation: none;
+  }
+
+  /* Aktifkan animasi hanya saat md (≥768px) */
+  @media (min-width: 768px) {
+    .floating-1 { animation: float 3s ease-in-out infinite; }
+    .floating-2 { animation: float 3.5s ease-in-out infinite; }
+    .floating-3 { animation: float 4s ease-in-out infinite; }
+    .floating-4 { animation: float 4.5s ease-in-out infinite; }
+    .floating-5 { animation: float 5s ease-in-out infinite; }
+  }
   </style>
 </head>
 <body>
@@ -86,7 +113,7 @@
       </button>
     </div>
     <div class=" items-center justify-between hidden w-full md:flex md:w-auto md:order-2" id="navbar-sticky">
-      <ul class="md:bg-transparent md:backdrop-opacity-10  md:backdrop-blur-md bg-white md:flex md:items-center flex-col p-4 md:p-0 mt-4 md:font-sans md:font-semibold border border-gray-100 rounded-lg md:space-x-12 md:flex-row md:mt-0 md:border-0 ">
+      <ul class="md:bg-transparent  bg-white md:flex md:items-center flex-col p-4 md:p-0 mt-4 md:font-sans md:font-semibold border border-gray-100 rounded-lg md:space-x-12 md:flex-row md:mt-0 md:border-0 ">
 
         <li class="order-1 md:order-3">
           <a href="{% url 'account' %}" class="block transition-all ease-in duration-300  md:flex md:items-center md:ml-14 block py-2 px-3  w-full hover:text-white text-gray-900 rounded-lg  md:text-white md:hover:bg-transparent md:hover:text-[#F2C94C] md:hover:underline md:underline-offset-8 md:p-0">
@@ -96,14 +123,14 @@
         </li>
 
         <li class="order-2 md:order-2">
-          <a href="#" class="block transition-all ease-in duration-300 py-2 px-3 text-gray-900 hover:text-white rounded-lg md:text-white md:hover:bg-transparent md:hover:text-[#F2C94C] md:hover:underline md:underline-offset-8 md:p-0">
-            About Us
+          <a href="{% url 'contact' %}" class="block transition-all ease-in duration-300 py-2 px-3 text-gray-900 hover:text-white rounded-lg md:text-white md:hover:bg-transparent md:hover:text-[#F2C94C] md:hover:underline md:underline-offset-8 md:p-0">
+            Contact Us
           </a>
         </li>
 
         <li class="order-3 md:order-1">
-          <a href="#" class="block transition-all ease-in duration-300 py-2 px-3 text-gray-900 hover:text-white md:mr-4 rounded-lg md:text-white md:hover:bg-transparent md:hover:text-[#F2C94C] md:hover:underline md:underline-offset-8 md:p-0 ">
-            Contact Us
+          <a href="{% url 'guide' %}" class="block transition-all ease-in duration-300 py-2 px-3 text-gray-900 hover:text-white md:mr-4 rounded-lg md:text-white md:hover:bg-transparent md:hover:text-[#F2C94C] md:hover:underline md:underline-offset-8 md:p-0 ">
+            Getting Started
           </a>
         </li>
       

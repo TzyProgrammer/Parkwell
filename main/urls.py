@@ -16,6 +16,7 @@ urlpatterns = [
     path('reservation/<int:reservation_id>/delete/', delete_reservation, name='delete_reservation'),
     path('history/', history_view, name='history'),
     path('guide/', guide_view, name='guide' ),
+    path('contact/', contact_view, name='contact' ),
     path('status/', status_view, name='status'),
   
     path('api/spots-dynamic-status/', spots_dynamic_status_json, name='spots_dynamic_status_json'),
