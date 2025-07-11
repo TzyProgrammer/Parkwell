@@ -10,6 +10,8 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.utils.timezone import now, localdate, make_aware, localtime
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt 
+import paho.mqtt.publish as publish
 from functools import wraps
 import json
 
@@ -322,6 +324,7 @@ def spots_dynamic_status_json(request):
         result.append({
             "spot_number": spot.spot_number,
             "status":      status,
+            "buzzer_active": spot.buzzer_active,
         })
 
     return JsonResponse(result, safe=False)
@@ -449,3 +452,32 @@ def toggle_spot_disable(request):
         return JsonResponse({"success": True})
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
+
+@require_POST
+@admin_login_required
+@csrf_exempt
+def admin_turn_off_buzzer(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        slot_number = data.get("slot_number")
+
+        try:
+            spot = Spot.objects.get(spot_number=slot_number)
+            spot.buzzer_active = False
+            spot.save()
+
+            topic = f"parkir/slot{slot_number}/buzzer"
+            publish.single(
+                topic,
+                "off",
+                hostname="192.168.18.11",  # IP broker laptop
+                port=1883
+            )
+            print(f"✅ Buzzer untuk slot {slot_number} dimatikan oleh admin.")
+            return JsonResponse({"success": True})
+
+        except Spot.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Slot tidak ditemukan"})
+
+    return JsonResponse({"success": False, "error": "Metode bukan POST"})
+

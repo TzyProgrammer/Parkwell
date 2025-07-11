@@ -206,8 +206,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   /* ===========  HELPERS  =========== */
-  const todayISO = () => new Date().toISOString().slice(0, 10);    // YYYY-MM-DD
-
+  const todayISO = () => {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());  // konversi ke waktu lokal
+    return now.toISOString().slice(0, 10);
+  };
   /* ===========  UI RENDERERS  =========== */
   function renderBox(n, status){
     const box   = document.getElementById(`slot${n}-box`);

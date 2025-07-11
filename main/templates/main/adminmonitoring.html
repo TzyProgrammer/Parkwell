@@ -50,6 +50,13 @@
                       <div class="flex justify-center">
                         <p id="slot1-label" class="text-md text-[#018214] font-semibold">Available</p>
                         </div>
+                        <div class="flex justify-center mt-2">
+                        <button id="buzzer-btn-slot1"
+                                onclick="turnOffBuzzer('1')"
+                                class="hidden bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-1 rounded-lg">
+                          Matikan Buzzer
+                        </button>
+                      </div>
                     </li>
 
                         <!-- Slot 2 -->
@@ -63,6 +70,13 @@
                       </div>
                       <div class="flex justify-center">
                       <p id="slot2-label" class="text-md text-[#018214] font-semibold">Available</p>
+                      </div>
+                      <div class="flex justify-center mt-2">
+                        <button id="buzzer-btn-slot2"
+                                onclick="turnOffBuzzer('2')"
+                                class="hidden bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-1 rounded-lg">
+                          Matikan Buzzer
+                        </button>
                       </div>
                     </li>
 
@@ -79,6 +93,13 @@
                     <div class="flex justify-center">
                     <p id="slot3-label" class="text-md text-[#018214] font-semibold">Available</p>
                     </div>
+                    <div class="flex justify-center mt-2">
+                      <button id="buzzer-btn-slot3"
+                              onclick="turnOffBuzzer('3')"
+                              class="hidden bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-1 rounded-lg">
+                        Matikan Buzzer
+                      </button>
+                    </div>
                   </li>
 
                     <!-- Slot 4 -->
@@ -92,6 +113,13 @@
                     </div>
                     <div class="flex justify-center">
                     <p id="slot4-label" class="text-md text-[#018214] font-semibold">Available</p>
+                    </div>
+                    <div class="flex justify-center mt-2">
+                      <button id="buzzer-btn-slot4"
+                              onclick="turnOffBuzzer('4')"
+                              class="hidden bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-1 rounded-lg">
+                        Matikan Buzzer
+                      </button>
                     </div>
                   </li>
               </ul>
@@ -124,30 +152,48 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   /* ───────────────── HELPERS ───────────────── */
-  const todayISO = () => new Date().toISOString().slice(0, 10);
-
+  const todayISO = () => {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());  // konversi ke waktu lokal
+    return now.toISOString().slice(0, 10);
+  };
   function getCookie(name) {                // ambil CSRF utk fetch POST
     const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
     return v ? v.pop() : '';
   }
 
   /* ───────────────── RENDER SLOT ───────────────── */
-  function renderSlot(n, status){
+  function renderSlot(n, status, buzzerActive = false){
     const box   = document.getElementById(`slot${n}-box`);
     const label = document.getElementById(`slot${n}-label`);
+    const btn   = document.getElementById(`buzzer-btn-slot${n}`);
     if(!box || !label) return;
 
     box.style.backgroundColor = COLORS[status].bg;
     label.style.color         = COLORS[status].text;
     label.textContent         = COLORS[status].label;
+
+    // Tampilkan tombol jika occupied dan buzzer masih aktif
+    if (btn) {
+      if (status === 'occupied' && buzzerActive) {
+        btn.classList.remove("hidden");
+        btn.disabled = false;
+        btn.textContent = "Matikan Buzzer";
+      } else {
+        btn.classList.add("hidden");
+      }
+    }
   }
+
 
   /* ───────────────── POLL STATUS ───────────────── */
   function poll(){
     fetch(`/api/spots-dynamic-status/?date=${todayISO()}`)
       .then(r => r.json())
-      .then(data => data.forEach(s => renderSlot(s.spot_number, s.status)))
-      .catch(console.error);
+      .then(data => data.forEach(s => {
+        const slotNum = s.spot_number.replace("slot", "");
+        renderSlot(slotNum, s.status, s.buzzer_active);
+      }))
   }
 
   /* langsung panggil & set interval */
@@ -192,6 +238,35 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('selectAll').addEventListener('change', function(){
     document.querySelectorAll('.box-checkbox').forEach(cb => cb.checked = this.checked);
   });
+
+  window.turnOffBuzzer = function(slotNumber) {
+    fetch("/api/admin-turn-off-buzzer/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+      body: JSON.stringify({ slot_number: slotNumber })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        const btn = document.getElementById(`buzzer-btn-slot${slotNumber}`);
+        btn.innerText = "Dimatikan";
+        btn.disabled = true;
+        btn.classList.remove("bg-red-600");
+        btn.classList.add("bg-gray-400");
+        console.log(`✅ Buzzer slot ${slotNumber} berhasil dimatikan.`);
+      } else {
+        alert("Gagal mematikan buzzer: " + data.error);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Terjadi kesalahan saat mematikan buzzer.");
+    });
+  };
+
 
 });
 </script>

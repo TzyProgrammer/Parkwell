@@ -22,6 +22,7 @@ urlpatterns = [
     path('api/reserved-intervals/', reserved_intervals_view, name='reserved_intervals'),
     path('api/admin-home-details/', admin_home_details_json, name='admin_home_details_json'),
     path('api/toggle-spot-disable/', toggle_spot_disable, name='toggle_spot_disable'),
+    path('api/admin-turn-off-buzzer/', admin_turn_off_buzzer, name='admin_turn_off_buzzer'),
     # admin
     path('adminlogin/', adminlogin_view, name='adminlogin'),
     path('adminhome/', adminhome_view, name='adminhome'),
