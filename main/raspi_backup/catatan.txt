@@ -1,5 +1,8 @@
 Cara Kalibrasi Sensor 
 
 1. Pada Kalibrasi.py, ubah DELAY_THRESHOLD (dalam satuan detik) Untuk Buzzer dan DISTANCE_THRESHOLD = y (dalam satuan cm) Untuk Sensor
-2. Restart mqtt_sub.py Pada Server
-3. Jangan lupa untuk selalu perhatikan IP Pada broker_address()
+2. Ubah time.sleep() terakhir untuk mengatur delay pada Sensor
+3. Ubah Juga Jarak Pada distance_cm pada models.py
+4. Jangan lupa untuk selalu perhatikan IP Pada broker_address()
+5. Rumus Bunyi Pada Buzzer = DELAY_THRESHOLD x time.sleep()
+6. Restart mqtt_sub.py Pada Server
