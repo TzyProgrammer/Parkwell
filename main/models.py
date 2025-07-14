@@ -39,21 +39,36 @@ class CustomUser (AbstractUser):
     
 class Spot(models.Model):
     spot_number = models.CharField(max_length=20, unique=True)
+    
     STATUS_CHOICES = [
-    ('available', 'Available'),
-    ('occupied', 'Occupied'),
-    ('reserved', 'Reserved'),
+        ('available', 'Available'),
+        ('occupied', 'Occupied'),
+        ('reserved', 'Reserved'),
+        ('disabled',  'Disabled'), 
     ]
+    
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='available')
+    is_disabled = models.BooleanField(default=False)
     last_updated = models.DateTimeField(auto_now=True)
+    buzzer_active = models.BooleanField(default=True)
 
     def update_status_from_distance(self, distance_cm):
+        if self.is_disabled:
+            return
+        
+        # Status sebelumnya untuk deteksi perubahan
+        prev_status = self.status
+        
         if distance_cm < 30:
             self.status = 'occupied'
+            if prev_status != 'occupied':
+                self.buzzer_active = True  # Setel buzzer hidup saat transisi masuk
         else:
             self.status = 'available'
+            self.buzzer_active = False  # Matikan buzzer saat kendaraan pergi
+
         self.save()
-        
+    
     def __str__(self):
         return f"Spot {self.spot_number}"
     
