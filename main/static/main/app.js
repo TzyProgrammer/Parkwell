@@ -128,3 +128,42 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000);
 document.addEventListener('DOMContentLoaded', updateCountdown);
+
+// button change for history
+function createButton(label, targetId, color) {
+    return `<button type="button" data-modal-target="${targetId}" data-modal-toggle="${targetId}" 
+        class="focus:outline-none text-white ${color} hover:underline focus:ring-2 font-medium rounded-xl md:text-md text-sm px-4 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">
+        ${label}</button>`;
+}
+
+function updateButtons(reservationId, status) {
+    const container = document.getElementById(`action-buttons-${reservationId}`);
+    if (!container) return;
+
+    let buttons = "";
+
+    if (status === "reserved") {
+        buttons += createButton("Cancel", `cancel${reservationId}`, "bg-red-700 hover:bg-red-900");
+    } else if (status === "placed") {
+        buttons += createButton("Verify", `verify${reservationId}`, "bg-blue-700 hover:bg-blue-900");
+        buttons += createButton("End", `end${reservationId}`, "bg-yellow-600 hover:bg-yellow-800");
+    } else if (status === "about_to_end") {
+        buttons += createButton("Extend", `extend${reservationId}`, "bg-green-700 hover:bg-green-900");
+    }
+
+    container.innerHTML = buttons;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("td[id^='action-buttons-']").forEach(td => {
+        const row = td.closest("tr");
+        const statusText = row.querySelector(".status").textContent.trim();
+        const reservationId = td.id.replace("action-buttons-", "");
+
+        console.log(`Row ${reservationId}: Status is -> '${statusText}'`);
+        console.log("testsdf")
+        console.log("test")
+        updateButtons(reservationId, statusText);
+    });
+});
+console.log("test")

@@ -330,3 +330,13 @@ def reserved_intervals_view(request):
         all_blocked.extend(blocked)
 
     return JsonResponse({'reserved_times': all_blocked})
+
+def extend_reservation(request, reservation_id):
+    if request.method == 'POST':
+        reservation = Reservation.objects.get(id=reservation_id)
+        new_end_time = request.POST.get('new_end_time')
+
+        reservation.end_time = new_end_time
+        reservation.save()
+
+        return redirect('history')
