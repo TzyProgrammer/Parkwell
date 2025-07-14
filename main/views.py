@@ -7,6 +7,7 @@ from datetime import datetime, time, date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.utils.dateparse import parse_date
+from django.conf import settings
 from django.utils import timezone
 from django.utils.timezone import now, localdate, make_aware, localtime
 from django.views.decorators.http import require_POST
@@ -190,6 +191,7 @@ def reservation_details_view(request, reservation_id):
 
     return render(request, 'reservation_details.html', {'reservation': reservation})
 
+@login_required(login_url='login')
 def account_view(request):
     return render(request, 'account.html')
 
@@ -245,6 +247,9 @@ def history_view(request):
 
 def guide_view(request):
     return render(request, 'guide.html')
+
+def contact_view(request):
+    return render(request, 'contact.html')
 
 # ADMIN SECTION
 def adminlogin_view(request):

@@ -16,6 +16,7 @@ urlpatterns = [
     path('reservation/<int:reservation_id>/delete/', delete_reservation, name='delete_reservation'),
     path('history/', history_view, name='history'),
     path('guide/', guide_view, name='guide' ),
+    path('contact/', contact_view, name='contact' ),
     path('status/', status_view, name='status'),
     # API
     path('api/spots-dynamic-status/', spots_dynamic_status_json, name='spots_dynamic_status_json'),
@@ -25,6 +26,7 @@ urlpatterns = [
     path('api/admin-turn-off-buzzer/', admin_turn_off_buzzer, name='admin_turn_off_buzzer'),
     # admin
     path('adminlogin/', adminlogin_view, name='adminlogin'),
+    path('adminlogout/', adminlogout_view, name='adminlogout'),
     path('adminhome/', adminhome_view, name='adminhome'),
     path('adminreservation/', adminreservation_view, name='adminreservation'),
     path('adminmonitoring/', adminmonitoring_view, name='adminmonitoring'),

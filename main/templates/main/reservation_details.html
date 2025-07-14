@@ -28,7 +28,7 @@
             <!-- modal -->
             <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                 <div class="relative p-4 w-full max-w-md max-h-full">
-                    <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                    <div class="relative bg-white rounded-lg shadow-sm ">
                         <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-hide="popup-modal">
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -36,15 +36,15 @@
                             <span class="sr-only">Close modal</span>
                         </button>
                         <div class="p-4 md:p-5 text-center">
-                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                             </svg>
-                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to log out and switch to a different account?</h3>
-                            <a href="{% url 'logout' %}" data-modal-hide="popup-modal" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                            <h3 class="mb-5 text-lg font-normal text-gray-500">Are you sure you want to log out and switch to a different account?</h3>
+                            <a href="{% url 'logout' %}" data-modal-hide="popup-modal" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                                 Yes, Logout
                             </a>
                             
-                            <button data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 ">No, cancel</button>
+                            <button data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 ">No, cancel</button>
 
 
                         </div>
@@ -66,7 +66,7 @@
             <div class="mr-4">
                 <label for="brand" class="block mb-2 text-sm font-medium text-gray-600">Brand:</label>
                 <select name="dropdown1" id="id_dropdown1" class="bg-white border border-[#0F044C] text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
-                    <option value="0" class="hidden">Choose Brand</option>
+                    <option value="" class="hidden">Choose Brand</option>
                     <option value="Audi">Audi</option>
                     <option value="BMW">BMW</option>
                     <option value="BYD">BYD</option>
@@ -343,9 +343,62 @@
                     });
                 </script>
 
-        <div class="md:mt-14 mt-8">
-            <button value="add" class="w-full block focus:outline-none text-white bg-[#141E61] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-[50px] text-lg px-5 py-2.5 me-2 mb-2 text-center" type="submit">Continue</button>
+        <div class="justify-center flex items-center">
+            <img src="" alt="Image preview" id="preview_image" class="mt-4 hidden w-auto h-48 border border-gray-300 rounded">
         </div>
+
+        <div class="md:mt-14 mt-8">
+            <button data-modal-target="confirmModal" data-modal-toggle="confirmModal" class="w-full block focus:outline-none text-white bg-[#141E61] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-[50px] text-lg px-5 py-2.5 me-2 mb-2 text-center" type="button">
+                Reserve
+            </button>
+        </div>
+
+        <!-- Flowbite Modal -->
+        <div id="confirmModal" tabindex="-1" aria-hidden="true"
+            class="hidden fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full bg-black/50 flex items-center justify-center">
+            <div class="relative w-full max-w-md h-auto">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t ">
+                        <h3 class="text-xl font-semibold text-gray-900 ">
+                            Reservation Confirmation
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="confirmModal">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-6 flex justify-center">
+                        <p class="text-base leading-relaxed text-gray-500">
+                            Are you sure you want to make a reservation?
+                        </p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center justify-center p-4 space-x-2 border-t border-gray-200 rounded-b">
+                        <button data-modal-hide="confirmModal" type="button"
+                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium w-full  py-2.5 hover:text-gray-900 focus:z-10 ">
+                            Cancel
+                        </button>
+                        <form method="POST" action="/reserve/">
+                            {% csrf_token %}
+                            <button type="submit"
+                                class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full   py-2.5 text-center">
+                                Continue
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
 
         </form>
 
@@ -404,9 +457,7 @@
                         <span class="text-sm font-medium text-[#141E61] ">{{ reservation.end_time|time:"H:i" }}</span>
                     </div>
                 </div>
-                <div>
-                    <img src="" alt="Image preview" id="preview_image" class="mt-4 hidden w-64 h-auto border border-gray-300 rounded">
-                </div>
+                
         </div>
 
         <div class="grid grid-flow-col justify-items-end">
@@ -418,7 +469,7 @@
                 <form method="POST" action="{% url 'delete_reservation' reservation.id %}?next=reservation">
                 {% csrf_token %}
                 <div class="relative p-4 w-full max-w-md max-h-full">
-                    <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                    <div class="relative bg-white rounded-lg shadow-sm">
                         <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center " data-modal-hide="popup-cancel">
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -426,15 +477,15 @@
                             <span class="sr-only">Close modal</span>
                         </button>
                         <div class="p-4 md:p-5 text-center">
-                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                             </svg>
-                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"><p class="text-red-700 font-semibold">Warning!</p>This action may remove all your current input.</h3>
-                            <button data-modal-hide="popup-cancel" type="submit" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                            <h3 class="mb-5 text-lg font-normal text-gray-500"><p class="text-red-700 font-semibold">Warning!</p>This action may remove all your current input.</h3>
+                            <button data-modal-hide="popup-cancel" type="submit" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                                 Continue
                             </button>
                             
-                            <button data-modal-hide="popup-cancel" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 ">Cancel</button>
+                            <button data-modal-hide="popup-cancel" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 ">Cancel</button>
 
                                 </div>
                             </div>
