@@ -18,13 +18,17 @@ urlpatterns = [
     path('guide/', guide_view, name='guide' ),
     path('contact/', contact_view, name='contact' ),
     path('status/', status_view, name='status'),
-  
+    # API
     path('api/spots-dynamic-status/', spots_dynamic_status_json, name='spots_dynamic_status_json'),
     path('api/reserved-intervals/', reserved_intervals_view, name='reserved_intervals'),
+    path('api/admin-home-details/', admin_home_details_json, name='admin_home_details_json'),
+    path('api/toggle-spot-disable/', toggle_spot_disable, name='toggle_spot_disable'),
+    path('api/admin-turn-off-buzzer/', admin_turn_off_buzzer, name='admin_turn_off_buzzer'),
     # admin
     path('adminlogin/', adminlogin_view, name='adminlogin'),
     path('adminlogout/', adminlogout_view, name='adminlogout'),
     path('adminhome/', adminhome_view, name='adminhome'),
     path('adminreservation/', adminreservation_view, name='adminreservation'),
     path('adminmonitoring/', adminmonitoring_view, name='adminmonitoring'),
+    path('adminlogout/', adminlogout_view, name='adminlogout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

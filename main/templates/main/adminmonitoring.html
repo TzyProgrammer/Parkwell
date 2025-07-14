@@ -21,7 +21,7 @@
               <!-- Park spot 1 -->
             <div class="md:px-12 px-8 pt-8 md:pt-12 flex justify-center">
               <h2 class="text-2xl md:text-4xl font-semibold tracking-wide text-[#141E61] fade-up border-b-2 border-gray-500 pb-1">
-                Parking Spot 1
+                Parking Spot
               </h2>
             </div>
 
@@ -43,13 +43,20 @@
                       <label for="slot1" class="flex justify-center text-sm font-semibold text-[#141E61]">Slot 1</label>
                       <div class="flex justify-center py-2">
                         <input type="checkbox" id="box1" class="hidden peer box-checkbox">
-                        <label for="box1" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
+                        <label id="slot1-box" for="box1" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
                           <img src="{% static 'main/car1.png' %}" class="w-20 md:w-28" alt="">
                         </label>
                       </div>
                       <div class="flex justify-center">
-                        <p class="text-md text-[#018214] font-semibold">Available</p>
+                        <p id="slot1-label" class="text-md text-[#018214] font-semibold">Available</p>
                         </div>
+                        <div class="flex justify-center mt-2">
+                        <button id="buzzer-btn-slot1"
+                                onclick="turnOffBuzzer('1')"
+                                class="hidden bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-1 rounded-lg">
+                          Matikan Buzzer
+                        </button>
+                      </div>
                     </li>
 
                         <!-- Slot 2 -->
@@ -57,12 +64,19 @@
                       <label for="slot2" class="flex justify-center text-sm font-semibold text-[#141E61]">Slot 2</label>
                       <div class="flex justify-center py-2">
                         <input type="checkbox" id="box2" class="hidden peer box-checkbox">
-                      <label for="box2" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
+                      <label id="slot2-box" for="box2" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
                         <img src="{% static 'main/car2.png' %}" class="w-20 md:w-28" alt="">
                       </label>
                       </div>
                       <div class="flex justify-center">
-                      <p class="text-md text-[#018214] font-semibold">Available</p>
+                      <p id="slot2-label" class="text-md text-[#018214] font-semibold">Available</p>
+                      </div>
+                      <div class="flex justify-center mt-2">
+                        <button id="buzzer-btn-slot2"
+                                onclick="turnOffBuzzer('2')"
+                                class="hidden bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-1 rounded-lg">
+                          Matikan Buzzer
+                        </button>
                       </div>
                     </li>
 
@@ -72,12 +86,19 @@
                     <label for="slot3" class="flex justify-center text-sm font-semibold text-[#141E61]">Slot 3</label>
                     <div class="flex justify-center py-2">
                       <input type="checkbox" id="box3" class="hidden peer box-checkbox">
-                    <label for="box3" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
+                    <label id="slot3-box" for="box3" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
                       <img src="{% static 'main/car3.png' %}" class="w-20 md:w-28" alt="">
                     </label>
                     </div>
                     <div class="flex justify-center">
-                    <p class="text-md text-[#018214] font-semibold">Available</p>
+                    <p id="slot3-label" class="text-md text-[#018214] font-semibold">Available</p>
+                    </div>
+                    <div class="flex justify-center mt-2">
+                      <button id="buzzer-btn-slot3"
+                              onclick="turnOffBuzzer('3')"
+                              class="hidden bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-1 rounded-lg">
+                        Matikan Buzzer
+                      </button>
                     </div>
                   </li>
 
@@ -86,12 +107,19 @@
                     <label for="slot4" class="flex justify-center text-sm font-semibold text-[#141E61]">Slot 4</label>
                     <div class="flex justify-center py-2">
                       <input type="checkbox" id="box4" class="hidden peer box-checkbox">
-                    <label for="box4" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
+                    <label id="slot4-box" for="box4" class="w-[220px] flex items-center justify-center p-5 text-white bg-[#018214] border-2 border-gray-200 rounded-2xl cursor-pointer peer-checked:border-blue-600 peer-checked:ring-2 peer-checked:ring-blue-200 peer-checked:bg-opacity-80 transition-all duration-200 transition duration-300 ease-in-out transform hover:scale-[1.03] hover:brightness-75">
                       <img src="{% static 'main/car4.png' %}" class="w-20 md:w-28" alt="">
                     </label>
                     </div>
                     <div class="flex justify-center">
-                    <p class="text-md text-[#018214] font-semibold">Available</p>
+                    <p id="slot4-label" class="text-md text-[#018214] font-semibold">Available</p>
+                    </div>
+                    <div class="flex justify-center mt-2">
+                      <button id="buzzer-btn-slot4"
+                              onclick="turnOffBuzzer('4')"
+                              class="hidden bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-1 rounded-lg">
+                        Matikan Buzzer
+                      </button>
                     </div>
                   </li>
               </ul>
@@ -101,7 +129,6 @@
                   <label for="colorSelect" class="text-gray-700 text-sm font-medium">Reason:</label>
                   <select id="colorSelect" class="px-4 md:pr-12 pr-8 md:text-md text-sm md:py-2 py-1.5 border rounded">
                     <option value="bg-[#018214]">Available</option>
-                    <option value="bg-[#8a1616]">Occupied</option>
                     <option value="bg-gray-300">Disabled</option>
                   </select>
                 </div>
@@ -114,49 +141,135 @@
             </div>
 
   <script>
-    // Fungsi update warna kotak
-   function updateSelectedColors() {
-  const selectedColor = document.getElementById('colorSelect').value;
-  const checkboxes = document.querySelectorAll('.box-checkbox');
+document.addEventListener('DOMContentLoaded', () => {
 
-  // Mapping warna ke teks status
-  const statusMap = {
-    "bg-[#8a1616]": "Occupied",
-    "bg-[#018214]": "Available",
-    "bg-gray-300": "Disabled"
+  /* ───────────────── COLOR MAP ───────────────── */
+  const COLORS = {
+    occupied : { bg:'#8a1616', text:'#8a1616', label:'Occupied'  },
+    reserved : { bg:'#afd106', text:'#afd106', label:'Reserved'  },
+    available: { bg:'#018214', text:'#018214', label:'Available' },
+    disabled : { bg:'#A0A0A0', text:'#A0A0A0', label:'Disabled'  },
   };
 
-  const selectedText = statusMap[selectedColor] || "Unknown";
+  /* ───────────────── HELPERS ───────────────── */
+  const todayISO = () => {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());  // konversi ke waktu lokal
+    return now.toISOString().slice(0, 10);
+  };
+  function getCookie(name) {                // ambil CSRF utk fetch POST
+    const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return v ? v.pop() : '';
+  }
 
-  checkboxes.forEach(cb => {
-    if (cb.checked) {
-      const label = cb.nextElementSibling;
-      const statusText = label.parentElement.nextElementSibling.querySelector("p");
+  /* ───────────────── RENDER SLOT ───────────────── */
+  function renderSlot(n, status, buzzerActive = false){
+    const box   = document.getElementById(`slot${n}-box`);
+    const label = document.getElementById(`slot${n}-label`);
+    const btn   = document.getElementById(`buzzer-btn-slot${n}`);
+    if(!box || !label) return;
 
-      // Reset warna sebelumnya
-      label.classList.remove('bg-[#8a1616]', 'bg-[#018214]', 'bg-gray-300');
-      label.classList.add(selectedColor);
+    box.style.backgroundColor = COLORS[status].bg;
+    label.style.color         = COLORS[status].text;
+    label.textContent         = COLORS[status].label;
 
-      // Update teks status
-      statusText.textContent = selectedText;
-      statusText.classList.remove("text-[#8a1616]", "text-[#018214]", "text-gray-300");
-      if (selectedColor === "bg-[#8a1616]") {
-        statusText.classList.add("text-[#8a1616]");
-      } else if (selectedColor === "bg-[#018214]") {
-        statusText.classList.add("text-[#018214]");
+    // Tampilkan tombol jika occupied dan buzzer masih aktif
+    if (btn) {
+      if (status === 'occupied' && buzzerActive) {
+        btn.classList.remove("hidden");
+        btn.disabled = false;
+        btn.textContent = "Matikan Buzzer";
       } else {
-        statusText.classList.add("text-gray-400");
+        btn.classList.add("hidden");
       }
     }
-  });
-}
-    // Fungsi untuk pilih semua
-    document.getElementById('selectAll').addEventListener('change', function () {
-      const checkboxes = document.querySelectorAll('.box-checkbox');
-      checkboxes.forEach(cb => cb.checked = this.checked);
+  }
+
+
+  /* ───────────────── POLL STATUS ───────────────── */
+  function poll(){
+    fetch(`/api/spots-dynamic-status/?date=${todayISO()}`)
+      .then(r => r.json())
+      .then(data => data.forEach(s => {
+        const slotNum = s.spot_number.replace("slot", "");
+        renderSlot(slotNum, s.status, s.buzzer_active);
+      }))
+  }
+
+  /* langsung panggil & set interval */
+  poll();
+  const pollInterval = setInterval(poll, 3000);
+
+  /* ───────────────── UPDATE SELECTED ───────────────── */
+  window.updateSelectedColors = function () {
+    const disableOption = document.getElementById('colorSelect').value === 'bg-gray-300';
+    const selectedSlots = [...document.querySelectorAll('.box-checkbox')]
+                            .filter(cb => cb.checked)
+                            .map(cb => cb.id.replace('box',''));   // ['1','2',...]
+
+    if (selectedSlots.length === 0) return;
+
+    fetch('/api/toggle-spot-disable/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken' : getCookie('csrftoken'),
+      },
+      body: JSON.stringify({ spot_numbers: selectedSlots, disable: disableOption })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success){
+        /* refresh tampilan dengan memanggil poll sekali */
+        poll();
+        /* kosongkan centang supaya admin jelas update selesai */
+        document.querySelectorAll('.box-checkbox').forEach(cb => cb.checked = false);
+      } else {
+        alert('Update failed: ' + (data.error || 'Unknown error'));
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Request failed. Check console.');
     });
-  </script>
-            
+  };
+
+  /* ───────────────── SELECT ALL ───────────────── */
+  document.getElementById('selectAll').addEventListener('change', function(){
+    document.querySelectorAll('.box-checkbox').forEach(cb => cb.checked = this.checked);
+  });
+
+  window.turnOffBuzzer = function(slotNumber) {
+    fetch("/api/admin-turn-off-buzzer/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+      body: JSON.stringify({ slot_number: slotNumber })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        const btn = document.getElementById(`buzzer-btn-slot${slotNumber}`);
+        btn.innerText = "Dimatikan";
+        btn.disabled = true;
+        btn.classList.remove("bg-red-600");
+        btn.classList.add("bg-gray-400");
+        console.log(`✅ Buzzer slot ${slotNumber} berhasil dimatikan.`);
+      } else {
+        alert("Gagal mematikan buzzer: " + data.error);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Terjadi kesalahan saat mematikan buzzer.");
+    });
+  };
+
+
+});
+</script>
 
         </div>
 {% endblock %}

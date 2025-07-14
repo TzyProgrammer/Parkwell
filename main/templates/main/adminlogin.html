@@ -29,6 +29,7 @@
         </h1>
         <form class="space-y-4 md:space-y-6" method="post">
           {% csrf_token %}
+          {{ form }}
           <div>
             <label for="password" class="block mb-1 text-sm font-medium text-gray-900">Password :</label>
             <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
@@ -40,6 +41,9 @@
             Sign In
           </button>
         </form>
+        {% if error %}
+          <p class="text-red-600 text-sm font-medium text-center mt-2">* {{ error }}</p>
+        {% endif %}
         <p class="text-center text-sm  mt-4">© 2025 Teams. All rights reserved.</p>
       </div>
     </div>

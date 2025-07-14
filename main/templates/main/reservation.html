@@ -422,11 +422,23 @@
                             label.classList.add('text-[#afd106]');
                             label.innerText = "Reserved";
                             btn.onclick = () => document.getElementById(`popup-modal${slotNumber}-reserved`).classList.remove('hidden');
-                        } else {
+                        } else if (status === "disabled") {
+                        box.classList.add('bg-[#A0A0A0]');
+                        label.classList.add('text-[#A0A0A0]');
+                        label.innerText = "Disabled";
+                        btn.onclick = () => alert('This slot is disabled by admin.');
+                        }
+                        else {
                             box.classList.add('bg-[#018214]');
                             label.classList.add('text-[#018214]');
                             label.innerText = "Available";
                             btn.onclick = () => setSlotDirectly(slotNumber);
+                        }
+
+                        if (status === 'disabled') {
+                        document.querySelector(`#slot option[value="${slotNumber}"]`).disabled = true;
+                        } else {
+                        document.querySelector(`#slot option[value="${slotNumber}"]`).disabled = false;
                         }
                     }
 
