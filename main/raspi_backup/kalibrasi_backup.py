@@ -10,47 +10,48 @@ sensors = [
     (19, 26, 21, "4")
 ]
 
-# Flags: status buzzer dimatikan oleh admin
-admin_buzzer_off_flags = { slot: False for _, _, _, slot in sensors }
+# Flags untuk status buzzer dimatikan oleh admin
+admin_buzzer_off_flags = {
+    "1": False,
+    "2": False,
+    "3": False,
+    "4": False
+}
 
-# Flags: slot sedang di-disable oleh admin
-buzzer_disabled_flags = { slot: False for _, _, _, slot in sensors }
+# Flags untuk status kendaraan terdeteksi terus selama delay
+pre_buzzer_flags = {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0
+}
 
-# Flags: kendaraan terdeteksi selama delay
-pre_buzzer_flags = { slot: 0 for _, _, _, slot in sensors }
-
-DELAY_THRESHOLD = 5  # detik
-DISTANCE_THRESHOLD = 30  # cm (threshold jarak)
+DELAY_THRESHOLD = 10  # detik
+DISTANCE_THRESHOLD = 30  # cm (testing)
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-broker_address = "192.168.18.11"  # IP broker (laptop)
+broker_address = ""  # IP broker (laptop)
 client = mqtt.Client()
 
-# MQTT Callbacks
+# Callback MQTT
 def on_connect(client, userdata, flags, rc):
-    print("[MQTT] âœ… Terhubung ke broker")
+    print("[MQTT] ? Terhubung ke broker")
     for _, _, _, slot in sensors:
         topic = f"parkir/slot{slot}/buzzer"
         client.subscribe(topic)
-        print(f"[MQTT] ðŸ“¡ Subscribed ke: {topic}")
+        print(f"[MQTT] ?? Subscribed ke: {topic}")
 
 def on_message(client, userdata, msg):
     topic = msg.topic
     payload = msg.payload.decode()
+
     if topic.startswith("parkir/slot") and topic.endswith("/buzzer"):
         slot = topic.replace("parkir/slot", "").replace("/buzzer", "")
         if payload.lower() == "off":
             admin_buzzer_off_flags[slot] = True
-            print(f"[BUZZER] âœ‹ Admin mematikan buzzer slot {slot}")
-        elif payload.lower() == "disabled":
-            buzzer_disabled_flags[slot] = True
-            print(f"[BUZZER] âŒ Slot {slot} dinonaktifkan")
-        elif payload.lower() == "enable":
-            buzzer_disabled_flags[slot] = False
-            admin_buzzer_off_flags[slot] = False
-            print(f"[BUZZER] âœ… Slot {slot} diaktifkan kembali")
+            print(f"[BUZZER] ?? Admin mematikan buzzer slot {slot}")
 
 client.on_connect = on_connect
 client.on_message = on_message
@@ -89,11 +90,6 @@ try:
             topic = f"parkir/slot{slot}"
             client.publish(topic, str(distance))
 
-            if buzzer_disabled_flags[slot]:
-                GPIO.output(buzzer, GPIO.LOW)
-                print(f"[BUZZER] ðŸ”‡ Slot {slot} DISABLED - buzzer tidak akan aktif")
-                continue
-
             if distance < DISTANCE_THRESHOLD:
                 pre_buzzer_flags[slot] += 1
                 print(f"[DETECT] Slot {slot} - kendaraan terdeteksi {pre_buzzer_flags[slot]}x")
@@ -101,18 +97,18 @@ try:
                 if pre_buzzer_flags[slot] >= DELAY_THRESHOLD:
                     if not admin_buzzer_off_flags[slot]:
                         GPIO.output(buzzer, GPIO.HIGH)
-                        print(f"[BUZZER] ðŸ”Š Slot {slot} HIDUP (setelah delay)")
+                        print(f"[BUZZER] Slot {slot} ?? HIDUP (setelah delay)")
                     else:
                         GPIO.output(buzzer, GPIO.LOW)
-                        print(f"[BUZZER] âœ‹ Slot {slot} DIMATIKAN ADMIN")
+                        print(f"[BUZZER] Slot {slot} ? DIMATIKAN ADMIN")
                 else:
-                    GPIO.output(buzzer, GPIO.LOW)
-                    print(f"[BUZZER] â³ Slot {slot} Menunggu delay...")
+                    GPIO.output(buzzer, GPIO.LOW)  # Jangan nyalakan dulu
+                    print(f"[BUZZER] Slot {slot} ? Menunggu delay...")
             else:
                 pre_buzzer_flags[slot] = 0
                 GPIO.output(buzzer, GPIO.LOW)
-                admin_buzzer_off_flags[slot] = False  # reset
-                print(f"[BUZZER] â›” Slot {slot} MATI")
+                admin_buzzer_off_flags[slot] = False  # Reset jika kendaraan pergi
+                print(f"[BUZZER] Slot {slot} ? MATI")
 
             time.sleep(0.2)
         print("=" * 40)

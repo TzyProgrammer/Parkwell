@@ -442,12 +442,25 @@ def toggle_spot_disable(request):
 
         Spot.objects.filter(spot_number__in=spot_nums).update(is_disabled=disable)
 
-        # Update status kolom status → 'disabled' / 'available'
-        if disable:
-            Spot.objects.filter(spot_number__in=spot_nums).update(status='disabled')
-        else:
-            Spot.objects.filter(spot_number__in=spot_nums, status='disabled').update(status='available')
-            
+        for slot_number in spot_nums:
+            topic = f"parkir/slot{slot_number}/buzzer"
+            if disable:
+                # Set status ke disabled dan kirim perintah ke sensor
+                Spot.objects.filter(spot_number=slot_number).update(status='disabled')
+                payload = "disabled"
+                print(f"[MQTT] 🚫 Slot {slot_number} dinonaktifkan → kirim 'disabled'")
+            else:
+                # Reset status jika sebelumnya disabled
+                Spot.objects.filter(spot_number=slot_number, status='disabled').update(status='available')
+                payload = "enable"
+                print(f"[MQTT] ✅ Slot {slot_number} diaktifkan kembali → kirim 'enable'")
+
+            publish.single(
+                topic,
+                payload,
+                hostname="192.168.18.11",  # ganti ke IP broker kamu
+                port=1883
+            )
 
         return JsonResponse({"success": True})
     except Exception as e:
