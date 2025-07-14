@@ -5,89 +5,87 @@
 {% block title %}Home Page{% endblock %}
 
 {% block start %}
+<title>Sign Up</title> 
 
-<title>Sign Up</title>
-<div class="bg-gray-500 dark:bg-gray-900 flex justify-center items-center min-h-screen px-4 min-w-[360px]">
-    <div class="w-full max-w-5xl flex flex-col md:flex-row bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden">
-      
-      <!-- Form Section -->
-      <div class="w-full md:w-1/2 p-8 md:p-12 space-y-6">
-        <h5 class="text-lg font-bold text-[#141E61] dark:text-white">Logo</h5>
-        <h1 class="text-4xl font-bold text-center text-[#141E61] dark:text-white">Get Started</h1>
-  
-        <form action="#" method="POST" class="space-y-4">
-          {% csrf_token %}
-          {{ form }}
-  
-          <div>
-            <label for="username" class="block mb-1 text-sm font-bold text-[#141E61] dark:text-white">Username</label>
-            <input type="text" name="username" id="username" required
-              class="w-full p-2 bg-white border border-gray-700 text-gray-900 rounded-lg 
-                     focus:ring-blue-500 focus:border-blue-500 
-                     dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-          </div>
-  
-          <div>
-            <label for="email" class="block mb-1 text-sm font-bold text-[#141E61] dark:text-white">Email</label>
-            <input type="email" name="email" id="email" required
-              class="w-full p-2 bg-white border border-gray-700 text-gray-900 rounded-lg 
-                     focus:ring-blue-500 focus:border-blue-500 
-                     dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-          </div>
-  
-          <div>
-            <label for="password" class="block mb-1 text-sm font-bold text-[#141E61] dark:text-white">Password</label>
-            <input type="password" name="password" id="password" required
-              class="w-full p-2 bg-white border border-gray-700 text-gray-900 rounded-lg 
-                     focus:ring-blue-500 focus:border-blue-500 
-                     dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-          </div>
-  
-          <div>
-            <label for="phone_number" class="block mb-1 text-sm font-bold text-[#141E61] dark:text-white">Phone Number</label>
-            <input type="text" name="phone_number" id="phone_number" required
-              class="w-full p-2 bg-white border border-gray-700 text-gray-900 rounded-lg 
-                     focus:ring-blue-500 focus:border-blue-500 
-                     dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-          </div>
-  
-          <button type="submit"
-            class="w-full text-white font-medium bg-[#141E61] mt-5 hover:bg-blue-800 focus:ring-4 
-                   focus:ring-blue-300 rounded-full cursor-pointer text-md px-5 py-3
-                   dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Sign Up
-          </button>
-          <div class="justify-center text-sm  font-medium flex text-center">
-            <h6 class="text-[#141E61]">Already Have An Account? <a href="{% url 'login' %}" class="text-[#0026FF]">Sign In</a></h6>
-          </div>
-          
-        </form>
-       
-      </div>
-  
-      <!-- kanan -->
-      <div class="hidden md:flex md:w-1/2 bg-[#141E61] rounded-l-[150px] items-center justify-center">
-        <div class="flex flex-col mt-12 items-center justify-center text-center text-white space-y-0">
-          
-          <!-- Title -->
-          <div class="text-3xl font-bold">
-            <h1>
-              RESERVE YOUR PARK<br>
-              EASILY!!
-            </h1>
-          </div>
-  
-          <!-- Image -->
-          <div class="mt-4">
-            <img src="{% static 'main/park.png' %}" alt="Logo" class="w-100 h-auto object-contain" />
-          </div>
-  
-        </div>
-      </div>
-  
+
+   <section class="relative h-screen overflow-hidden">
+
+  <img src="{% static 'main/bg.jpg' %}" class="min-h-screen w-full object-cover" alt="">
+
+  <div class="inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/50">
+    <div class="absolute top-6 left-6 z-20">
+        <a class="flex items-center text-2xl font-semibold">
+        <img class="w-8 h-8 mr-2" src="{% static 'main/iconweb.ico' %}" alt="logo">
+        WTP
+        </a>
     </div>
   </div>
-  
-  
 
-    {% endblock %}
+  <div class="absolute inset-0 flex flex-col items-center justify-center px-6 mx-auto z-10">
+  <div class="w-full animate-fade-in-down bg-white/60 backdrop-blur-2xl rounded-2xl shadow-2xl transition-all duration-500 hover:scale-[1.03] sm:max-w-md">
+    <div class="p-8 space-y-6">
+      <h1 class="text-2xl font-bold text-center text-gray-900">Create an Account</h1>
+      <form method="post" class="space-y-5">
+        {% csrf_token %}
+        {{ form }}
+        <div>
+          <label for="username" class="block mb-1 text-sm font-medium text-gray-700">Username</label>
+          <div class="relative">
+            <input type="text" name="username" id="username" placeholder="Your username" maxlength="15" class="pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none w-full transition-all duration-200" required>
+            <svg class="absolute left-3 top-3 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4 4 0 017 16h10a4 4 0 011.879.464M15 11a4 4 0 10-6 0 4 4 0 006 0z" /></svg>
+          </div>
+          {% if errors.username %}
+            <p class="text-red-600 text-sm mt-1">{{ errors.username }}</p>
+          {% endif %}
+        </div>
+
+        <div>
+          <label for="email" class="block mb-1 text-sm font-medium text-gray-700">Email</label>
+          <div class="relative">
+            <input type="email" name="email" id="email" placeholder="you@example.com" class="pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none w-full transition-all duration-200" required>
+            <svg class="absolute left-3 top-3 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12H8m8 0a4 4 0 10-8 0 4 4 0 008 0z" /></svg>
+          </div>
+          {% if errors.email %}
+            <p class="text-red-600 text-sm mt-1">{{ errors.email }}</p>
+          {% endif %}
+        </div>
+
+        <div>
+          <label for="password" class="block mb-1 text-sm font-medium text-gray-700">Password</label>
+          <div class="relative">
+            <input type="password" name="password" id="password" placeholder="••••••••" minlength="8" class="pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none w-full transition-all duration-200" required>
+            <svg class="absolute left-3 top-3 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.38 0 2.5 1.12 2.5 2.5S13.38 16 12 16s-2.5-1.12-2.5-2.5S10.62 11 12 11zM6 12c0-3.314 2.686-6 6-6s6 2.686 6 6" /></svg>
+          </div>
+          {% if errors.password %}
+            <p class="text-red-600 text-sm mt-1">{{ errors.password }}</p>
+          {% endif %}
+        </div>
+
+        <div>
+          <label for="confirm_password" class="block mb-1 text-sm font-medium text-gray-700">Confirm Password</label>
+          <input type="password" name="confirm_password" id="confirm_password" placeholder="••••••••" class="py-2.5 px-4 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 w-full transition-all duration-200" required>
+        </div>
+
+        <div>
+          <label for="phone_number" class="block mb-1 text-sm font-medium text-gray-700">Phone Number</label>
+          <div class="flex gap-2">
+            <input type="text" readonly value="+62" class="w-1/5 py-2.5 px-2 bg-gray-100 text-center text-gray-600 border border-gray-300 rounded-lg">
+            <input type="text" maxlength="12" pattern="[0-9]*" inputmode="numeric" name="phone_number" id="phone_number" placeholder="8123456789" class="w-4/5 py-2.5 px-4 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 transition-all duration-200" required>
+          </div>
+        </div>
+
+        <button type="submit"
+          class="w-full py-3 text-white font-semibold bg-gradient-to-r from-blue-900 to-[#141E61] rounded-lg hover:shadow-[0_0_15px_#141E61] hover:brightness-110 transition-all duration-300">
+          Sign Up
+        </button>
+      </form>
+      <p class="text-center text-sm text-gray-600">
+        Already have an account?
+        <a href="{% url 'login' %}" class="text-blue-700 hover:underline">Login now</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+</section>
+{% endblock %}

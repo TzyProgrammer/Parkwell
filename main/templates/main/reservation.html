@@ -5,29 +5,37 @@
 {% load static %}
 
 {% block content %}
-
+<title>Reservation</title>
 <div class="md:pl-16 py-1 pt-12 md:text-left text-center">
             <span class="text-[50px] text-[#141E61] md:text-[clamp(34px,4vw,50px)]">
                 Reserve Your Spot
             </span>
 </div>
 
-<div class="flex pb-12 md:pb-8 flex-col md:flex-row mb-12 ">
+<div class="flex pb-4 animate-fade-up md:pb-8 flex-col md:flex-row mb-12 ">
 
     <!-- Kiri -->
     <div class=" flex-col flex md:w-2/5 md:order-1 order-2">
         
 
 
-        <div class="px-12 my-20 mx-12 flex flex-col">
+        <div class="md:px-12 px-8 md:my-20 my-8 md:mx-12 flex flex-col">
         <form action="" method="POST">
             {% csrf_token %}
 
+
+            <!-- date -->
+            <div >
+                <span class="text-gray-500 text-lg">Date :</span>
+                <input readonly type="text" name="date" id="default-date" class="bg-gray-100 border border-gray-400 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " required>
+
+            </div>
+
             <!-- pslot -->
-            <div>   
+            <div class="my-6">   
                 <span class="text-gray-500 text-lg">Parking Slot :</span>
-                <select id="slot" name="slot" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                    <option selected disabled hidden >Choose Slot</option>
+                <select required id="slot" name="slot" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                    <option selected disabled hidden value="" >Choose Slot</option>
                     <option value="1">Slot 1</option>
                     <option value="2">Slot 2</option>
                     <option value="3">Slot 3</option>
@@ -35,65 +43,181 @@
                 </select>
             </div>
 
-            <!-- date -->
-            <div class="my-6">
-                <span class="text-gray-500 text-lg">Date :</span>
-                <input readonly type="text" name="date" id="default-date" class="bg-gray-100 border border-gray-400 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-
-            </div>
+            
 
             <!-- booking time -->
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <span class="text-gray-500 text-lg">From :</span>
-                        <select id="start" name="start_time" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                        <select required id="start" name="start_time" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                             <option selected disabled hidden ></option>
-                            <option value="7">07:00</option>
-                            <option value="8">08:00</option>
-                            <option value="9">09:00</option>
-                            <option value="10">10:00</option>
-                            <option value="11">11:00</option>
-                            <option value="12">12:00</option>
-                            <option value="13">13:00</option>
-                            <option value="14">14:00</option>
-                            <option value="15">15:00</option>
-                            <option value="16">16:00</option>
-                            <option value="17">17:00</option>
-                            <option value="18">18:00</option>
-                            <option value="19">19:00</option>
-                            <option value="20">20:00</option>
-                            <option value="21">21:00</option>
-                            <option value="22">22:00</option>
-                            <option value="23">23:00</option>
+                            <option value="07:00">07:00</option>
+                            <option value="07:30">07:30</option>
+                            <option value="08:00">08:00</option>
+                            <option value="08:30">08:30</option>
+                            <option value="09:00">09:00</option>
+                            <option value="09:30">09:30</option>
+                            <option value="10:00">10:00</option>
+                            <option value="10:30">10:30</option>
+                            <option value="11:00">11:00</option>
+                            <option value="11:30">11:30</option>
+                            <option value="12:00">12:00</option>
+                            <option value="12:30">12:30</option>
+                            <option value="13:00">13:00</option>
+                            <option value="13:30">13:30</option>
+                            <option value="14:00">14:00</option>
+                            <option value="14:30">14:30</option>
+                            <option value="15:00">15:00</option>
+                            <option value="15:30">15:30</option>
+                            <option value="16:00">16:00</option>
+                            <option value="16:30">16:30</option>
+                            <option value="17:00">17:00</option>
+                            <option value="17:30">17:30</option>
+                            <option value="18:00">18:00</option>
+                            <option value="18:30">18:30</option>
+                            <option value="19:00">19:00</option>
+                            <option value="19:30">19:30</option>
+                            <option value="20:00">20:00</option>
+                            <option value="20:30">20:30</option>
+                            <option value="21:00">21:00</option>
+                            <option value="21:30">21:30</option>
+                            <option value="22:00">22:00</option>
+                            <option value="22:30">22:30</option>
+                            <option value="23:00">23:00</option>
                         </select>
                 </div>
                 <div>
                     <span class="text-gray-500 text-lg">Until :</span>
-                        <select id="end" name="end_time" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                        <select required id="end" name="end_time" class=" bg-white border border-gray-400 text-[#0F044C] text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                             <option selected disabled hidden ></option>
-                            <option value="7">07:00</option>
-                            <option value="8">08:00</option>
-                            <option value="9">09:00</option>
-                            <option value="10">10:00</option>
-                            <option value="11">11:00</option>
-                            <option value="12">12:00</option>
-                            <option value="13">13:00</option>
-                            <option value="14">14:00</option>
-                            <option value="15">15:00</option>
-                            <option value="16">16:00</option>
-                            <option value="17">17:00</option>
-                            <option value="18">18:00</option>
-                            <option value="19">19:00</option>
-                            <option value="20">20:00</option>
-                            <option value="21">21:00</option>
-                            <option value="22">22:00</option>
-                            <option value="23">23:00</option>
+                            <option value="07:00">07:00</option>
+                            <option value="07:30">07:30</option>
+                            <option value="08:00">08:00</option>
+                            <option value="08:30">08:30</option>
+                            <option value="09:00">09:00</option>
+                            <option value="09:30">09:30</option>
+                            <option value="10:00">10:00</option>
+                            <option value="10:30">10:30</option>
+                            <option value="11:00">11:00</option>
+                            <option value="11:30">11:30</option>
+                            <option value="12:00">12:00</option>
+                            <option value="12:30">12:30</option>
+                            <option value="13:00">13:00</option>
+                            <option value="13:30">13:30</option>
+                            <option value="14:00">14:00</option>
+                            <option value="14:30">14:30</option>
+                            <option value="15:00">15:00</option>
+                            <option value="15:30">15:30</option>
+                            <option value="16:00">16:00</option>
+                            <option value="16:30">16:30</option>
+                            <option value="17:00">17:00</option>
+                            <option value="17:30">17:30</option>
+                            <option value="18:00">18:00</option>
+                            <option value="18:30">18:30</option>
+                            <option value="19:00">19:00</option>
+                            <option value="19:30">19:30</option>
+                            <option value="20:00">20:00</option>
+                            <option value="20:30">20:30</option>
+                            <option value="21:00">21:00</option>
+                            <option value="21:30">21:30</option>
+                            <option value="22:00">22:00</option>
+                            <option value="22:30">22:30</option>
+                            <option value="23:00">23:00</option>
                         </select>
                 </div>
             </div>
+
+            <!-- mengdisable jam yang sudah direservasi -->
+             <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const dateInput = document.getElementById('default-datepicker');
+                    const spotInput = document.getElementById('slot');
+                    const startSelect = document.getElementById('start');
+                    const endSelect = document.getElementById('end');
+
+                    function formatDateToISO(dateString) {
+                        const [month, day, year] = dateString.split('/');
+                        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                    }
+
+                    function updateTimeOptions(reservedTimes) {
+                        // Re-enable all options
+                        for (let opt of startSelect.options) {
+                            opt.disabled = false;
+                            opt.classList.remove('opacity-50');
+                        }
+                        for (let opt of endSelect.options) {
+                            opt.disabled = false;
+                            opt.classList.remove('opacity-50');
+                        }
+
+                        // Disable reserved
+                        reservedTimes.forEach(time => {
+                            const startOpt = [...startSelect.options].find(opt => opt.value === time);
+                            const endOpt = [...endSelect.options].find(opt => opt.value === time);
+                            if (startOpt) {
+                                startOpt.disabled = true;
+                                startOpt.classList.add('opacity-50');
+                            }
+                            if (endOpt) {
+                                endOpt.disabled = true;
+                                endOpt.classList.add('opacity-50');
+                            }
+                        });
+                    }
+
+                    function fetchReservedTimesAndDisable() {
+                        const date = dateInput.value;
+                        const spot = spotInput.value;
+
+                        if (!date || !spot) return;
+
+                        const formattedDate = formatDateToISO(date);
+                        if (!formattedDate) return;
+
+                        fetch(`/api/reserved-intervals/?date=${formattedDate}&spot=${spot}`)
+                            .then(res => res.json())
+                            .then(data => updateTimeOptions(data.reserved_times))
+                            .catch(err => console.error(err));
+                    }
+
+                    // Initial load
+                    fetchReservedTimesAndDisable();
+
+                    // Trigger on change
+                    dateInput.addEventListener('change', fetchReservedTimesAndDisable);
+                    spotInput.addEventListener('change', fetchReservedTimesAndDisable);
+                });
+
+                // supaya end time cuma bisa pilih yang setelah start time
+                document.getElementById('start').addEventListener('change', function () {
+                    const selectedStart = this.value;
+                    const endSelect = document.getElementById('end');
+
+                    if (!selectedStart || !endSelect) return;
+
+                    const selectedHour = parseInt(selectedStart.split(':')[0], 10);
+                    const selectedMin = parseInt(selectedStart.split(':')[1], 10);
+
+                    Array.from(endSelect.options).forEach(opt => {
+                        const [optHour, optMin] = opt.value.split(':').map(Number);
+
+                        if (
+                            optHour < selectedHour || 
+                            (optHour === selectedHour && optMin <= selectedMin)
+                        ) {
+                            opt.disabled = true;
+                            opt.classList.add('opacity-50');
+                        } else {
+                            opt.disabled = false;
+                            opt.classList.remove('opacity-50');
+                        }
+                    });
+                });
+             </script>
         
             <div class="mt-12">
-                <button class="w-full block focus:outline-none text-white bg-[#141E61] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-[50px] text-lg px-5 py-2.5 me-2 mb-2 text-center" type="submit">Reserve</button>
+                <button class="shadow-[0_5px_5px_rgba(0,0,0,0.2)] w-full block focus:outline-none text-white bg-[#141E61] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-[50px] text-lg px-5 py-2.5 me-2 mb-2 text-center" type="submit">Continue</button>
             </div>
 
         </form>
@@ -110,144 +234,271 @@
         <div class="mx-4 px-2 mt-8 md:mt-0 md:mx-12 flex flex-col">
 
             <!-- date -->
-            <div >   
+            <div class="flex justify-between">   
 
-
-                <div class="text-[#0F044C] font-medium rounded-lg text-sm text-center inline-flex items-center">
-                
-                <input readonly datepicker id="default-datepicker" name="datepicker" type="text" class="bg-white text-sm rounded-lg placeholder-[#141E61] border border-2 border-[#141E61] hover:bg-[#141E61] hover:placeholder-white cursor-pointer focus:ring-blue-500 focus:border-blue-500 px-4 py-1.5  w-auto"  size="8" placeholder="Select date" >                                                                 
+                <div class="text-[#0F044C] font-medium rounded-lg text-sm text-center inline-flex items-center ">
+                <!--
+                <input readonly datepicker datepicker-format="mm/dd/yyyy" data-date-min="{{ today }}" data-date-max="{{ two_weeks }}" id="default-datepicker" name="datepicker" type="text" class=" bg-white text-sm rounded-lg placeholder-[#141E61] border border-2 border-[#141E61] hover:bg-[#141E61] hover:placeholder-white cursor-pointer focus:ring-blue-500 focus:border-blue-500 px-4 py-1.5  w-auto"  size="8" placeholder="Select date" >                                                                 
+                -->
+                <input
+                    id="default-datepicker"
+                    name="date"
+                    type="text"
+                    data-datepicker
+                    data-date-format="mm/dd/yyyy"
+                    min="{{ today }}"
+                    max="{{ two_weeks }}"
+                    class="bg-white text-sm rounded-lg border border-2 border-[#141E61] px-4 py-1.5 placeholder-[#141E61] hover:bg-[#141E61] hover:placeholder-white cursor-pointer focus:ring-blue-500 focus:border-blue-500 w-auto" size="8"
+                    placeholder="Select date"
+                    readonly
+                    />
                 </div>
+                <!-- script ini harus disini, tak bisa di app.js -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const input = document.getElementById('default-datepicker');
+
+                        if (window.Datepicker && input) {
+                            const today = new Date("{{ today|escapejs }}");
+                            const maxDate = new Date("{{ two_weeks|escapejs }}");
+
+                            new Datepicker(input, {
+                                format: 'mm/dd/yyyy',
+                                minDate: today,
+                                maxDate: maxDate,
+                                autohide: true,
+                            });
+
+                            console.log("Datepicker initialized with:", today, maxDate);
+                        } else {
+                            console.error('Datepicker or input not found.');
+                        }
+                    });
+                </script>
+
+                <div class="me-4 mt-4">
+                    <button data-modal-target="view" data-modal-toggle="view" type="button" class="flex items-center text-xs text-blue-700 hover:text-blue-800 hover:underline">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="w-4 h-4" viewBox="0 0 256 256" xml:space="preserve">
+                        <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                            <path d="M 45 73.264 c -14.869 0 -29.775 -8.864 -44.307 -26.346 c -0.924 -1.112 -0.924 -2.724 0 -3.836 C 15.225 25.601 30.131 16.737 45 16.737 c 14.868 0 29.775 8.864 44.307 26.345 c 0.925 1.112 0.925 2.724 0 3.836 C 74.775 64.399 59.868 73.264 45 73.264 z M 6.934 45 C 19.73 59.776 32.528 67.264 45 67.264 c 12.473 0 25.27 -7.487 38.066 -22.264 C 70.27 30.224 57.473 22.737 45 22.737 C 32.528 22.737 19.73 30.224 6.934 45 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(24,47,255); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+                            <path d="M 45 62 c -9.374 0 -17 -7.626 -17 -17 s 7.626 -17 17 -17 s 17 7.626 17 17 S 54.374 62 45 62 z M 45 34 c -6.065 0 -11 4.935 -11 11 s 4.935 11 11 11 s 11 -4.935 11 -11 S 51.065 34 45 34 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(24,47,255); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+                        </g>
+                        </svg> View place
+                    </button>
+
+                    <!-- Modal -->
+                    <div id="view" tabindex="-1" aria-hidden="true"
+                        class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 overflow-y-auto overflow-x-hidden">
+                        <div class="relative w-full max-w-4xl p-4">
+                            <!-- Modal content -->
+                            <div class="relative bg-white rounded-lg shadow-sm">
+                                <!-- Modal header -->
+                                <div class="flex items-center justify-between p-4 border-b rounded-t">
+                                    <h3 class="text-xl font-semibold text-gray-900">
+                                        Parking lot view <span class="text-gray-500 text-sm">( TA Parking Lot )</span>
+                                    </h3>
+                                    <button type="button" data-modal-toggle="view" class="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" >
+                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                        </svg>
+                                        <span class="sr-only">Close modal</span>
+                                    </button>
+                                </div>
+
+                                <!-- Modal body -->
+                                <div class="p-4 flex flex-col items-center gap-4">
+                                    <!-- Gambar -->
+                                    <div class="overflow-auto border rounded shadow max-w-full">
+                                        <img id="parkImage" src="{% static 'main/parkview.png' %}" alt="Parking lot image"
+                                            class="transition-transform duration-300 scale-100">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
 
             </div>
 
+            
             <!-- park -->
-            <div class=" my-4 border border-4 border-[#141E61] rounded-lg">
+            <div class=" my-4 border border-4 border-[#141E61] rounded-lg shadow-[0_5px_5px_rgba(0,0,0,0.2)]">
 
-                    <div class="p-4 justify-center flex text-3xl bg-[#141E61] font-medium text-white">
-                        Select Your Parking Spot
+                    <div class="p-4 justify-center text-center flex text-3xl bg-[#141E61] font-medium text-white">
+                        Where would you like to park?
                     </div>
 
-                <div class=" grid grid-cols-4">
-
-                        <!-- Slot 1 -->
-                        <div class="py-8 justify-center items-center flex bg-[#8a1616] rounded-2xl mx-3 mt-3">
-
-                            <button onclick="confirmSelection('1')" data-modal-target="popup-modal1" data-modal-toggle="popup-modal1">
-                                <img src="{% static 'main/car1.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
-                            </button>
-
-                            <!-- modal -->
-                            <div id="popup-modal1" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                <div class="relative p-4 w-full max-w-md max-h-full">
-                                    <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-                                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal1">
-                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                            </svg>
-                                            <span class="sr-only">Close modal</span>
-                                        </button>
-                                        <div class="p-4 md:p-5 text-center">
-                                            <svg class="mx-auto mb-4 text-[#8a1616] w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                            </svg>
-                                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">This parking slot is currently <span class="font-semibold text-[#8a1616]">Occupied</span>. However, you can still make a reservation for available time.</h3>
-                                            <button onclick="setSelection()" data-modal-hide="popup-modal1" type="button" class="text-white bg-[#8a1616] hover:bg-[#731212] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                                                Reserve Anyway
-                                            </button>
-                                            <button onclick="closeModal()" data-modal-hide="popup-modal1" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 ">No, cancel</button>
-                                        </div>
+                <div class="grid grid-cols-4">
+                        {% for i in "1234" %}
+                        <!-- ==================== SLOT {{ i }} ==================== -->
+                        <div>
+                            <div class="flex justify-center md:my-2 my-1">
+                                <p class="md:text-md text-sm text-[#141E61] font-semibold">Slot {{i}}</p>
+                            </div>
+                            <div id="slot-{{ i }}-box" class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3">
+                                <button id="slot-{{ i }}-btn" onclick="setSlotDirectly('{{ i }}')">
+                                    <img src="{% static 'main/car'|add:i|add:'.png' %}" alt="" class="block md:w-28 w-20 transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
+                                </button>
+                            </div>
+                            <div class="items-center flex justify-center py-2">
+                                <p id="slot-{{ i }}-label" class="text-md text-[#018214] font-semibold">Available</p>
+                            </div>
+                    
+                            <!-- Modal OCCUPIED Slot {{ i }} -->
+                            <div id="popup-modal{{ i }}" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                                <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md relative">
+                                    <button class="absolute top-2 right-2 text-gray-500 hover:text-black" data-modal-hide="popup-modal{{ i }}">&times;</button>
+                                    <svg class="mx-auto mb-4 text-[#8a1616] w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                                    <h3 class="mb-5 text-center text-gray-500 text-lg">This parking slot is currently <span class="font-semibold text-[#8a1616]">Occupied</span>. However, you can still make a reservation.</h3>
+                                    <div class="flex justify-center gap-2">
+                                        <button data-modal-hide="popup-modal{{ i }}" class="bg-[#8a1616] text-white px-4 py-2 rounded hover:bg-[#731212]">Reserve Anyway</button>
+                                        <button data-modal-hide="popup-modal{{ i }}" class="bg-gray-200 text-black px-4 py-2 rounded hover:bg-gray-300">No, cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Modal RESERVED Slot {{ i }} -->
+                            <div id="popup-modal{{ i }}-reserved" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                                <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md relative">
+                                    <button class="absolute top-2 right-2 text-gray-500 hover:text-black" data-modal-hide="popup-modal{{ i }}-reserved">&times;</button>
+                                    <svg class="mx-auto mb-4 text-[#afd106] w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                                    <h3 class="mb-5 text-center text-gray-500 text-lg">This parking slot has already been <span class="font-semibold text-[#afd106]">Reserved</span>. However, you can still reserve it for other available time slots.</h3>
+                                    <div class="flex justify-center gap-2">
+                                        <button data-modal-hide="popup-modal{{ i }}-reserved" class="bg-[#afd106] text-white px-4 py-2 rounded hover:bg-[#91ad05]">Reserve Anyway</button>
+                                        <button data-modal-hide="popup-modal{{ i }}-reserved" class="bg-gray-200 text-black px-4 py-2 rounded hover:bg-gray-300">No, cancel</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Slot 2 -->
-                        <div class="py-8 justify-center items-center flex bg-[#afd106] rounded-2xl mx-3 mt-3">
-
-                            <button onclick="confirmSelection('2')" data-modal-target="popup-modal2" data-modal-toggle="popup-modal2">
-                                <img src="{% static 'main/car2.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
-                            </button>
-
-                            <!-- modal -->
-                            <div id="popup-modal2" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                <div class="relative p-4 w-full max-w-md max-h-full">
-                                    <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-                                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal2">
-                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                            </svg>
-                                            <span class="sr-only">Close modal</span>
-                                        </button>
-                                        <div class="p-4 md:p-5 text-center">
-                                            <svg class="mx-auto mb-4 text-[#afd106] w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                            </svg>
-                                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">This parking slot has already been <Span class="text-[#afd106] font-semibold">Reserved</Span> by other users today. However, you can still reserve it for other available time slots.</h3>
-                                            <button onclick="setSelection()" data-modal-hide="popup-modal2" type="button" class="text-white bg-[#afd106] hover:bg-[#91ad05] focus:ring-4 focus:outline-none focus:ring-[#d3fa14] font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                                                Reserve Anyway
-                                            </button>
-                                            <button onclick="closeModal()" data-modal-hide="popup-modal2" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 ">No, cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    <!-- Slot 3 -->
-                    <div class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
-                        <button onclick="setSlotDirectly('3')">
-                            <img src="{% static 'main/car3.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
-                        </button>
+                        {% endfor %}
                     </div>
-
-                    <!-- Slot 4 -->
-                    <div class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3 mt-3">
-                        <button onclick="setSlotDirectly('4')" >
-                            <img src="{% static 'main/car4.png' %}" alt="" class="block w-20 md:w-28 h-auto transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
-                        </button>
-                    </div>
-
-                        <!-- js auto pick slot -->
-                        <script>
-                            let selectedSlotValue;
-                            const selectElement = document.getElementById('slot');
-
-                            function confirmSelection(value) {
-                                selectedSlotValue = value;
-                            }
-
-                            function setSelection() {
-                                if (selectElement) {
-                                selectElement.value = selectedSlotValue;
-                                }
-                            }
-
-                            window.setSlotDirectly = function (value) {
-                            const selectElement = document.getElementById('slot');
-                            if (selectElement) {
-                                selectElement.value = value;
-                            }
-                            }
-
-                            function closeModal() {
-                          
+                    
+                    <!-- ==================== JS ==================== -->
+                    <script>
+                    let selectedSlotValue;
+                    const selectElement = document.getElementById('slot');
+                    
+                    function setSlotDirectly(value) {
+                        if (selectElement) selectElement.value = value;
+                    }
+                    
+                    // ==================== Modal JS ==================== //
+                    document.addEventListener('DOMContentLoaded', () => {
+                        // close on button
+                        document.querySelectorAll('[data-modal-hide]').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                const modalId = btn.getAttribute('data-modal-hide');
+                                document.getElementById(modalId).classList.add('hidden');
+                            });
+                        });
+                        // close on backdrop
+                        document.querySelectorAll('.fixed').forEach(modal => {
+                            modal.addEventListener('click', e => {
+                                if (e.target === modal) modal.classList.add('hidden');
+                            })
+                        })
+                    });
+                    
+                    // ==================== Fetch Status AJAX ==================== //
+                    function updateSlotDisplay(slotNumber, status) {
+                        const box = document.getElementById(`slot-${slotNumber}-box`);
+                        const label = document.getElementById(`slot-${slotNumber}-label`);
+                        const btn = document.getElementById(`slot-${slotNumber}-btn`);
+                    
+                        box.className = "py-8 justify-center items-center flex rounded-2xl mx-3 mt-3";
+                        label.className = "text-md font-semibold";
+                    
+                        if (status === "occupied") {
+                            box.classList.add('bg-[#8a1616]');
+                            label.classList.add('text-[#8a1616]');
+                            label.innerText = "Occupied";
+                            btn.onclick = () => document.getElementById(`popup-modal${slotNumber}`).classList.remove('hidden');
+                        } else if (status === "reserved") {
+                            box.classList.add('bg-[#afd106]');
+                            label.classList.add('text-[#afd106]');
+                            label.innerText = "Reserved";
+                            btn.onclick = () => document.getElementById(`popup-modal${slotNumber}-reserved`).classList.remove('hidden');
+                        } else if (status === "disabled") {
+                        box.classList.add('bg-[#A0A0A0]');
+                        label.classList.add('text-[#A0A0A0]');
+                        label.innerText = "Disabled";
+                        btn.onclick = () => alert('This slot is disabled by admin.');
+                        }
+                        else {
+                            box.classList.add('bg-[#018214]');
+                            label.classList.add('text-[#018214]');
+                            label.innerText = "Available";
+                            btn.onclick = () => setSlotDirectly(slotNumber);
                         }
 
-                        </script>
+                        if (status === 'disabled') {
+                        document.querySelector(`#slot option[value="${slotNumber}"]`).disabled = true;
+                        } else {
+                        document.querySelector(`#slot option[value="${slotNumber}"]`).disabled = false;
+                        }
+                    }
+
+                    function formatDateToISO(dateStr) {
+                        const [month, day, year] = dateStr.split('/');
+                        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                    }
+                    
+                    // Fetch every 3s
+                    setInterval(() => {
+                        const dateInput = document.getElementById('default-datepicker');
+                        const selectedDate = dateInput ? dateInput.value : '';
+
+                        if (!selectedDate) return; 
+
+                        const formattedDate = formatDateToISO(selectedDate)
+
+                        fetch(`/api/spots-dynamic-status/?date=${formattedDate}`)
+                            .then(res => res.json())
+                            .then(data => {
+                                data.forEach(spot => updateSlotDisplay(spot.spot_number, spot.status));
+                            })
+                            .catch(err => console.error(err));
+                    }, 3000);
+
+                    /* testing
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const dateInput = document.getElementById('default-datepicker');
+
+                        function fetchSlotStatusByDate(selectedDate) {
+                            if (!selectedDate) return;
+
+                            const formattedDate = formatDateToISO(selectedDate);
+
+                            fetch(`/api/spots-dynamic-status/?date=${formattedDate}`)
+                                .then(res => res.json())
+                                .then(data => {
+                                    data.forEach(spot => updateSlotDisplay(spot.spot_number, spot.status));
+                                })
+                                .catch(err => console.error(err));
+                        }
+
+                        if (dateInput) {
+
+                            fetchSlotStatusByDate(dateInput.value);
+
+                            dateInput.addEventListener('change', () => {
+                                fetchSlotStatusByDate(dateInput.value)
+                            });
+
+                            setInterval(() => {
+                                fetchSlotStatusByDate(dateInput.value);
+                            }, 3000)
+                        }
+                    });
+                    */
+                    
+                    </script>
                 
             </div>
-
-                <!-- Hint -->
-                <div class=" grid my-2 grid-flow-col justify-items-end me-3">
-                    <button data-tooltip-placement="left" data-tooltip-target="tooltip-click" data-tooltip-trigger="click"><img src="{% static 'main/qstn.png' %}" class="block w-6 h-auto" alt=""></button>
-
-                        <div id="tooltip-click" role="tooltip" class="absolute z-10 invisible inline-block px-4 py-2 text-sm font-medium border border-gray-500 bg-white rounded-lg shadow-xs opacity-0 tooltip ">
-
-                            <p class="text-[#0F044C] text-lg font-medium"><span class="text-[#8a1616] font-semibold">Red </span>: Occupied,<br><span class="text-[#afd106] font-semibold">Yellow </span>: Reserved,<br><span class="text-[#018214] font-semibold">Green </span>: Available</p>
-
-                            <div class="tooltip-arrow order border-gray-500" data-popper-arrow></div>
-                        </div>
-                </div>
 
             </div>
         </div>

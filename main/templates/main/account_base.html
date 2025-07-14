@@ -13,28 +13,16 @@
         <p class="text-md font-medium "><a href="{% url 'home' %}" class="text-[#00158B] underline">Home</a><span class="mx-2"> > </span>My Account</p>
     </div>
 
-    <div class="mx-4 md:mx-28  my-8">
+    <div class="mx-4 md:mx-20 my-8">
         
+            
+
         <span class="md:ml-12 ml-4 text-[40px] text-[#141E61] md:text-[clamp(34px,4vw,45px)]">My Account</span>
 
-        <div class="flex flex-row mt-4">
-            <div>
-                <a href="{% url 'account' %}" class="focus:outline-none text-[#141E61] bg-white hover:bg-[#141E61] hover:text-white focus:ring-2 font-medium rounded-2xl md:text-md text-sm md:px-8 px-4 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">Account</a>
-            </div>
-            <div>
-                <a href="#" class="focus:outline-none text-[#141E61] bg-white hover:bg-[#141E61] hover:text-white focus:ring-2 font-medium rounded-2xl md:text-md text-sm md:px-8 px-4 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">Reservations</a>
-            </div>
-            <div>
-                <a href="#" class="focus:outline-none text-[#141E61] bg-white hover:bg-[#141E61] hover:text-white focus:ring-2 font-medium rounded-2xl md:text-md text-sm md:px-8 px-4 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">User Guide</a>
-            </div>
-        </div>
+        {% block akun_content %}
+        {% endblock %}
 
-        <div class="mt-4 bg-white rounded-2xl ">
-
-            {% block akun_content %}
-            {% endblock %}
-
-        </div>
+        
 
     </div>
 
