@@ -458,7 +458,7 @@ def toggle_spot_disable(request):
             publish.single(
                 topic,
                 payload,
-                hostname="192.168.18.11",  # ganti ke IP broker kamu
+                hostname="192.168.12.151",  # ganti ke IP broker kamu
                 port=1883
             )
 
@@ -483,7 +483,7 @@ def admin_turn_off_buzzer(request):
             publish.single(
                 topic,
                 "off",
-                hostname="192.168.18.11",  # IP broker laptop
+                hostname="192.168.12.151",  # IP broker laptop
                 port=1883
             )
             print(f"✅ Buzzer untuk slot {slot_number} dimatikan oleh admin.")
