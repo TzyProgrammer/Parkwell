@@ -1,4 +1,3 @@
-console.log("haziq jomok");
 console.log("yang YTTA YTTA aja")
 
 // transfer datepicker into readonly input box
