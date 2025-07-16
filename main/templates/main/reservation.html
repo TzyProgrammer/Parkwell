@@ -101,95 +101,6 @@
 
         </form>
 
-            <!-- mengdisable jam yang sudah direservasi -->
-             <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const dateInput = document.getElementById('default-datepicker');
-                    const spotInput = document.getElementById('slot');
-                    const startSelect = document.getElementById('start');
-                    const endSelect = document.getElementById('end');
-
-                    function formatDateToISO(dateString) {
-                        const [month, day, year] = dateString.split('/');
-                        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-                    }
-
-                    function updateTimeOptions(reservedTimes) {
-                        // Re-enable all options
-                        for (let opt of startSelect.options) {
-                            opt.disabled = false;
-                            opt.classList.remove('opacity-50');
-                        }
-                        for (let opt of endSelect.options) {
-                            opt.disabled = false;
-                            opt.classList.remove('opacity-50');
-                        }
-
-                        // Disable reserved
-                        reservedTimes.forEach(time => {
-                            const startOpt = [...startSelect.options].find(opt => opt.value === time);
-                            const endOpt = [...endSelect.options].find(opt => opt.value === time);
-                            if (startOpt) {
-                                startOpt.disabled = true;
-                                startOpt.classList.add('opacity-50');
-                            }
-                            if (endOpt) {
-                                endOpt.disabled = true;
-                                endOpt.classList.add('opacity-50');
-                            }
-                        });
-                    }
-
-                    function fetchReservedTimesAndDisable() {
-                        const date = dateInput.value;
-                        const spot = spotInput.value;
-
-                        if (!date || !spot) return;
-
-                        const formattedDate = formatDateToISO(date);
-                        if (!formattedDate) return;
-
-                        fetch(`/api/reserved-intervals/?date=${formattedDate}&spot=${spot}`)
-                            .then(res => res.json())
-                            .then(data => updateTimeOptions(data.reserved_times))
-                            .catch(err => console.error(err));
-                    }
-
-                    // Initial load
-                    fetchReservedTimesAndDisable();
-
-                    // Trigger on change
-                    dateInput.addEventListener('change', fetchReservedTimesAndDisable);
-                    spotInput.addEventListener('change', fetchReservedTimesAndDisable);
-                });
-
-                // supaya end time cuma bisa pilih yang setelah start time
-                document.getElementById('start').addEventListener('change', function () {
-                    const selectedStart = this.value;
-                    const endSelect = document.getElementById('end');
-
-                    if (!selectedStart || !endSelect) return;
-
-                    const selectedHour = parseInt(selectedStart.split(':')[0], 10);
-                    const selectedMin = parseInt(selectedStart.split(':')[1], 10);
-
-                    Array.from(endSelect.options).forEach(opt => {
-                        const [optHour, optMin] = opt.value.split(':').map(Number);
-
-                        if (
-                            optHour < selectedHour || 
-                            (optHour === selectedHour && optMin <= selectedMin)
-                        ) {
-                            opt.disabled = true;
-                            opt.classList.add('opacity-50');
-                        } else {
-                            opt.disabled = false;
-                            opt.classList.remove('opacity-50');
-                        }
-                    });
-                });
-             </script>
-
         
         </div>
         
@@ -223,116 +134,183 @@
                     readonly
                     />
                 </div>
-                <!-- script ini harus disini, tak bisa di app.js -->
+
                 <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                const dateInput = document.getElementById('default-datepicker');
-                const startSelect = document.getElementById('start');
-                const endSelect = document.getElementById('end');
+document.addEventListener('DOMContentLoaded', () => {
+    const dateInput = document.getElementById('default-datepicker');
+    const spotInput = document.getElementById('slot');
+    const startSelect = document.getElementById('start');
+    const endSelect = document.getElementById('end');
+    let blockedIntervals = []; // Menyimpan interval yang diblokir
 
-                // Fungsi untuk mengisi waktu dari 07:00 - 23:30 (dengan interval 30 menit)
-                function generateTimeOptions(isToday) {
-                    const now = new Date();
-                    const currentMinutes = now.getHours() * 60 + now.getMinutes();
-                    const nextHalfHour = Math.ceil(currentMinutes / 30) * 30;
+    // Format tanggal ke YYYY-MM-DD
+    function formatDateToISO(dateString) {
+        const [month, day, year] = dateString.split('/');
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
 
-                    const timeOptions = [];
-
-                    for (let hour = 7; hour <= 23; hour++) {
-                    for (let min = 0; min < 60; min += 30) {
-                        const totalMinutes = hour * 60 + min;
-                        const timeStr = `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
-                        timeOptions.push({
-                        value: timeStr,
-                        disabled: isToday && totalMinutes < nextHalfHour
-                        });
-                    }
-                    }
-
-                    return timeOptions;
-                }
-
-                // Fungsi untuk populate dropdown start dan end
-                function populateTimeDropdowns(selectedDateStr) {
-                    // Reset dropdown
-                    startSelect.innerHTML = '<option value="" disabled selected hidden></option>';
-                    endSelect.innerHTML = '<option value="" disabled selected hidden></option>';
-                    endSelect.disabled = true;
-
-                    const now = new Date();
-                    const todayStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}/${now.getFullYear()}`;
-                    const isToday = selectedDateStr === todayStr;
-
-                    const timeOptions = generateTimeOptions(isToday);
-
-                    timeOptions.forEach(opt => {
-                    const startOpt = document.createElement('option');
-                    startOpt.value = opt.value;
-                    startOpt.textContent = opt.value;
-                    if (opt.disabled) {
-                        startOpt.disabled = true;
-                        startOpt.classList.add('opacity-50');
-                    }
-                    startSelect.appendChild(startOpt);
-
-                    const endOpt = document.createElement('option');
-                    endOpt.value = opt.value;
-                    endOpt.textContent = opt.value;
-                    endSelect.appendChild(endOpt);
-                    });
-                }
-
-                // Handler saat start dipilih → filter end
-                startSelect.addEventListener('change', function () {
-                    const selectedStart = this.value;
-                    endSelect.selectedIndex = 0;
-                    endSelect.disabled = true;
-
-                    if (!selectedStart) return;
-
-                    const [selectedHour, selectedMin] = selectedStart.split(':').map(Number);
-
-                    Array.from(endSelect.options).forEach(opt => {
-                    if (!opt.value) return; // Skip hidden
-                    const [optHour, optMin] = opt.value.split(':').map(Number);
-                    if (optHour < selectedHour || (optHour === selectedHour && optMin <= selectedMin)) {
-                        opt.disabled = true;
-                        opt.classList.add('opacity-50');
-                    } else {
-                        opt.disabled = false;
-                        opt.classList.remove('opacity-50');
-                    }
-                    });
-
-                    endSelect.disabled = false;
+    // Generate waktu dengan interval 30 menit
+    function generateTimeOptions(isToday) {
+        const options = [];
+        const now = new Date();
+        const currentMinutes = now.getHours() * 60 + now.getMinutes();
+        
+        for (let hour = 7; hour <= 23; hour++) {
+            for (let min = 0; min < 60; min += 30) {
+                const timeStr = `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+                const totalMinutes = hour * 60 + min;
+                
+                options.push({
+                    value: timeStr,
+                    disabled: isToday && totalMinutes < currentMinutes
                 });
+            }
+        }
+        return options;
+    }
 
-                // Inisialisasi datepicker
-                if (window.Datepicker && dateInput) {
-                    const today = new Date("{{ today|escapejs }}");
-                    const maxDate = new Date("{{ two_weeks|escapejs }}");
+    // Cek apakah waktu berada dalam interval yang diblokir
+    function isTimeInBlockedInterval(time, intervals) {
+        const [hours, minutes] = time.split(':').map(Number);
+        const totalMinutes = hours * 60 + minutes;
+        
+        for (const interval of intervals) {
+            const [startHours, startMins] = interval.start.split(':').map(Number);
+            const [endHours, endMins] = interval.end.split(':').map(Number);
+            
+            const startTotal = startHours * 60 + startMins;
+            const endTotal = endHours * 60 + endMins;
+            
+            if (totalMinutes >= startTotal && totalMinutes < endTotal) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-                    const dp = new Datepicker(dateInput, {
-                    format: 'mm/dd/yyyy',
-                    minDate: today,
-                    maxDate: maxDate,
-                    autohide: true
-                    });
+    // Populate dropdown waktu
+    function populateTimeDropdowns(selectedDateStr, intervals = []) {
+        startSelect.innerHTML = '<option value="" disabled selected hidden></option>';
+        endSelect.innerHTML = '<option value="" disabled selected hidden></option>';
+        endSelect.disabled = true;
 
-                    // Jika sudah ada value, populate awal
-                    if (dateInput.value) {
-                    populateTimeDropdowns(dateInput.value);
-                    }
+        const now = new Date();
+        const todayStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}/${now.getFullYear()}`;
+        const isToday = selectedDateStr === todayStr;
+        
+        blockedIntervals = intervals; // Simpan untuk digunakan nanti
+        const timeOptions = generateTimeOptions(isToday);
 
-                    // Saat tanggal dipilih
-                    dateInput.addEventListener('changeDate', () => {
-                    populateTimeDropdowns(dateInput.value);
-                    });
-                } else {
-                    console.error('Datepicker or input not found.');
+        timeOptions.forEach(opt => {
+            const isBlocked = isTimeInBlockedInterval(opt.value, intervals);
+            
+            // Start select
+            const startOption = document.createElement('option');
+            startOption.value = opt.value;
+            startOption.textContent = opt.value;
+            startOption.disabled = opt.disabled || isBlocked;
+            if (startOption.disabled) startOption.classList.add('opacity-50');
+            startSelect.appendChild(startOption);
+
+            // End select
+            const endOption = document.createElement('option');
+            endOption.value = opt.value;
+            endOption.textContent = opt.value;
+            endOption.disabled = isBlocked;
+            if (endOption.disabled) endOption.classList.add('opacity-50');
+            endSelect.appendChild(endOption);
+        });
+    }
+
+    // Fetch interval yang diblokir
+    async function fetchBlockedIntervalsAndUpdate() {
+        const date = dateInput.value;
+        const spot = spotInput.value;
+
+        if (!date || !spot) return;
+
+        const formattedDate = formatDateToISO(date);
+        
+        try {
+            const response = await fetch(`/api/reserved-intervals/?date=${formattedDate}&spot=${spot}`);
+            if (!response.ok) throw new Error('Failed to fetch blocked intervals');
+            
+            const data = await response.json();
+            populateTimeDropdowns(date, data.blocked_intervals);
+        } catch (error) {
+            console.error('Error fetching blocked intervals:', error);
+            populateTimeDropdowns(date);
+        }
+    }
+
+    // Event handler untuk start select
+    startSelect.addEventListener('change', () => {
+        const selectedStart = startSelect.value;
+        endSelect.selectedIndex = 0;
+        endSelect.disabled = true;
+
+        if (!selectedStart) return;
+        
+        const [startHour, startMin] = selectedStart.split(':').map(Number);
+        const startTotalMinutes = startHour * 60 + startMin;
+
+        Array.from(endSelect.options).forEach(option => {
+            if (!option.value) return;
+            
+            const [endHour, endMin] = option.value.split(':').map(Number);
+            const endTotalMinutes = endHour * 60 + endMin;
+            
+            // Nonaktifkan waktu sebelum waktu mulai
+            if (endTotalMinutes <= startTotalMinutes) {
+                option.disabled = true;
+                option.classList.add('opacity-50');
+                return;
+            }
+
+            // Cek apakah interval mulai-akhir bertabrakan dengan reservasi lain
+            let hasConflict = false;
+            for (const interval of blockedIntervals) {
+                const [blockStartHour, blockStartMin] = interval.start.split(':').map(Number);
+                const [blockEndHour, blockEndMin] = interval.end.split(':').map(Number);
+                
+                const blockStart = blockStartHour * 60 + blockStartMin;
+                const blockEnd = blockEndHour * 60 + blockEndMin;
+                
+                // Cek tabrakan: mulai sebelum akhir reservasi dan berakhir setelah mulai reservasi
+                if (startTotalMinutes < blockEnd && endTotalMinutes > blockStart) {
+                    hasConflict = true;
+                    break;
                 }
-                });
-                </script>
+            }
+
+            option.disabled = hasConflict;
+            option.classList.toggle('opacity-50', hasConflict);
+        });
+
+        endSelect.disabled = false;
+    });
+
+    // Inisialisasi datepicker
+    if (window.Datepicker && dateInput) {
+        const today = new Date("{{ today|escapejs }}");
+        const maxDate = new Date("{{ two_weeks|escapejs }}");
+
+        const dp = new Datepicker(dateInput, {
+            format: 'mm/dd/yyyy',
+            minDate: today,
+            maxDate: maxDate,
+            autohide: true
+        });
+
+        // Event listeners
+        if (dateInput.value) fetchBlockedIntervalsAndUpdate();
+        dateInput.addEventListener('changeDate', fetchBlockedIntervalsAndUpdate);
+        spotInput.addEventListener('change', fetchBlockedIntervalsAndUpdate);
+    } else {
+        console.error('Datepicker library not loaded or input missing');
+    }
+});
+</script>
 
                 <div class="me-4 mt-4">
                     <button data-modal-target="view" data-modal-toggle="view" type="button" class="flex items-center text-xs text-blue-700 hover:text-blue-800 hover:underline">

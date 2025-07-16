@@ -343,36 +343,43 @@ def get_reserved_times(start, end):
     return blocked
 
 def reserved_intervals_view(request):
-    from django.utils.timezone import localtime
-
     date_str = request.GET.get('date')
     spot_id = request.GET.get('spot')
 
     if not date_str or not spot_id:
         return JsonResponse({'error': 'Missing parameters'}, status=400)
 
-    from .models import Spot  # adjust if needed
     try:
         spot = Spot.objects.get(spot_number=spot_id)
     except Spot.DoesNotExist:
         return JsonResponse({'error': 'Spot not found'}, status=404)
 
-    # Use naive date for filtering
-    target_date = parse_date(date_str)
+    try:
+        # Parse tanggal dengan timezone awareness
+        naive_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+        start_of_day = make_aware(datetime.combine(naive_date, datetime.min.time()))
+        end_of_day = start_of_day + timedelta(days=1)
+    except ValueError:
+        return JsonResponse({'error': 'Invalid date format'}, status=400)
 
+    # Dapatkan semua reservasi untuk spot dan tanggal tersebut
     reservations = Reservation.objects.filter(
         spot=spot,
-        start_time__date=target_date
+        start_time__gte=start_of_day,
+        start_time__lt=end_of_day
     )
 
-    all_blocked = []
+    # Kumpulkan interval yang diblokir
+    blocked_intervals = []
     for r in reservations:
-        start = localtime(r.start_time)  # Convert to local time
+        start = localtime(r.start_time)
         end = localtime(r.end_time)
-        blocked = get_reserved_times(start, end)
-        all_blocked.extend(blocked)
+        blocked_intervals.append({
+            'start': start.strftime("%H:%M"),
+            'end': end.strftime("%H:%M")
+        })
 
-    return JsonResponse({'reserved_times': all_blocked})
+    return JsonResponse({'blocked_intervals': blocked_intervals})
 
 def admin_home_details_json(request):
     """
