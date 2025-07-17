@@ -124,183 +124,6 @@
                 <input id="default-datepicker" name="date" type="text" data-datepicker data-date-format="mm/dd/yyyy" min="{{ today }}" max="{{ two_weeks }}" class="bg-white text-sm rounded-lg border border-2 border-[#141E61] md:px-4 px-2 py-1.5 placeholder-[#141E61] hover:bg-[#141E61] hover:placeholder-white cursor-pointer focus:ring-blue-500 focus:border-blue-500 w-auto" size="8" placeholder="Select date" readonly />
                 </div>
 
-                <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const dateInput = document.getElementById('default-datepicker');
-                    const spotInput = document.getElementById('slot');
-                    const startSelect = document.getElementById('start');
-                    const endSelect = document.getElementById('end');
-                    let blockedIntervals = []; // Menyimpan interval yang diblokir
-
-                    // Format tanggal ke YYYY-MM-DD
-                    function formatDateToISO(dateString) {
-                        const [month, day, year] = dateString.split('/');
-                        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-                    }
-
-                    // Generate waktu dengan interval 30 menit
-                    function generateTimeOptions(isToday) {
-                        const options = [];
-                        const now = new Date();
-                        const currentMinutes = now.getHours() * 60 + now.getMinutes();
-                        
-                        for (let hour = 7; hour <= 23; hour++) {
-                            for (let min = 0; min < 60; min += 30) {
-                                const timeStr = `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
-                                const totalMinutes = hour * 60 + min;
-                                
-                                options.push({
-                                    value: timeStr,
-                                    disabled: isToday && totalMinutes < currentMinutes
-                                });
-                            }
-                        }
-                        return options;
-                    }
-
-                    // Cek apakah waktu berada dalam interval yang diblokir
-                    function isTimeInBlockedInterval(time, intervals) {
-                        const [hours, minutes] = time.split(':').map(Number);
-                        const totalMinutes = hours * 60 + minutes;
-                        
-                        for (const interval of intervals) {
-                            const [startHours, startMins] = interval.start.split(':').map(Number);
-                            const [endHours, endMins] = interval.end.split(':').map(Number);
-                            
-                            const startTotal = startHours * 60 + startMins;
-                            const endTotal = endHours * 60 + endMins;
-                            
-                            if (totalMinutes >= startTotal && totalMinutes < endTotal) {
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-
-                    // Populate dropdown waktu
-                    function populateTimeDropdowns(selectedDateStr, intervals = []) {
-                        startSelect.innerHTML = '<option value="" disabled selected hidden></option>';
-                        endSelect.innerHTML = '<option value="" disabled selected hidden></option>';
-                        endSelect.disabled = true;
-
-                        const now = new Date();
-                        const todayStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}/${now.getFullYear()}`;
-                        const isToday = selectedDateStr === todayStr;
-                        
-                        blockedIntervals = intervals; // Simpan untuk digunakan nanti
-                        const timeOptions = generateTimeOptions(isToday);
-
-                        timeOptions.forEach(opt => {
-                            const isBlocked = isTimeInBlockedInterval(opt.value, intervals);
-                            
-                            // Start select
-                            const startOption = document.createElement('option');
-                            startOption.value = opt.value;
-                            startOption.textContent = opt.value;
-                            startOption.disabled = opt.disabled || isBlocked;
-                            if (startOption.disabled) startOption.classList.add('opacity-50');
-                            startSelect.appendChild(startOption);
-
-                            // End select
-                            const endOption = document.createElement('option');
-                            endOption.value = opt.value;
-                            endOption.textContent = opt.value;
-                            endOption.disabled = isBlocked;
-                            if (endOption.disabled) endOption.classList.add('opacity-50');
-                            endSelect.appendChild(endOption);
-                        });
-                    }
-
-                    // Fetch interval yang diblokir
-                    async function fetchBlockedIntervalsAndUpdate() {
-                        const date = dateInput.value;
-                        const spot = spotInput.value;
-
-                        if (!date || !spot) return;
-
-                        const formattedDate = formatDateToISO(date);
-                        
-                        try {
-                            const response = await fetch(`/api/reserved-intervals/?date=${formattedDate}&spot=${spot}`);
-                            if (!response.ok) throw new Error('Failed to fetch blocked intervals');
-                            
-                            const data = await response.json();
-                            populateTimeDropdowns(date, data.blocked_intervals);
-                        } catch (error) {
-                            console.error('Error fetching blocked intervals:', error);
-                            populateTimeDropdowns(date);
-                        }
-                    }
-
-                    // Event handler untuk start select
-                    startSelect.addEventListener('change', () => {
-                        const selectedStart = startSelect.value;
-                        endSelect.selectedIndex = 0;
-                        endSelect.disabled = true;
-
-                        if (!selectedStart) return;
-                        
-                        const [startHour, startMin] = selectedStart.split(':').map(Number);
-                        const startTotalMinutes = startHour * 60 + startMin;
-
-                        Array.from(endSelect.options).forEach(option => {
-                            if (!option.value) return;
-                            
-                            const [endHour, endMin] = option.value.split(':').map(Number);
-                            const endTotalMinutes = endHour * 60 + endMin;
-                            
-                            // Nonaktifkan waktu sebelum waktu mulai
-                            if (endTotalMinutes <= startTotalMinutes) {
-                                option.disabled = true;
-                                option.classList.add('opacity-50');
-                                return;
-                            }
-
-                            // Cek apakah interval mulai-akhir bertabrakan dengan reservasi lain
-                            let hasConflict = false;
-                            for (const interval of blockedIntervals) {
-                                const [blockStartHour, blockStartMin] = interval.start.split(':').map(Number);
-                                const [blockEndHour, blockEndMin] = interval.end.split(':').map(Number);
-                                
-                                const blockStart = blockStartHour * 60 + blockStartMin;
-                                const blockEnd = blockEndHour * 60 + blockEndMin;
-                                
-                                // Cek tabrakan: mulai sebelum akhir reservasi dan berakhir setelah mulai reservasi
-                                if (startTotalMinutes < blockEnd && endTotalMinutes > blockStart) {
-                                    hasConflict = true;
-                                    break;
-                                }
-                            }
-
-                            option.disabled = hasConflict;
-                            option.classList.toggle('opacity-50', hasConflict);
-                        });
-
-                        endSelect.disabled = false;
-                    });
-
-                    // Inisialisasi datepicker
-                    if (window.Datepicker && dateInput) {
-                        const today = new Date("{{ today|escapejs }}");
-                        const maxDate = new Date("{{ two_weeks|escapejs }}");
-
-                        const dp = new Datepicker(dateInput, {
-                            format: 'mm/dd/yyyy',
-                            minDate: today,
-                            maxDate: maxDate,
-                            autohide: true
-                        });
-
-                        // Event listeners
-                        if (dateInput.value) fetchBlockedIntervalsAndUpdate();
-                        dateInput.addEventListener('changeDate', fetchBlockedIntervalsAndUpdate);
-                        spotInput.addEventListener('change', fetchBlockedIntervalsAndUpdate);
-                    } else {
-                        console.error('Datepicker library not loaded or input missing');
-                    }
-                });
-                </script>
-
                 <div class="me-4 mt-4">
                     <button data-modal-target="view" data-modal-toggle="view" type="button" class="flex items-center text-xs text-blue-700 hover:text-blue-800 hover:underline">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="w-4 h-4" viewBox="0 0 256 256" xml:space="preserve">
@@ -404,124 +227,280 @@
                     
                     <!-- ==================== JS ==================== -->
                     <script>
-                    let selectedSlotValue;
-                    const selectElement = document.getElementById('slot');
-                    
-                    function setSlotDirectly(value) {
-                        if (selectElement) selectElement.value = value;
-                    }
-                    
-                    // ==================== Modal JS ==================== //
-                    document.addEventListener('DOMContentLoaded', () => {
-                        // close on button
-                        document.querySelectorAll('[data-modal-hide]').forEach(btn => {
-                            btn.addEventListener('click', () => {
-                                const modalId = btn.getAttribute('data-modal-hide');
-                                document.getElementById(modalId).classList.add('hidden');
-                            });
-                        });
-                        // close on backdrop
-                        document.querySelectorAll('.fixed').forEach(modal => {
-                            modal.addEventListener('click', e => {
-                                if (e.target === modal) modal.classList.add('hidden');
-                            })
-                        })
-                    });
-                    
-                    // ==================== Fetch Status AJAX ==================== //
-                    function updateSlotDisplay(slotNumber, status) {
-                        const box = document.getElementById(`slot-${slotNumber}-box`);
-                        const label = document.getElementById(`slot-${slotNumber}-label`);
-                        const btn = document.getElementById(`slot-${slotNumber}-btn`);
-                    
-                        box.className = "md:py-8 justify-center items-center flex rounded-2xl md:h-auto h-[130px] md:mx-3 mx-1.5 mt-3";
-                        label.className = "text-md font-semibold";
-                    
-                        if (status === "occupied") {
-                            box.classList.add('bg-[#8a1616]');
-                            label.classList.add('text-[#8a1616]');
-                            label.innerText = "Occupied";
-                            btn.onclick = () => document.getElementById(`popup-modal${slotNumber}`).classList.remove('hidden');
-                        } else if (status === "reserved") {
-                            box.classList.add('bg-[#afd106]');
-                            label.classList.add('text-[#afd106]');
-                            label.innerText = "Reserved";
-                            btn.onclick = () => document.getElementById(`popup-modal${slotNumber}-reserved`).classList.remove('hidden');
-                        } else if (status === "disabled") {
-                        box.classList.add('bg-[#A0A0A0]');
-                        label.classList.add('text-[#A0A0A0]');
-                        label.innerText = "Disabled";
-                        btn.onclick = () => alert('This slot is disabled by admin.');
-                        }
-                        else {
-                            box.classList.add('bg-[#018214]');
-                            label.classList.add('text-[#018214]');
-                            label.innerText = "Available";
-                            btn.onclick = () => setSlotDirectly(slotNumber);
-                        }
+document.addEventListener('DOMContentLoaded', () => {
+    // ==================== Shared Functions ==================== //
+    function formatDateToISO(dateString) {
+        if (!dateString) return '';
+        const [month, day, year] = dateString.split('/');
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
 
-                        if (status === 'disabled') {
-                        document.querySelector(`#slot option[value="${slotNumber}"]`).disabled = true;
-                        } else {
-                        document.querySelector(`#slot option[value="${slotNumber}"]`).disabled = false;
-                        }
-                    }
+    // ==================== Datepicker & Time Selection ==================== //
+    const dateInput = document.getElementById('default-datepicker');
+    const spotInput = document.getElementById('slot');
+    const startSelect = document.getElementById('start');
+    const endSelect = document.getElementById('end');
+    let blockedIntervals = [];
 
-                    function formatDateToISO(dateStr) {
-                        const [month, day, year] = dateStr.split('/');
-                        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-                    }
-                    
-                    // Fetch every 3s
-                    setInterval(() => {
-                        const dateInput = document.getElementById('default-datepicker');
-                        const selectedDate = dateInput ? dateInput.value : '';
+    // Generate waktu dengan interval 30 menit
+    function generateTimeOptions(isToday) {
+        const options = [];
+        const now = new Date();
+        const currentMinutes = now.getHours() * 60 + now.getMinutes();
+        
+        for (let hour = 7; hour <= 23; hour++) {
+            for (let min = 0; min < 60; min += 30) {
+                const timeStr = `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+                const totalMinutes = hour * 60 + min;
+                
+                options.push({
+                    value: timeStr,
+                    disabled: isToday && totalMinutes < currentMinutes
+                });
+            }
+        }
+        return options;
+    }
 
-                        if (!selectedDate) return; 
+    // Cek apakah waktu berada dalam interval yang diblokir
+    function isTimeInBlockedInterval(time, intervals) {
+        const [hours, minutes] = time.split(':').map(Number);
+        const totalMinutes = hours * 60 + minutes;
+        
+        for (const interval of intervals) {
+            const [startHours, startMins] = interval.start.split(':').map(Number);
+            const [endHours, endMins] = interval.end.split(':').map(Number);
+            
+            const startTotal = startHours * 60 + startMins;
+            const endTotal = endHours * 60 + endMins;
+            
+            if (totalMinutes >= startTotal && totalMinutes < endTotal) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-                        const formattedDate = formatDateToISO(selectedDate)
+    // Populate dropdown waktu
+    function populateTimeDropdowns(selectedDateStr, intervals = []) {
+        startSelect.innerHTML = '<option value="" disabled selected hidden></option>';
+        endSelect.innerHTML = '<option value="" disabled selected hidden></option>';
+        endSelect.disabled = true;
 
-                        fetch(`/api/spots-dynamic-status/?date=${formattedDate}`)
-                            .then(res => res.json())
-                            .then(data => {
-                                data.forEach(spot => updateSlotDisplay(spot.spot_number, spot.status));
-                            })
-                            .catch(err => console.error(err));
-                    }, 3000);
+        const now = new Date();
+        const todayStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}/${now.getFullYear()}`;
+        const isToday = selectedDateStr === todayStr;
+        
+        blockedIntervals = intervals;
+        const timeOptions = generateTimeOptions(isToday);
 
-                    /* testing
-                    document.addEventListener('DOMContentLoaded', () => {
-                        const dateInput = document.getElementById('default-datepicker');
+        timeOptions.forEach(opt => {
+            const isBlocked = isTimeInBlockedInterval(opt.value, intervals);
+            
+            // Start select
+            const startOption = document.createElement('option');
+            startOption.value = opt.value;
+            startOption.textContent = opt.value;
+            startOption.disabled = opt.disabled || isBlocked;
+            if (startOption.disabled) startOption.classList.add('opacity-50');
+            startSelect.appendChild(startOption);
 
-                        function fetchSlotStatusByDate(selectedDate) {
-                            if (!selectedDate) return;
+            // End select
+            const endOption = document.createElement('option');
+            endOption.value = opt.value;
+            endOption.textContent = opt.value;
+            endOption.disabled = isBlocked;
+            if (endOption.disabled) endOption.classList.add('opacity-50');
+            endSelect.appendChild(endOption);
+        });
+    }
 
-                            const formattedDate = formatDateToISO(selectedDate);
+    // Fetch interval yang diblokir
+    async function fetchBlockedIntervalsAndUpdate() {
+        const date = dateInput.value;
+        const spot = spotInput.value;
 
-                            fetch(`/api/spots-dynamic-status/?date=${formattedDate}`)
-                                .then(res => res.json())
-                                .then(data => {
-                                    data.forEach(spot => updateSlotDisplay(spot.spot_number, spot.status));
-                                })
-                                .catch(err => console.error(err));
-                        }
+        if (!date || !spot) return;
 
-                        if (dateInput) {
+        const formattedDate = formatDateToISO(date);
+        
+        try {
+            const response = await fetch(`/api/reserved-intervals/?date=${formattedDate}&spot=${spot}`);
+            if (!response.ok) throw new Error('Failed to fetch blocked intervals');
+            
+            const data = await response.json();
+            populateTimeDropdowns(date, data.blocked_intervals);
+        } catch (error) {
+            console.error('Error fetching blocked intervals:', error);
+            populateTimeDropdowns(date);
+        }
+    }
 
-                            fetchSlotStatusByDate(dateInput.value);
+    // Event handler untuk start select
+    startSelect.addEventListener('change', () => {
+        const selectedStart = startSelect.value;
+        endSelect.selectedIndex = 0;
+        endSelect.disabled = true;
 
-                            dateInput.addEventListener('change', () => {
-                                fetchSlotStatusByDate(dateInput.value)
-                            });
+        if (!selectedStart) return;
+        
+        const [startHour, startMin] = selectedStart.split(':').map(Number);
+        const startTotalMinutes = startHour * 60 + startMin;
 
-                            setInterval(() => {
-                                fetchSlotStatusByDate(dateInput.value);
-                            }, 3000)
-                        }
-                    });
-                    */
-                    
-                    </script>
+        Array.from(endSelect.options).forEach(option => {
+            if (!option.value) return;
+            
+            const [endHour, endMin] = option.value.split(':').map(Number);
+            const endTotalMinutes = endHour * 60 + endMin;
+            
+            // Nonaktifkan waktu sebelum waktu mulai
+            if (endTotalMinutes <= startTotalMinutes) {
+                option.disabled = true;
+                option.classList.add('opacity-50');
+                return;
+            }
+
+            // Cek apakah interval mulai-akhir bertabrakan dengan reservasi lain
+            let hasConflict = false;
+            for (const interval of blockedIntervals) {
+                const [blockStartHour, blockStartMin] = interval.start.split(':').map(Number);
+                const [blockEndHour, blockEndMin] = interval.end.split(':').map(Number);
+                
+                const blockStart = blockStartHour * 60 + blockStartMin;
+                const blockEnd = blockEndHour * 60 + blockEndMin;
+                
+                // Cek tabrakan: mulai sebelum akhir reservasi dan berakhir setelah mulai reservasi
+                if (startTotalMinutes < blockEnd && endTotalMinutes > blockStart) {
+                    hasConflict = true;
+                    break;
+                }
+            }
+
+            option.disabled = hasConflict;
+            option.classList.toggle('opacity-50', hasConflict);
+        });
+
+        endSelect.disabled = false;
+    });
+
+    // Inisialisasi datepicker
+    if (window.Datepicker && dateInput) {
+        const today = new Date("{{ today|escapejs }}");
+        const maxDate = new Date("{{ two_weeks|escapejs }}");
+
+        const dp = new Datepicker(dateInput, {
+            format: 'mm/dd/yyyy',
+            minDate: today,
+            maxDate: maxDate,
+            autohide: true
+        });
+
+        // Event listeners
+        if (dateInput.value) fetchBlockedIntervalsAndUpdate();
+        dateInput.addEventListener('changeDate', fetchBlockedIntervalsAndUpdate);
+        spotInput.addEventListener('change', fetchBlockedIntervalsAndUpdate);
+    } else {
+        console.error('Datepicker library not loaded or input missing');
+    }
+
+    // ==================== Slot Selection & Modals ==================== //
+    function setSlotDirectly(value) {
+        if (spotInput) {
+            spotInput.value = value;
+            // PERBAIKAN: Panggil update waktu saat slot berubah
+            fetchBlockedIntervalsAndUpdate();
+        }
+    }
+
+    // Modal handlers
+    document.querySelectorAll('[data-modal-hide]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modalId = btn.getAttribute('data-modal-hide');
+            document.getElementById(modalId).classList.add('hidden');
+        });
+    });
+    
+    document.querySelectorAll('.fixed').forEach(modal => {
+        modal.addEventListener('click', e => {
+            if (e.target === modal) modal.classList.add('hidden');
+        })
+    });
+
+    // Update tampilan slot
+    function updateSlotDisplay(slotNumber, status) {
+        const box = document.getElementById(`slot-${slotNumber}-box`);
+        const label = document.getElementById(`slot-${slotNumber}-label`);
+        const btn = document.getElementById(`slot-${slotNumber}-btn`);
+    
+        // Reset classes
+        box.className = "md:py-8 justify-center items-center flex rounded-2xl md:h-auto h-[130px] md:mx-3 mx-1.5 mt-3";
+        label.className = "text-md font-semibold";
+    
+        if (status === "occupied") {
+            box.classList.add('bg-[#8a1616]');
+            label.classList.add('text-[#8a1616]');
+            label.innerText = "Occupied";
+            btn.onclick = () => document.getElementById(`popup-modal${slotNumber}`).classList.remove('hidden');
+        } else if (status === "reserved") {
+            box.classList.add('bg-[#afd106]');
+            label.classList.add('text-[#afd106]');
+            label.innerText = "Reserved";
+            btn.onclick = () => document.getElementById(`popup-modal${slotNumber}-reserved`).classList.remove('hidden');
+        } else if (status === "disabled") {
+            box.classList.add('bg-[#A0A0A0]');
+            label.classList.add('text-[#A0A0A0]');
+            label.innerText = "Disabled";
+            btn.onclick = () => alert('This slot is disabled by admin.');
+        }
+        else {
+            box.classList.add('bg-[#018214]');
+            label.classList.add('text-[#018214]');
+            label.innerText = "Available";
+            btn.onclick = () => setSlotDirectly(slotNumber);
+        }
+
+        // Update select option
+        const option = spotInput.querySelector(`option[value="${slotNumber}"]`);
+        if (option) {
+            option.disabled = (status === 'disabled');
+        }
+    }
+
+    // Fetch slot status berdasarkan tanggal
+    function fetchSlotStatusByDate(selectedDate) {
+        if (!selectedDate) return;
+
+        const formattedDate = formatDateToISO(selectedDate);
+        fetch(`/api/spots-dynamic-status/?date=${formattedDate}`)
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(spot => updateSlotDisplay(spot.spot_number, spot.status));
+            })
+            .catch(err => console.error('Error fetching slot status:', err));
+    }
+
+    // Inisialisasi pertama kali
+    if (dateInput) {
+        fetchSlotStatusByDate(dateInput.value);
+        
+        // Update saat tanggal berubah
+        dateInput.addEventListener('change', () => {
+            fetchSlotStatusByDate(dateInput.value);
+            // PERBAIKAN: Reset waktu saat tanggal berubah
+            startSelect.selectedIndex = 0;
+            endSelect.selectedIndex = 0;
+            endSelect.disabled = true;
+        });
+    }
+
+    // Update real-time setiap 3 detik
+    setInterval(() => {
+        if (dateInput && dateInput.value) {
+            fetchSlotStatusByDate(dateInput.value);
+        }
+    }, 3000);
+});
+</script>
                 
             </div>
 
