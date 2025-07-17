@@ -282,7 +282,11 @@ def adminhome_view(request):
 
 @admin_login_required
 def adminreservation_view(request):
-    return render(request, 'adminreservation.html')
+    now = timezone.now()
+    reservations = Reservation.objects.filter(end_time__gte=now).order_by('-start_time').select_related('car', 'user')
+    return render(request, 'adminreservation.html', {
+        'reservations': reservations
+    })
 
 @admin_login_required
 def adminmonitoring_view(request):
