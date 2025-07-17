@@ -127,6 +127,14 @@
                                             <td class="px-6 py-4 ">
                                                 <button type="button" data-modal-target="cancel{{ reservation.id }}" data-modal-toggle="cancel{{ reservation.id }}" class="focus:outline-none text-white bg-red-700 hover:bg-red-900 hover:underline focus:ring-2 font-medium rounded-xl md:text-md text-sm px-4 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">Cancel</button>
 
+                                                <!-- Tombol Verify -->
+                                                {% if not reservation.parked and reservation.spot.status == 'occupied' and reservation.spot.buzzer_active and reservation.start_time <= now <= reservation.end_time %}
+                                                    <button onclick="turnOffBuzzer('{{ reservation.spot.spot_number }}')" class="verify-btn text-white bg-blue-700 hover:bg-blue-900 hover:underline focus:ring-2 font-medium rounded-xl md:text-md text-sm px-4 py-2 shadow-md me-2 mb-2 transition-all ease-in duration-300">
+                                                        Verify (Matikan Buzzer)
+                                                    </button>
+                                                {% endif %}
+
+
                                                 <!-- modal -->
                                                 <form method="POST" action="{% url 'delete_reservation' reservation.id %}?next=history">
                                                 {% csrf_token %}
@@ -167,4 +175,38 @@
                 <div class="h-4"></div>
 
         </div>
+
+
+<script>
+  function getCookie(name) {
+    const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return v ? v.pop() : '';
+  }
+
+  function turnOffBuzzer(slotNumber) {
+    fetch("/api/user-turn-off-buzzer/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+      body: JSON.stringify({ slot_number: slotNumber })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert("Buzzer berhasil dimatikan!");
+        location.reload(); // Reload agar tombol verify hilang
+      } else {
+        alert("Gagal: " + (data.error || "Terjadi kesalahan."));
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("Gagal mematikan buzzer. Cek koneksi.");
+    });
+  }
+</script>
+
+
 {% endblock %}

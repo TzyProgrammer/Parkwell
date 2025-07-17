@@ -241,9 +241,60 @@ def delete_reservation(request, reservation_id):
 
 def history_view(request):
     now = timezone.now()
-    reservations = Reservation.objects.filter(user=request.user, end_time__gte=now).order_by('-start_time').select_related('car')
+    reservations = Reservation.objects.filter(
+        user=request.user,
+        end_time__gte=now
+    ).order_by('-start_time').select_related('car', 'spot')
+
     return render(request, 'history.html', {
-        'reservations': reservations})
+        'reservations': reservations,
+        'now': now  # dikirim ke template
+    })
+
+@require_POST
+@login_required
+def user_turn_off_buzzer(request):
+    try:
+        data = json.loads(request.body)
+        slot_number = data.get("slot_number")
+
+        spot = Spot.objects.get(spot_number=slot_number)
+        now_time = timezone.now()
+
+        # Cek apakah user punya reservasi aktif di slot ini
+        reservation = Reservation.objects.filter(
+            user=request.user,
+            spot=spot,
+            start_time__lte=now_time,
+            end_time__gte=now_time,
+            parked=False
+        ).first()
+
+        if reservation:
+            # Update status parked
+            reservation.parked = True
+            reservation.save()
+
+            # Matikan buzzer
+            spot.buzzer_active = False
+            spot.save()
+
+            publish.single(
+                f"parkir/slot{slot_number}/buzzer",
+                "off",
+                hostname="192.168.12.151",  # ganti jika pakai broker lain
+                port=1883
+            )
+
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False, "error": "Tidak ada reservasi aktif untuk user ini."})
+
+    except Spot.DoesNotExist:
+        return JsonResponse({"success": False, "error": "Slot tidak ditemukan."})
+    except Exception as e:
+        return JsonResponse({"success": False, "error": str(e)})
+
 
 def guide_view(request):
     return render(request, 'guide.html')
