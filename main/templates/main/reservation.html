@@ -404,14 +404,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==================== Slot Selection & Modals ==================== //
-    function setSlotDirectly(value) {
+    // Fungsi untuk memilih slot
+    window.setSlotDirectly = function(value) {
         if (spotInput) {
             spotInput.value = value;
-            // PERBAIKAN: Panggil update waktu saat slot berubah
+            // Perbarui tampilan dropdown
+            const option = spotInput.querySelector(`option[value="${value}"]`);
+            if (option) option.selected = true;
+            
             fetchBlockedIntervalsAndUpdate();
+            highlightSelectedSlot(value);
         }
     }
 
+    
     // Modal handlers
     document.querySelectorAll('[data-modal-hide]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -426,7 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     });
 
-    // Update tampilan slot
+     // Update tampilan slot
     function updateSlotDisplay(slotNumber, status) {
         const box = document.getElementById(`slot-${slotNumber}-box`);
         const label = document.getElementById(`slot-${slotNumber}-label`);
