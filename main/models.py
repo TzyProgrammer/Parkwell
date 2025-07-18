@@ -59,7 +59,7 @@ class Spot(models.Model):
         # Status sebelumnya untuk deteksi perubahan
         prev_status = self.status
         
-        if distance_cm < 30:
+        if distance_cm < 100:
             self.status = 'occupied'
             if prev_status != 'occupied':
                 self.buzzer_active = True  # Setel buzzer hidup saat transisi masuk
