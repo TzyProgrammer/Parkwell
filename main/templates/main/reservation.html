@@ -6,8 +6,8 @@
 
 {% block content %}
 <title>Reservation</title>
-<div class="md:pl-16 py-1 pt-12 md:text-left text-center">
-            <span class="text-[50px] text-[#141E61] md:text-[clamp(34px,4vw,50px)]">
+<div class="md:pl-16 py-1 md:pt-12 pt-8 md:text-left text-center">
+            <span class="md:text-[50px] text-[35px] text-[#141E61] md:text-[clamp(34px,4vw,50px)]">
                 Reserve Your Spot
             </span>
 </div>
@@ -19,7 +19,7 @@
         
 
 
-        <div class="md:px-12 px-8 md:my-20 my-8 md:mx-12 flex flex-col">
+        <div class="md:px-12 px-8 md:my-20 my-4 md:mx-12 flex flex-col">
         <form action="" method="POST">
             {% csrf_token %}
 
@@ -121,33 +121,126 @@
                 <!--
                 <input readonly datepicker datepicker-format="mm/dd/yyyy" data-date-min="{{ today }}" data-date-max="{{ two_weeks }}" id="default-datepicker" name="datepicker" type="text" class=" bg-white text-sm rounded-lg placeholder-[#141E61] border border-2 border-[#141E61] hover:bg-[#141E61] hover:placeholder-white cursor-pointer focus:ring-blue-500 focus:border-blue-500 px-4 py-1.5  w-auto"  size="8" placeholder="Select date" >                                                                 
                 -->
-                <input
-                    id="default-datepicker"
-                    name="date"
-                    type="text"
-                    data-datepicker
-                    data-date-format="mm/dd/yyyy"
-                    min="{{ today }}"
-                    max="{{ two_weeks }}"
-                    class="bg-white text-sm rounded-lg border border-2 border-[#141E61] px-4 py-1.5 placeholder-[#141E61] hover:bg-[#141E61] hover:placeholder-white cursor-pointer focus:ring-blue-500 focus:border-blue-500 w-auto" size="8"
-                    placeholder="Select date"
-                    readonly
-                    />
+                <input id="default-datepicker" name="date" type="text" data-datepicker data-date-format="mm/dd/yyyy" min="{{ today }}" max="{{ two_weeks }}" class="bg-white text-sm rounded-lg border border-2 border-[#141E61] md:px-4 px-2 py-1.5 placeholder-[#141E61] hover:bg-[#141E61] hover:placeholder-white cursor-pointer focus:ring-blue-500 focus:border-blue-500 w-auto" size="8" placeholder="Select date" readonly />
                 </div>
 
-                <script>
+                <div class="me-4 mt-4">
+                    <button data-modal-target="view" data-modal-toggle="view" type="button" class="flex items-center text-xs text-blue-700 hover:text-blue-800 hover:underline">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="w-4 h-4" viewBox="0 0 256 256" xml:space="preserve">
+                        <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                            <path d="M 45 73.264 c -14.869 0 -29.775 -8.864 -44.307 -26.346 c -0.924 -1.112 -0.924 -2.724 0 -3.836 C 15.225 25.601 30.131 16.737 45 16.737 c 14.868 0 29.775 8.864 44.307 26.345 c 0.925 1.112 0.925 2.724 0 3.836 C 74.775 64.399 59.868 73.264 45 73.264 z M 6.934 45 C 19.73 59.776 32.528 67.264 45 67.264 c 12.473 0 25.27 -7.487 38.066 -22.264 C 70.27 30.224 57.473 22.737 45 22.737 C 32.528 22.737 19.73 30.224 6.934 45 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(24,47,255); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+                            <path d="M 45 62 c -9.374 0 -17 -7.626 -17 -17 s 7.626 -17 17 -17 s 17 7.626 17 17 S 54.374 62 45 62 z M 45 34 c -6.065 0 -11 4.935 -11 11 s 4.935 11 11 11 s 11 -4.935 11 -11 S 51.065 34 45 34 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(24,47,255); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
+                        </g>
+                        </svg> View place
+                    </button>
+
+                    <!-- Modal -->
+                    <div id="view" tabindex="-1" aria-hidden="true"
+                        class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 overflow-y-auto overflow-x-hidden">
+                        <div class="relative w-full max-w-4xl p-4">
+                            <!-- Modal content -->
+                            <div class="relative bg-white rounded-lg shadow-sm">
+                                <!-- Modal header -->
+                                <div class="flex items-center justify-between p-4 border-b rounded-t">
+                                    <h3 class="text-xl font-semibold text-gray-900">
+                                        Parking lot view <span class="text-gray-500 text-sm">( TA Parking Lot )</span>
+                                    </h3>
+                                    <button type="button" data-modal-toggle="view" class="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" >
+                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                        </svg>
+                                        <span class="sr-only">Close modal</span>
+                                    </button>
+                                </div>
+
+                                <!-- Modal body -->
+                                <div class="p-4 flex flex-col items-center gap-4">
+                                    <!-- Gambar -->
+                                    <div class="overflow-auto border rounded shadow max-w-full">
+                                        <img id="parkImage" src="{% static 'main/parkview.png' %}" alt="Parking lot image"
+                                            class="transition-transform duration-300 scale-100">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            
+            <!-- park -->
+            <div class=" my-4 border border-4 border-[#141E61] rounded-lg shadow-[0_5px_5px_rgba(0,0,0,0.2)]">
+
+                    <div class="md:p-4 p-2 justify-center text-center flex md:text-3xl text-md bg-[#141E61] font-medium text-white">
+                        Where would you like to park?
+                    </div>
+
+                <div class="grid grid-cols-4">
+                        {% for i in "1234" %}
+                        <!-- ==================== SLOT {{ i }} ==================== -->
+                        <div>
+                            <div class="flex justify-center my-2">
+                                <p class="md:text-md text-xs text-[#141E61] font-semibold">Slot {{i}}</p>
+                            </div>
+                            <div id="slot-{{ i }}-box" class="md:py-8 justify-center items-center flex bg-[#018214] md:h-auto h-[130px] rounded-2xl md:mx-3 mx-1.5">
+                                <button id="slot-{{ i }}-btn" onclick="setSlotDirectly('{{ i }}')">
+                                    <img src="{% static 'main/car'|add:i|add:'.png' %}" alt="" class="block md:w-28 w-[55px] transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
+                                </button>
+                            </div>
+                            <div class="items-center flex justify-center py-2">
+                                <p id="slot-{{ i }}-label" class="md:text-md text-xs text-[#018214] font-semibold">Available</p>
+                            </div>
+                    
+                            <!-- Modal OCCUPIED Slot {{ i }} -->
+                            <div id="popup-modal{{ i }}" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                                <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md relative">
+                                    <button class="absolute top-2 right-2 text-gray-500 hover:text-black" data-modal-hide="popup-modal{{ i }}">&times;</button>
+                                    <svg class="mx-auto mb-4 text-[#8a1616] w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                                    <h3 class="mb-5 text-center text-gray-500 text-lg">This parking slot is currently <span class="font-semibold text-[#8a1616]">Occupied</span>. However, you can still make a reservation.</h3>
+                                    <div class="flex justify-center gap-2">
+                                        <button data-modal-hide="popup-modal{{ i }}" class="bg-[#8a1616] text-white px-4 py-2 rounded hover:bg-[#731212]">Reserve Anyway</button>
+                                        <button data-modal-hide="popup-modal{{ i }}" class="bg-gray-200 text-black px-4 py-2 rounded hover:bg-gray-300">No, cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Modal RESERVED Slot {{ i }} -->
+                            <div id="popup-modal{{ i }}-reserved" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                                <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md relative">
+                                    <button class="absolute top-2 right-2 text-gray-500 hover:text-black" data-modal-hide="popup-modal{{ i }}-reserved">&times;</button>
+                                    <svg class="mx-auto mb-4 text-[#afd106] w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                                    <h3 class="mb-5 text-center text-gray-500 text-lg">This parking slot has already been <span class="font-semibold text-[#afd106]">Reserved</span>. However, you can still reserve it for other available time slots.</h3>
+                                    <div class="flex justify-center gap-2">
+                                        <button data-modal-hide="popup-modal{{ i }}-reserved" class="bg-[#afd106] text-white px-4 py-2 rounded hover:bg-[#91ad05]">Reserve Anyway</button>
+                                        <button data-modal-hide="popup-modal{{ i }}-reserved" class="bg-gray-200 text-black px-4 py-2 rounded hover:bg-gray-300">No, cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- ==================== JS ==================== -->
+                    <script>
 document.addEventListener('DOMContentLoaded', () => {
+    // ==================== Shared Functions ==================== //
+    function formatDateToISO(dateString) {
+        if (!dateString) return '';
+        const [month, day, year] = dateString.split('/');
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+
+    // ==================== Datepicker & Time Selection ==================== //
     const dateInput = document.getElementById('default-datepicker');
     const spotInput = document.getElementById('slot');
     const startSelect = document.getElementById('start');
     const endSelect = document.getElementById('end');
-    let blockedIntervals = []; // Menyimpan interval yang diblokir
-
-    // Format tanggal ke YYYY-MM-DD
-    function formatDateToISO(dateString) {
-        const [month, day, year] = dateString.split('/');
-        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-    }
+    let blockedIntervals = [];
 
     // Generate waktu dengan interval 30 menit
     function generateTimeOptions(isToday) {
@@ -198,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const todayStr = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}/${now.getFullYear()}`;
         const isToday = selectedDateStr === todayStr;
         
-        blockedIntervals = intervals; // Simpan untuk digunakan nanti
+        blockedIntervals = intervals;
         const timeOptions = generateTimeOptions(isToday);
 
         timeOptions.forEach(opt => {
@@ -309,230 +402,105 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Datepicker library not loaded or input missing');
     }
+
+    // ==================== Slot Selection & Modals ==================== //
+    function setSlotDirectly(value) {
+        if (spotInput) {
+            spotInput.value = value;
+            // PERBAIKAN: Panggil update waktu saat slot berubah
+            fetchBlockedIntervalsAndUpdate();
+        }
+    }
+
+    // Modal handlers
+    document.querySelectorAll('[data-modal-hide]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modalId = btn.getAttribute('data-modal-hide');
+            document.getElementById(modalId).classList.add('hidden');
+        });
+    });
+    
+    document.querySelectorAll('.fixed').forEach(modal => {
+        modal.addEventListener('click', e => {
+            if (e.target === modal) modal.classList.add('hidden');
+        })
+    });
+
+    // Update tampilan slot
+    function updateSlotDisplay(slotNumber, status) {
+        const box = document.getElementById(`slot-${slotNumber}-box`);
+        const label = document.getElementById(`slot-${slotNumber}-label`);
+        const btn = document.getElementById(`slot-${slotNumber}-btn`);
+    
+        // Reset classes
+        box.className = "md:py-8 justify-center items-center flex rounded-2xl md:h-auto h-[130px] md:mx-3 mx-1.5 mt-3";
+        label.className = "text-md font-semibold";
+    
+        if (status === "occupied") {
+            box.classList.add('bg-[#8a1616]');
+            label.classList.add('text-[#8a1616]');
+            label.innerText = "Occupied";
+            btn.onclick = () => document.getElementById(`popup-modal${slotNumber}`).classList.remove('hidden');
+        } else if (status === "reserved") {
+            box.classList.add('bg-[#afd106]');
+            label.classList.add('text-[#afd106]');
+            label.innerText = "Reserved";
+            btn.onclick = () => document.getElementById(`popup-modal${slotNumber}-reserved`).classList.remove('hidden');
+        } else if (status === "disabled") {
+            box.classList.add('bg-[#A0A0A0]');
+            label.classList.add('text-[#A0A0A0]');
+            label.innerText = "Disabled";
+            btn.onclick = () => alert('This slot is disabled by admin.');
+        }
+        else {
+            box.classList.add('bg-[#018214]');
+            label.classList.add('text-[#018214]');
+            label.innerText = "Available";
+            btn.onclick = () => setSlotDirectly(slotNumber);
+        }
+
+        // Update select option
+        const option = spotInput.querySelector(`option[value="${slotNumber}"]`);
+        if (option) {
+            option.disabled = (status === 'disabled');
+        }
+    }
+
+    // Fetch slot status berdasarkan tanggal
+    function fetchSlotStatusByDate(selectedDate) {
+        if (!selectedDate) return;
+
+        const formattedDate = formatDateToISO(selectedDate);
+        fetch(`/api/spots-dynamic-status/?date=${formattedDate}`)
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(spot => updateSlotDisplay(spot.spot_number, spot.status));
+            })
+            .catch(err => console.error('Error fetching slot status:', err));
+    }
+
+    // Inisialisasi pertama kali
+    if (dateInput) {
+        fetchSlotStatusByDate(dateInput.value);
+        
+        // Update saat tanggal berubah
+        dateInput.addEventListener('change', () => {
+            fetchSlotStatusByDate(dateInput.value);
+            // PERBAIKAN: Reset waktu saat tanggal berubah
+            startSelect.selectedIndex = 0;
+            endSelect.selectedIndex = 0;
+            endSelect.disabled = true;
+        });
+    }
+
+    // Update real-time setiap 3 detik
+    setInterval(() => {
+        if (dateInput && dateInput.value) {
+            fetchSlotStatusByDate(dateInput.value);
+        }
+    }, 3000);
 });
 </script>
-
-                <div class="me-4 mt-4">
-                    <button data-modal-target="view" data-modal-toggle="view" type="button" class="flex items-center text-xs text-blue-700 hover:text-blue-800 hover:underline">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="w-4 h-4" viewBox="0 0 256 256" xml:space="preserve">
-                        <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
-                            <path d="M 45 73.264 c -14.869 0 -29.775 -8.864 -44.307 -26.346 c -0.924 -1.112 -0.924 -2.724 0 -3.836 C 15.225 25.601 30.131 16.737 45 16.737 c 14.868 0 29.775 8.864 44.307 26.345 c 0.925 1.112 0.925 2.724 0 3.836 C 74.775 64.399 59.868 73.264 45 73.264 z M 6.934 45 C 19.73 59.776 32.528 67.264 45 67.264 c 12.473 0 25.27 -7.487 38.066 -22.264 C 70.27 30.224 57.473 22.737 45 22.737 C 32.528 22.737 19.73 30.224 6.934 45 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(24,47,255); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
-                            <path d="M 45 62 c -9.374 0 -17 -7.626 -17 -17 s 7.626 -17 17 -17 s 17 7.626 17 17 S 54.374 62 45 62 z M 45 34 c -6.065 0 -11 4.935 -11 11 s 4.935 11 11 11 s 11 -4.935 11 -11 S 51.065 34 45 34 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(24,47,255); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round"/>
-                        </g>
-                        </svg> View place
-                    </button>
-
-                    <!-- Modal -->
-                    <div id="view" tabindex="-1" aria-hidden="true"
-                        class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 overflow-y-auto overflow-x-hidden">
-                        <div class="relative w-full max-w-4xl p-4">
-                            <!-- Modal content -->
-                            <div class="relative bg-white rounded-lg shadow-sm">
-                                <!-- Modal header -->
-                                <div class="flex items-center justify-between p-4 border-b rounded-t">
-                                    <h3 class="text-xl font-semibold text-gray-900">
-                                        Parking lot view <span class="text-gray-500 text-sm">( TA Parking Lot )</span>
-                                    </h3>
-                                    <button type="button" data-modal-toggle="view" class="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" >
-                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 14 14">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                        </svg>
-                                        <span class="sr-only">Close modal</span>
-                                    </button>
-                                </div>
-
-                                <!-- Modal body -->
-                                <div class="p-4 flex flex-col items-center gap-4">
-                                    <!-- Gambar -->
-                                    <div class="overflow-auto border rounded shadow max-w-full">
-                                        <img id="parkImage" src="{% static 'main/parkview.png' %}" alt="Parking lot image"
-                                            class="transition-transform duration-300 scale-100">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-            </div>
-
-            
-            <!-- park -->
-            <div class=" my-4 border border-4 border-[#141E61] rounded-lg shadow-[0_5px_5px_rgba(0,0,0,0.2)]">
-
-                    <div class="p-4 justify-center text-center flex md:text-3xl text-xl bg-[#141E61] font-medium text-white">
-                        Where would you like to park?
-                    </div>
-
-                <div class="grid grid-cols-4">
-                        {% for i in "1234" %}
-                        <!-- ==================== SLOT {{ i }} ==================== -->
-                        <div>
-                            <div class="flex justify-center md:my-2 my-1">
-                                <p class="md:text-md text-sm text-[#141E61] font-semibold">Slot {{i}}</p>
-                            </div>
-                            <div id="slot-{{ i }}-box" class="py-8 justify-center items-center flex bg-[#018214] rounded-2xl mx-3">
-                                <button id="slot-{{ i }}-btn" onclick="setSlotDirectly('{{ i }}')">
-                                    <img src="{% static 'main/car'|add:i|add:'.png' %}" alt="" class="block md:w-28 w-[50px] transition duration-300 ease-in-out transform hover:scale-110 hover:brightness-75">
-                                </button>
-                            </div>
-                            <div class="items-center flex justify-center py-2">
-                                <p id="slot-{{ i }}-label" class="text-md text-[#018214] font-semibold">Available</p>
-                            </div>
-                    
-                            <!-- Modal OCCUPIED Slot {{ i }} -->
-                            <div id="popup-modal{{ i }}" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                                <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md relative">
-                                    <button class="absolute top-2 right-2 text-gray-500 hover:text-black" data-modal-hide="popup-modal{{ i }}">&times;</button>
-                                    <svg class="mx-auto mb-4 text-[#8a1616] w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-                                    <h3 class="mb-5 text-center text-gray-500 text-lg">This parking slot is currently <span class="font-semibold text-[#8a1616]">Occupied</span>. However, you can still make a reservation.</h3>
-                                    <div class="flex justify-center gap-2">
-                                        <button data-modal-hide="popup-modal{{ i }}" class="bg-[#8a1616] text-white px-4 py-2 rounded hover:bg-[#731212]">Reserve Anyway</button>
-                                        <button data-modal-hide="popup-modal{{ i }}" class="bg-gray-200 text-black px-4 py-2 rounded hover:bg-gray-300">No, cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                    
-                            <!-- Modal RESERVED Slot {{ i }} -->
-                            <div id="popup-modal{{ i }}-reserved" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                                <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md relative">
-                                    <button class="absolute top-2 right-2 text-gray-500 hover:text-black" data-modal-hide="popup-modal{{ i }}-reserved">&times;</button>
-                                    <svg class="mx-auto mb-4 text-[#afd106] w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-                                    <h3 class="mb-5 text-center text-gray-500 text-lg">This parking slot has already been <span class="font-semibold text-[#afd106]">Reserved</span>. However, you can still reserve it for other available time slots.</h3>
-                                    <div class="flex justify-center gap-2">
-                                        <button data-modal-hide="popup-modal{{ i }}-reserved" class="bg-[#afd106] text-white px-4 py-2 rounded hover:bg-[#91ad05]">Reserve Anyway</button>
-                                        <button data-modal-hide="popup-modal{{ i }}-reserved" class="bg-gray-200 text-black px-4 py-2 rounded hover:bg-gray-300">No, cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    
-                    <!-- ==================== JS ==================== -->
-                    <script>
-                    let selectedSlotValue;
-                    const selectElement = document.getElementById('slot');
-                    
-                    function setSlotDirectly(value) {
-                        if (selectElement) selectElement.value = value;
-                    }
-                    
-                    // ==================== Modal JS ==================== //
-                    document.addEventListener('DOMContentLoaded', () => {
-                        // close on button
-                        document.querySelectorAll('[data-modal-hide]').forEach(btn => {
-                            btn.addEventListener('click', () => {
-                                const modalId = btn.getAttribute('data-modal-hide');
-                                document.getElementById(modalId).classList.add('hidden');
-                            });
-                        });
-                        // close on backdrop
-                        document.querySelectorAll('.fixed').forEach(modal => {
-                            modal.addEventListener('click', e => {
-                                if (e.target === modal) modal.classList.add('hidden');
-                            })
-                        })
-                    });
-                    
-                    // ==================== Fetch Status AJAX ==================== //
-                    function updateSlotDisplay(slotNumber, status) {
-                        const box = document.getElementById(`slot-${slotNumber}-box`);
-                        const label = document.getElementById(`slot-${slotNumber}-label`);
-                        const btn = document.getElementById(`slot-${slotNumber}-btn`);
-                    
-                        box.className = "py-8 justify-center items-center flex rounded-2xl mx-3 mt-3";
-                        label.className = "text-md font-semibold";
-                    
-                        if (status === "occupied") {
-                            box.classList.add('bg-[#8a1616]');
-                            label.classList.add('text-[#8a1616]');
-                            label.innerText = "Occupied";
-                            btn.onclick = () => document.getElementById(`popup-modal${slotNumber}`).classList.remove('hidden');
-                        } else if (status === "reserved") {
-                            box.classList.add('bg-[#afd106]');
-                            label.classList.add('text-[#afd106]');
-                            label.innerText = "Reserved";
-                            btn.onclick = () => document.getElementById(`popup-modal${slotNumber}-reserved`).classList.remove('hidden');
-                        } else if (status === "disabled") {
-                        box.classList.add('bg-[#A0A0A0]');
-                        label.classList.add('text-[#A0A0A0]');
-                        label.innerText = "Disabled";
-                        btn.onclick = () => alert('This slot is disabled by admin.');
-                        }
-                        else {
-                            box.classList.add('bg-[#018214]');
-                            label.classList.add('text-[#018214]');
-                            label.innerText = "Available";
-                            btn.onclick = () => setSlotDirectly(slotNumber);
-                        }
-
-                        if (status === 'disabled') {
-                        document.querySelector(`#slot option[value="${slotNumber}"]`).disabled = true;
-                        } else {
-                        document.querySelector(`#slot option[value="${slotNumber}"]`).disabled = false;
-                        }
-                    }
-
-                    function formatDateToISO(dateStr) {
-                        const [month, day, year] = dateStr.split('/');
-                        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-                    }
-                    
-                    // Fetch every 3s
-                    setInterval(() => {
-                        const dateInput = document.getElementById('default-datepicker');
-                        const selectedDate = dateInput ? dateInput.value : '';
-
-                        if (!selectedDate) return; 
-
-                        const formattedDate = formatDateToISO(selectedDate)
-
-                        fetch(`/api/spots-dynamic-status/?date=${formattedDate}`)
-                            .then(res => res.json())
-                            .then(data => {
-                                data.forEach(spot => updateSlotDisplay(spot.spot_number, spot.status));
-                            })
-                            .catch(err => console.error(err));
-                    }, 3000);
-
-                    /* testing
-                    document.addEventListener('DOMContentLoaded', () => {
-                        const dateInput = document.getElementById('default-datepicker');
-
-                        function fetchSlotStatusByDate(selectedDate) {
-                            if (!selectedDate) return;
-
-                            const formattedDate = formatDateToISO(selectedDate);
-
-                            fetch(`/api/spots-dynamic-status/?date=${formattedDate}`)
-                                .then(res => res.json())
-                                .then(data => {
-                                    data.forEach(spot => updateSlotDisplay(spot.spot_number, spot.status));
-                                })
-                                .catch(err => console.error(err));
-                        }
-
-                        if (dateInput) {
-
-                            fetchSlotStatusByDate(dateInput.value);
-
-                            dateInput.addEventListener('change', () => {
-                                fetchSlotStatusByDate(dateInput.value)
-                            });
-
-                            setInterval(() => {
-                                fetchSlotStatusByDate(dateInput.value);
-                            }, 3000)
-                        }
-                    });
-                    */
-                    
-                    </script>
                 
             </div>
 
