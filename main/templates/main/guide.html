@@ -1,0 +1,149 @@
+{% extends "headfoot.html" %}
+
+{% block title %}Home Page{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<title>Getting Started</title>
+
+<div class="animate-fade-up">
+ <section class=" md:mt-12 text-center px-4 py-12 bg-gradient-to-r from-blue-600 to-indigo-600 ">
+    <h1 class="text-4xl font-bold">Getting Started</h1>
+    <p class="mt-2 text-lg">Learn how to use the app step by step</p>
+  </section>
+
+  <!-- Guide Categories -->
+  <section class="px-6 ">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-center">
+
+      <!-- Card: Login -->
+      <div class="bg-white floating-1 sm:h-[170px] items-center text-center grid p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1">
+        <div>
+          <h3 class="text-lg font-semibold">Login & Registration</h3>
+        </div>
+        <p class="text-gray-600 text-sm">How to sign up, log in, and recover your password.</p>
+        <a href="#login" class="scroll-to-center text-blue-600 mt-3 inline-block hover:underline">Read more →</a>
+      </div>
+
+      <!-- Card: Account Settings -->
+      <div class="bg-white floating-3 sm:h-[200px] items-center text-center grid p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1">
+        <div>
+          <h3 class="text-lg font-semibold">Park Reservation</h3>
+        </div>
+        <p class="text-gray-600 text-sm">Learn how to reserve a parking slot through the app, step by step.</p>
+        <a href="#features" class="scroll-to-center text-green-600 mt-3 inline-block hover:underline">Read more →</a>
+      </div>
+
+      <!-- Card: Features -->
+      <div class="bg-white floating-4 sm:h-[170px] items-center text-center grid p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1">
+        <div>
+          <h3 class="text-lg font-semibold">Account Settings</h3>
+        </div>
+        <p class="text-gray-600 text-sm">Manage your profile, password, and preferences.</p>
+        <a href="#account" class="scroll-to-center text-yellow-600 mt-3 inline-block hover:underline">Read more →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Sections -->
+  <section class="md:pt-16 pt-12 px-6 max-w-3xl mx-auto space-y-12 pb-16 md:pb-24">
+
+    <!-- Login & Registration -->
+    <div id="login">
+      <h2 class="text-2xl font-bold mb-4">🔐 Login & Registration</h2>
+      <div class="space-y-4">
+        <details class="bg-white p-4 rounded-lg shadow">
+          <summary class="flex items-center justify-between font-semibold cursor-pointer">How do I create a new account?<i class="fas fa-chevron-right transition-transform"></i></summary>
+          <p class="mt-2 text-sm text-gray-600">Click the "My Account" button on the homepage, select "Register Now", and fill in your details.</p>
+        </details>
+
+        <details class="bg-white p-4 rounded-lg shadow">
+          <summary class="flex items-center justify-between font-semibold cursor-pointer">How do I log in to my account?<i class="fas fa-chevron-right transition-transform"></i></summary>
+          <p class="mt-2 text-sm text-gray-600">After registration, you'll be redirected to the login page where you can enter your credentials.</p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Park Reservation -->
+    <div id="features">
+      <h2 class="text-2xl font-bold mb-4">📃 Park Reservation</h2>
+      <div class="space-y-4">
+        <details class="bg-white p-4 rounded-lg shadow">
+          <summary class="flex items-center justify-between font-semibold cursor-pointer">How do I reserve a parking slot?<i class="fas fa-chevron-right transition-transform"></i></summary>
+          <ul class="mt-2 ml-4 text-sm text-gray-600 list-disc">
+            <li>Log in and click the "Reserve Now" button on the homepage.</li>
+            <li>Select the date, parking spot, and available time slot.</li>
+            <li>Click "Continue" to proceed to the reservation details page.</li>
+            <li>Enter your car details, then click "Reserve".</li>
+          </ul>
+        </details>
+
+        <details class="bg-white p-4 rounded-lg shadow">
+          <summary class="flex items-center justify-between font-semibold cursor-pointer">How can I manage my reservations?<i class="fas fa-chevron-right transition-transform"></i></summary>
+          <p class="mt-2 text-sm text-gray-600">Go to the "My Account" page, click "Reservations" to view and manage your Reservations.</p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Account Settings -->
+    <div id="account">
+      <h2 class="text-2xl font-bold mb-4">🗝️ Account Settings</h2>
+      <div class="space-y-4">
+        <details class="bg-white p-4 rounded-lg shadow">
+          <summary class="flex items-center justify-between font-semibold cursor-pointer">How can I update my account?<i class="fas fa-chevron-right transition-transform"></i></summary>
+          <p class="mt-2 text-sm text-gray-600">Go to the "My Account" page, click the "Update" button under Account Management, then enter your new username, password, and phone number.</p>
+        </details>
+
+        <details class="bg-white p-4 rounded-lg shadow">
+          <summary class="flex items-center justify-between font-semibold cursor-pointer">How do I log out from the website?<i class="fas fa-chevron-right transition-transform"></i></summary>
+          <p class="mt-2 text-sm text-gray-600">Go to the "My Account" page and click "Sign Out" to log out of the website.</p>
+        </details>
+      </div>
+    </div>
+
+    <div class="flex justify-center px-4 sm:px-6 md:me-6">
+  <div class="w-full max-w-md bg-white rounded-xl shadow-md px-6 py-10 space-y-6">
+    
+    <div class="text-center">
+      <p class="text-lg text-gray-700 font-medium">Still need help?</p>
+      <p class="text-sm text-gray-500 mt-1">We're here to assist you with anything you need.</p>
+    </div>
+
+    <div class="flex justify-center">
+      <a href="{% url 'contact' %}"
+         class="inline-block bg-blue-700 text-white font-semibold px-6 py-3 rounded-full shadow-md 
+                hover:bg-blue-800 hover:scale-105 hover:shadow-lg transition-transform duration-300">
+        Contact Us
+      </a>
+    </div>
+    
+  </div>
+</div>
+
+
+
+  </section>
+  
+</div>
+
+
+<script>
+  document.querySelectorAll('a.scroll-to-center').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center', // <-- inilah yang bikin tampil di tengah
+        });
+      }
+    });
+  });
+</script>
+
+{% endblock %}

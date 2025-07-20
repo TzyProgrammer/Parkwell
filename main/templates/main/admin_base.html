@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- icon WEB -->
+  <link rel="icon" href="{% static 'main/iconweb.ico' %}" type="image/x-icon">
+
+  <!-- Tailwind + Flowbite CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+
+  <!-- font -->
+  <link href="https://fonts.googleapis.com/css2?family=Istok+Web&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Istok Web', sans-serif;
+      background: #f2f2f2;
+    }
+      @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 1s ease-out;
+  }
+
+  @keyframes spin-reverse {
+    from { transform: rotate(360deg); }
+    to { transform: rotate(0deg); }
+  }
+  .animate-spin-reverse {
+    animation: spin-reverse 1.2s linear infinite;
+  }
+  </style>
+</head>
+<body>
+
+  <!-- Loding -->
+<div id="loading-spinner" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center z-50 hidden transition-opacity duration-300 ease-in-out">
+  <!-- Double Ring Spinner -->
+  <div class="relative w-20 h-20">
+    <div class="absolute inset-0 border-4 border-t-transparent border-[#EEEE] rounded-full animate-spin"></div>
+    <div class="absolute inset-2 border-4 border-b-transparent border-[#F2C94C] rounded-full animate-spin-reverse"></div>
+  </div>
+
+  <div class="mt-6 text-[#EEEE] text-xl font-semibold tracking-wide flex gap-1">
+    <span>Loading</span>
+    <span class="animate-bounce">.</span>
+    <span class="animate-bounce delay-150">.</span>
+    <span class="animate-bounce delay-300">.</span>
+  </div>
+</div>
+
+  <nav class=" bg-[#141E61] backdrop-blur-md bg-opacity-[0.93] fixed w-full z-20 top-0 start-0 border-b border-gray-200 ">
+    <div class="max-w-screen flex flex-wrap items-center justify-between mx-8 p-3">
+      <a href="#" class="items-center space-x-3 md:ml-6">
+        <img src="{% static 'main/LogoTeks.png' %}" class="md:w-[165px] w-[140px]" alt="">
+      </a>
+      <div class="justify-between hidden w-full md:flex flex-col md:w-auto md:order-2" id="navbar-sticky">
+  <a href="{% url 'adminlogout' %}" class="flex items-center text-md gap-2 text-white hover:text-gray-300 transition-colors">
+    Logout
+    <svg xmlns="http://www.w3.org/2000/svg" 
+         viewBox="0 0 256 256" 
+         fill="none"
+         stroke="currentColor" 
+         stroke-width="1.5"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         class="w-6 h-6 ">
+      <g transform="translate(1.4 1.4) scale(2.8)">
+        <path d="M69.3 54.4c-.4 0-.8-.1-1.1-.4-.9-.6-1.1-1.9-.5-2.8l10.1-14.4-10.1-14.4c-.6-.9-.4-2.2.5-2.8.9-.6 2.2-.4 2.8.5l10.9 15.5c.5.7.5 1.6 0 2.3L71 53.6c-.4.5-1 .8-1.7.8z" fill="#fff"/>
+        <path d="M57.7 30.1c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2H9.8c-.2 0-.4 0-.6.1-.1 0-.2 0-.2.1-.2.1-.4.2-.6.3-.1.1-.2.1-.3.2-.1.1-.2.1-.3.2-.1.1-.3.2-.4.4-.1.1-.1.2-.2.2-.1.1-.2.3-.2.4-.1.1-.1.2-.2.3-.1.2-.1.3-.2.5 0 .1-.1.2-.1.3-.1.2-.1.3-.1.5V71c0 .2 0 .3.1.5 0 .1.1.2.1.3.1.1.1.2.2.3.1.1.1.2.2.3.1.1.2.3.4.4.1.1.2.1.3.2.1.1.3.2.4.3.1 0 .1.1.2.1l31 16.2c.3.2.6.3.9.3.4 0 .7-.1 1-.3.6-.4 1-1 1-1.7V73.8h14.9c1.1 0 2-.9 2-2V45c0-1.1-.9-2-2-2s-2 .9-2 2v24.8H42.8V18.2c0-.7-.4-1.4-1.1-1.8L17.9 4h37.8v24.1c0 1.1.9 2 2 2z" fill="#fff"/>
+        <path d="M80.2 38.9H47.5c-1.1 0-2-.9-2-2s.9-2 2-2h32.7c1.1 0 2 .9 2 2s-.9 2-2 2z" fill="#fff"/>
+      </g>
+    </svg>
+  </a>
+</div>
+
+  </nav>
+  
+
+  <!-- PAGE CONTENT -->
+  <div class="pt-20 md:pt-12"> 
+    <div class="md:mt-12 mt-6 mb-12 md:mb-24 ">
+
+    <div class="mx-4 md:mx-20 my-8">
+        
+            
+
+        <span class="md:ml-12 text-[35px] text-[#141E61] md:text-[clamp(34px,4vw,45px)]">Client Data Center</span>
+
+        {% block akun_content %}
+        {% endblock %}
+
+        
+
+    </div>
+
+</div>
+  </div>
+
+
+<footer class="w-full bg-[#141E61] text-[#EEEE] shadow-inner">
+  <div class="max-w-screen-xl mx-auto px-4 md:pt-12 pt-8 pb-4">
+    <div class="flex flex-col md:flex-row items-center md:justify-between gap-8 border-b border-[#EEEE]/30 pb-8">
+      <a href="{% url 'home' %}" class="flex items-center space-x-3">
+        <img src="{% static 'main/Logo1.png' %}" alt="Logo" class="md:w-[165px] w-[100px]">
+      </a>
+      <p class="text-center md:text-left text-sm md:text-base max-w-md leading-relaxed text-[#EEEE]/80">
+        Empowering smart solutions through innovation and teamwork. Built with dedication by our team.
+      </p>
+    </div>
+
+    <div class="mt-8 flex flex-col md:flex-row md:justify-between items-center gap-6">
+
+      <ul class="flex flex-wrap gap-6 text-sm font-medium">
+        <li><a class="hover:underline hover:text-[#F2C94C] transition">About Us</a></li>
+        <li><a class="hover:underline hover:text-[#F2C94C] transition">Contact</a></li>
+        <li><a class="hover:underline hover:text-[#F2C94C] transition">Privacy Policy</a></li>
+        <li><a class="hover:underline hover:text-[#F2C94C] transition">Terms of Use</a></li>
+      </ul>
+
+    </div>
+    <div class="pt-6 mt-6 border-t border-[#EEEE]/30 text-sm text-center text-[#EEEE]/60">
+      © 2025 <a href="#" class="hover:underline text-[#EEEE]">Teams</a>. All Rights Reserved.
+    </div>
+  </div>
+</footer>
+
+<script>
+  const spinner = document.getElementById("loading-spinner");
+
+  // 1. Spinner saat form disubmit
+  document.querySelectorAll("form").forEach((form) => {
+    form.addEventListener("submit", () => {
+      spinner.classList.remove("hidden");
+    });
+  });
+
+  // 2. Spinner saat klik <a> link (kecuali link internal)
+  document.querySelectorAll("a[href]").forEach((link) => {
+    const href = link.getAttribute("href");
+    const target = link.getAttribute("target");
+
+    if (
+      href.startsWith("#") ||
+      href.startsWith("javascript:") ||
+      href.startsWith("mailto:") ||
+      href.startsWith("tel:") ||
+      (target && target === "_blank")
+    ) return;
+
+    link.addEventListener("click", () => {
+      spinner.classList.remove("hidden");
+    });
+  });
+
+  // 3. Hilangkan spinner saat halaman selesai load atau kembali dari cache
+  window.addEventListener("load", () => {
+    spinner.classList.add("hidden");
+  });
+
+  window.addEventListener("pageshow", () => {
+    spinner.classList.add("hidden");
+  });
+</script>
+
+  <!-- Flowbite JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+  <script src="{% static 'main/app.js' %}"></script>
+</body>
+</html>
