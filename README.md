@@ -50,6 +50,4 @@ python manage.py runserver
 
 Semua perubahan dilakukan melalui branch develop.  
 
-Gunakan branch test jika ingin melakukan percobaan fitur atau testing tertentu.
-
 Setelah fitur stabil, merge ke develop → kemudian akan masuk ke main jika sudah production-ready.
