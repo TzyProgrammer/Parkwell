@@ -1,6 +1,16 @@
-# 🅿️ Parkwell – Smart Parking System with Django
+# 🅿️ Parkwell –  Data driven smart parking system powered by IoT and Big data analytic 
 
-Parkwell adalah proyek berbasis Django yang dikembangkan untuk membangun sistem monitoring dan manajemen parkir berbasis web. Proyek ini dirancang untuk membantu pengguna menemukan slot parkir kosong secara efisien dengan integrasi IoT di masa mendatang.
+Tim PBL IF-18, Yang Beranggotakan: <br>
+3312311003 - Tarich Ziad <br>
+3312301067 - Ardian Zahran <br>
+3312301068 - Muhammad Haziq Afif Hidayat <br>
+3312311123 - Arwindo <br>
+
+
+<img width="2844" height="1527" alt="Screenshot 2025-07-20 084658" src="https://github.com/user-attachments/assets/a2a8d030-cb71-4396-8886-e7232ac99922" />
+
+
+Parkwell adalah Aplikasi sistem parkir pintar berbasis web responsive yang memanfaatkan teknologi IoT dan sensor ultrasonic untuk memberikan informasi real-time tentang ketersediaan slot parkir. Pengguna dapat melakukan reservasi langsung melalui perangkat, sehingga menghindari aktivitas berkeliling mencari tempat parkir kosong.
 
 ## 🚀 Teknologi yang Digunakan
 - Python 3.13.2
