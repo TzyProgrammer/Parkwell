@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from django.utils.timezone import now
 
 # Create your models here.
 class Car(models.Model):
@@ -52,25 +53,74 @@ class Spot(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
     buzzer_active = models.BooleanField(default=True)
 
+    #Web
+    # def update_status_from_distance(self, distance_cm):
+    #     if self.is_disabled:
+    #         return
+        
+    #     # Status sebelumnya untuk deteksi perubahan
+    #     prev_status = self.status
+        
+    #     if distance_cm < 30:
+    #         self.status = 'occupied'
+    #         if prev_status != 'occupied':
+    #             self.buzzer_active = True  # Setel buzzer hidup saat transisi masuk
+    #     else:
+    #         self.status = 'available'
+    #         self.buzzer_active = False  # Matikan buzzer saat kendaraan pergi
+
+    #     self.save()
+    
+    # def __str__(self):
+    #     return f"Spot {self.spot_number}"
+
+    # Testing
     def update_status_from_distance(self, distance_cm):
         if self.is_disabled:
             return
-        
-        # Status sebelumnya untuk deteksi perubahan
+
+        current_time = now()
+
+        # Cek apakah ada reservasi aktif saat ini
+        active_reservation = Reservation.objects.filter(
+            spot=self,
+            start_time__lte=current_time,
+            end_time__gte=current_time
+        ).first()
+
         prev_status = self.status
-        
+
         if distance_cm < 30:
+            # Mobil terdeteksi
             self.status = 'occupied'
-            if prev_status != 'occupied':
-                self.buzzer_active = True  # Setel buzzer hidup saat transisi masuk
+
+            if active_reservation:
+                if not active_reservation.parked:
+                    # Mobil masuk pertama kali
+                    self.buzzer_active = True
+                    active_reservation.parked = True
+                    active_reservation.save()
+                else:
+                    # Mobil sudah pernah diverifikasi
+                    self.buzzer_active = False
+            else:
+                # Mobil bukan pemilik slot
+                self.buzzer_active = False
         else:
-            self.status = 'available'
-            self.buzzer_active = False  # Matikan buzzer saat kendaraan pergi
+            # Mobil tidak terdeteksi
+            if active_reservation:
+                self.status = 'reserved'
+            else:
+                self.status = 'available'
+
+            self.buzzer_active = False
+
+            if active_reservation and active_reservation.parked:
+                # Mobil keluar
+                active_reservation.parked = False
+                active_reservation.save()
 
         self.save()
-    
-    def __str__(self):
-        return f"Spot {self.spot_number}"
     
 class Reservation(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -78,6 +128,7 @@ class Reservation(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True, blank=True)
+    parked = models.BooleanField(default=False)
     
     def __str__(self):
         cars = self.user.cars.all()
