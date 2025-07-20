@@ -1,1 +1,34 @@
-23/6/2025
+Catatan :
+
+Cara melayani static files di PythonAnywhere untuk Django
+1. Atur STATIC_URL dan STATIC_ROOT di settings.py
+Biasanya di settings.py:
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+2. Jalankan collectstatic secara lokal atau di console PythonAnywhere
+Di PythonAnywhere bash console, jalankan:
+
+python manage.py collectstatic
+
+Ini akan mengumpulkan semua file statis ke folder staticfiles (atau folder lain sesuai STATIC_ROOT).
+
+3. Login ke dashboard PythonAnywhere
+
+Masuk ke dashboard PythonAnywhere.
+
+Pilih tab Web.
+
+Scroll ke bagian Static files.
+
+Tambahkan mapping URL ke folder statis, misalnya:
+
+URL	        Directory path
+/static/	/home/yourusername/yourproject/staticfiles/
+
+Pastikan folder diisi sesuai dengan STATIC_ROOT di proyekmu.
+
+4. Reload web app
+Setelah konfigurasi, klik tombol Reload pada halaman web app di PythonAnywhere supaya perubahan diterapkan.
+

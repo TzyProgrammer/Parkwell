@@ -10,8 +10,8 @@ from django.utils.dateparse import parse_date
 from django.conf import settings
 from django.utils import timezone
 from django.utils.timezone import now, localdate, make_aware, localtime
-from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_exempt 
+from django.views.decorators.http import require_POST, require_GET
+from django.views.decorators.csrf import csrf_exempt
 import paho.mqtt.publish as publish
 from functools import wraps
 import json
@@ -43,7 +43,7 @@ def register_view(request):
                 'errors': errors,
                 'input': request.POST
             })
-        
+
         user = CustomUser.objects.create_user(
             username=username,
             email=email,
@@ -161,7 +161,7 @@ def reservation_details_view(request, reservation_id):
         reservation = Reservation.objects.get(id=reservation_id)
     except Reservation.DoesNotExist:
         return render(request, 'reservation_details.html', {'error': 'Reservation not found'})
-    
+
     if request.method == 'POST':
         brand = request.POST.get('dropdown1')
         model = request.POST.get('dropdown2')
@@ -170,11 +170,11 @@ def reservation_details_view(request, reservation_id):
         plate2 = request.POST.get('plate2')
         plate3 = request.POST.get('plate3')
         uploaded_image = request.FILES.get('imageUpload')
-        
+
         license_plate = f"{plate1} {plate2} {plate3.strip().upper()}"
 
         print("reservation details data: ", request.POST, request.FILES)
-        
+
         car = Car.objects.create(
             user=request.user,
             brand=brand,
@@ -183,10 +183,10 @@ def reservation_details_view(request, reservation_id):
             license_plate=license_plate,
             image=uploaded_image,
         )
-        
+
         reservation.car = car
         reservation.save()
-        
+
         return redirect('account')
 
     return render(request, 'reservation_details.html', {'reservation': reservation})
@@ -291,7 +291,7 @@ def adminreservation_view(request):
 @admin_login_required
 def adminmonitoring_view(request):
     return render(request, 'adminmonitoring.html')
-  
+
 def spots_dynamic_status_json(request):
     # ───────────────────────── validasi querystring ─────────────────────────
     selected_date_str = request.GET.get('date')
@@ -447,6 +447,7 @@ def admin_home_details_json(request):
     return JsonResponse(result, safe=False)
 
 @require_POST
+@csrf_exempt
 def toggle_spot_disable(request):
     """
     Body JSON = { "spot_numbers": [1,2], "disable": true }
@@ -456,27 +457,17 @@ def toggle_spot_disable(request):
         spot_nums = body.get("spot_numbers", [])
         disable   = bool(body.get("disable", False))
 
+        # Update database field
         Spot.objects.filter(spot_number__in=spot_nums).update(is_disabled=disable)
 
+        # Reset status jika sebelumnya disabled
         for slot_number in spot_nums:
-            topic = f"parkir/slot{slot_number}/buzzer"
             if disable:
-                # Set status ke disabled dan kirim perintah ke sensor
                 Spot.objects.filter(spot_number=slot_number).update(status='disabled')
-                payload = "disabled"
-                print(f"[MQTT] 🚫 Slot {slot_number} dinonaktifkan → kirim 'disabled'")
+                print(f"[REST] 🚫 Slot {slot_number} dinonaktifkan")
             else:
-                # Reset status jika sebelumnya disabled
                 Spot.objects.filter(spot_number=slot_number, status='disabled').update(status='available')
-                payload = "enable"
-                print(f"[MQTT] ✅ Slot {slot_number} diaktifkan kembali → kirim 'enable'")
-
-            publish.single(
-                topic,
-                payload,
-                hostname="192.168.12.151",  # ganti ke IP broker kamu
-                port=1883
-            )
+                print(f"[REST] ✅ Slot {slot_number} diaktifkan kembali")
 
         return JsonResponse({"success": True})
     except Exception as e:
@@ -486,27 +477,58 @@ def toggle_spot_disable(request):
 @admin_login_required
 @csrf_exempt
 def admin_turn_off_buzzer(request):
-    if request.method == "POST":
+    try:
         data = json.loads(request.body)
         slot_number = data.get("slot_number")
 
-        try:
-            spot = Spot.objects.get(spot_number=slot_number)
-            spot.buzzer_active = False
-            spot.save()
+        spot = Spot.objects.get(spot_number=slot_number)
+        spot.buzzer_active = False
+        spot.save()
 
-            topic = f"parkir/slot{slot_number}/buzzer"
-            publish.single(
-                topic,
-                "off",
-                hostname="192.168.12.151",  # IP broker laptop
-                port=1883
-            )
-            print(f"✅ Buzzer untuk slot {slot_number} dimatikan oleh admin.")
-            return JsonResponse({"success": True})
+        print(f"✅ Buzzer untuk slot {slot_number} dimatikan oleh admin (REST).")
+        return JsonResponse({"success": True})
 
-        except Spot.DoesNotExist:
-            return JsonResponse({"success": False, "error": "Slot tidak ditemukan"})
+    except Spot.DoesNotExist:
+        return JsonResponse({"success": False, "error": "Slot tidak ditemukan"})
+    except Exception as e:
+        return JsonResponse({"success": False, "error": str(e)})
 
-    return JsonResponse({"success": False, "error": "Metode bukan POST"})
+@csrf_exempt
+@require_POST
+def sensor_data_api(request):
+    """
+    Menerima data POST dari Raspberry Pi:
+    Body JSON = { "slot": "1", "distance": 25.4 }
+    """
+    try:
+        data = json.loads(request.body.decode())
+        spot_number = data.get('slot')
+        distance = float(data.get('distance'))
 
+        spot = Spot.objects.get(spot_number=spot_number)
+        spot.update_status_from_distance(distance)
+
+        return JsonResponse({'status': 'success'})
+    except Spot.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Slot tidak ditemukan'}, status=404)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+
+@csrf_exempt
+@require_GET
+def buzzer_control_status(request, slot_number):
+    try:
+        spot = Spot.objects.get(spot_number=slot_number)
+
+        if spot.is_disabled:
+            control_status = "disabled"
+        elif not spot.buzzer_active:
+            control_status = "off"
+        else:
+            control_status = "enable"
+
+        return JsonResponse({"buzzer": control_status})
+
+    except Spot.DoesNotExist:
+        return JsonResponse({"error": "Slot tidak ditemukan"}, status=404)
