@@ -80,7 +80,7 @@ def home_view(request):
 
 @login_required(login_url='login')
 def reservation_view(request):
-    today = localdate()
+    today = date.today()
     two_weeks = today + timedelta(days=14)
 
     if request.method == 'POST':
@@ -89,12 +89,12 @@ def reservation_view(request):
 
         # Ambil data dari form
         date_str = request.POST.get('date')
-        start_time_str = request.POST.get('start_time')
-        end_time_str = request.POST.get('end_time')
+        start_hour = request.POST.get('start_time')
+        end_hour = request.POST.get('end_time')
         spot_number = request.POST.get('slot')  # name="slot" di HTML
 
         # Validasi form kosong
-        if not all([date_str, start_time_str, end_time_str, spot_number]):
+        if not all([date_str, start_hour, end_hour, spot_number]):
             return render(request, 'reservation.html', {
                 'error': 'Please fill all fields',
                 'today': today.strftime('%Y-%m-%d'),
@@ -123,27 +123,14 @@ def reservation_view(request):
                 'two_weeks': two_weeks.strftime('%Y-%m-%d')
             })
 
-        # Konversi waktu dengan zona waktu
+        # Konversi waktu
         try:
-            # Parse tanggal
-            date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
-            
-            # Parse waktu mulai
-            start_hour, start_minute = map(int, start_time_str.split(':'))
-            
-            # Parse waktu selesai
-            end_hour, end_minute = map(int, end_time_str.split(':'))
-            
-            # Buat datetime object dengan zona waktu
-            start_datetime = make_aware(
-                datetime.combine(date_obj, time(start_hour, start_minute))
-            )
-            end_datetime = make_aware(
-                datetime.combine(date_obj, time(end_hour, end_minute))
-            )
-        except Exception as e:
-            logger.error(f"Error parsing datetime: {str(e)}")
-            messages.error(request, f"Invalid date or time format: {str(e)}")
+            date_obj = datetime.strptime(date_str, "%m/%d/%Y")
+            formatted_date = date_obj.strftime("%Y-%m-%d")
+            start_datetime = datetime.strptime(f"{formatted_date} {start_hour}:00", "%Y-%m-%d %H:%M:%S")
+            end_datetime = datetime.strptime(f"{formatted_date} {end_hour}:00", "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            messages.error(request, "Invalid date or time format.")
             return redirect('reservation')
 
         # Simpan reservasi
@@ -161,6 +148,12 @@ def reservation_view(request):
         'today': today.strftime('%Y-%m-%d'),
         'two_weeks': two_weeks.strftime('%Y-%m-%d'),
     })
+
+latest_data = {"distance": "Belum ada data"}
+
+def status_view(request):
+    spots = Spot.objects.all()
+    return render(request, 'status.html', {"spots": spots})
 
 @login_required(login_url='login')
 def reservation_details_view(request, reservation_id):
@@ -197,10 +190,6 @@ def reservation_details_view(request, reservation_id):
         return redirect('account')
 
     return render(request, 'reservation_details.html', {'reservation': reservation})
-
-def status_view(request):
-    spots = Spot.objects.all()
-    return render(request, 'status.html', {"spots": spots})
 
 @login_required(login_url='login')
 def account_view(request):
@@ -240,7 +229,7 @@ def update_account_view(request):
             user.save()
 
         messages.success(request, "Akun berhasil diperbarui.")
-        return redirect('account')
+        return redirect('account')  # Ganti sesuai halaman utama akun kamu
 
     return redirect('account')
 
@@ -268,7 +257,7 @@ def adminlogin_view(request):
         password = request.POST.get('password')
         if password == 'parkircerdas':
             request.session['admin_logged_in'] = True
-            return redirect('adminhome')
+            return redirect('adminhome')  # pastikan URL name ini benar
         else:
             return render(request, 'adminlogin.html', {
                 'error': 'Password salah. Coba lagi.'
@@ -279,12 +268,12 @@ def admin_login_required(view_func):
     @wraps(view_func)
     def wrapper(request, *args, **kwargs):
         if not request.session.get('admin_logged_in'):
-            return redirect('adminlogin')
+            return redirect('adminlogin')  # pastikan URL name ini sesuai
         return view_func(request, *args, **kwargs)
     return wrapper
 
 def adminlogout_view(request):
-    request.session.flush()
+    request.session.flush()  # hapus semua data session
     return redirect('adminlogin')
 
 @admin_login_required
@@ -304,6 +293,7 @@ def adminmonitoring_view(request):
     return render(request, 'adminmonitoring.html')
   
 def spots_dynamic_status_json(request):
+    # ───────────────────────── validasi querystring ─────────────────────────
     selected_date_str = request.GET.get('date')
     if not selected_date_str:
         return JsonResponse({'error': 'No date provided'}, status=400)
@@ -312,19 +302,24 @@ def spots_dynamic_status_json(request):
     if not selected_date:
         return JsonResponse({'error': 'Invalid date format'}, status=400)
 
-    today = localdate()
+    # ───────────────────────── core logic ─────────────────────────
+    today  = localdate()
     result = []
 
     for spot in Spot.objects.all().order_by('spot_number'):
+        # 1) Jika admin men‑disable spot → selalu "disabled"
         if spot.is_disabled:
             status = "disabled"
+
         else:
+            # 2) Ada/tidaknya reservasi pada tanggal yang diminta
             reserved_on_date = Reservation.objects.filter(
                 spot=spot,
                 start_time__date=selected_date
             ).exists()
 
             if selected_date == today:
+                # Hari ini: pertimbangkan sensor live
                 if spot.status == "occupied":
                     status = "occupied"
                 elif reserved_on_date:
@@ -332,15 +327,24 @@ def spots_dynamic_status_json(request):
                 else:
                     status = "available"
             else:
+                # Tanggal lain: hanya lihat reservasi
                 status = "reserved" if reserved_on_date else "available"
 
         result.append({
             "spot_number": spot.spot_number,
-            "status": status,
+            "status":      status,
             "buzzer_active": spot.buzzer_active,
         })
 
     return JsonResponse(result, safe=False)
+
+def get_reserved_times(start, end):
+    blocked = []
+    current = start
+    while current <= end:
+        blocked.append(current.strftime("%H:%M"))
+        current += timedelta(minutes=30)
+    return blocked
 
 def reserved_intervals_view(request):
     date_str = request.GET.get('date')
@@ -355,18 +359,21 @@ def reserved_intervals_view(request):
         return JsonResponse({'error': 'Spot not found'}, status=404)
 
     try:
+        # Parse tanggal dengan timezone awareness
         naive_date = datetime.strptime(date_str, '%Y-%m-%d').date()
-        start_of_day = make_aware(datetime.combine(naive_date, time.min))
+        start_of_day = make_aware(datetime.combine(naive_date, datetime.min.time()))
         end_of_day = start_of_day + timedelta(days=1)
     except ValueError:
         return JsonResponse({'error': 'Invalid date format'}, status=400)
 
+    # Dapatkan semua reservasi untuk spot dan tanggal tersebut
     reservations = Reservation.objects.filter(
         spot=spot,
         start_time__gte=start_of_day,
         start_time__lt=end_of_day
     )
 
+    # Kumpulkan interval yang diblokir
     blocked_intervals = []
     for r in reservations:
         start = localtime(r.start_time)
@@ -379,25 +386,35 @@ def reserved_intervals_view(request):
     return JsonResponse({'blocked_intervals': blocked_intervals})
 
 def admin_home_details_json(request):
+    """
+    Kembalikan JSON berisi status, username, dan time (hari ini) untuk tiap slot.
+    GET /api/admin-home-details/?date=YYYY-MM-DD   ← date opsional (default: hari ini)
+    """
+    # ── ambil tanggal ──────────────────────────────────────────────────────
     date_str = request.GET.get('date')
     target_date = parse_date(date_str) if date_str else localdate()
     if target_date is None:
         return JsonResponse({'error': 'Invalid date'}, status=400)
 
     today = localdate()
+    now   = localtime()
+
     result = []
 
     for spot in Spot.objects.all().order_by('spot_number'):
         data = {
             "spot_number": spot.spot_number,
-            "status": "available",
-            "username": "",
-            "time": ""
+            "status":      "available",   # default
+            "username":    "",
+            "time":        ""
         }
 
+        # 1. prioritas tertinggi: Disabled
         if spot.is_disabled:
             data["status"] = "disabled"
+
         else:
+            # 2. cek ada reservasi pada target_date
             reservation_qs = Reservation.objects.filter(
                 spot=spot,
                 start_time__date=target_date
@@ -405,6 +422,7 @@ def admin_home_details_json(request):
 
             has_reservation = reservation_qs.exists()
 
+            # 3. tentukan status untuk hari ini
             if target_date == today:
                 if spot.status == "occupied":
                     data["status"] = "occupied"
@@ -415,6 +433,7 @@ def admin_home_details_json(request):
             else:
                 data["status"] = "reserved" if has_reservation else "available"
 
+            # 4. masukkan detail user & time kalau reserved
             if data["status"] == "reserved":
                 r = reservation_qs.first()
                 if r:
@@ -429,26 +448,33 @@ def admin_home_details_json(request):
 
 @require_POST
 def toggle_spot_disable(request):
+    """
+    Body JSON = { "spot_numbers": [1,2], "disable": true }
+    """
     try:
         body = json.loads(request.body.decode())
         spot_nums = body.get("spot_numbers", [])
-        disable = bool(body.get("disable", False))
+        disable   = bool(body.get("disable", False))
 
         Spot.objects.filter(spot_number__in=spot_nums).update(is_disabled=disable)
 
         for slot_number in spot_nums:
             topic = f"parkir/slot{slot_number}/buzzer"
             if disable:
+                # Set status ke disabled dan kirim perintah ke sensor
                 Spot.objects.filter(spot_number=slot_number).update(status='disabled')
                 payload = "disabled"
+                print(f"[MQTT] 🚫 Slot {slot_number} dinonaktifkan → kirim 'disabled'")
             else:
+                # Reset status jika sebelumnya disabled
                 Spot.objects.filter(spot_number=slot_number, status='disabled').update(status='available')
                 payload = "enable"
+                print(f"[MQTT] ✅ Slot {slot_number} diaktifkan kembali → kirim 'enable'")
 
             publish.single(
                 topic,
                 payload,
-                hostname="192.168.12.151",
+                hostname="192.168.12.151",  # ganti ke IP broker kamu
                 port=1883
             )
 
@@ -473,9 +499,10 @@ def admin_turn_off_buzzer(request):
             publish.single(
                 topic,
                 "off",
-                hostname="192.168.12.151",
+                hostname="192.168.12.151",  # IP broker laptop
                 port=1883
             )
+            print(f"✅ Buzzer untuk slot {slot_number} dimatikan oleh admin.")
             return JsonResponse({"success": True})
 
         except Spot.DoesNotExist:
