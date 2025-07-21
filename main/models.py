@@ -4,7 +4,7 @@ from django.utils import timezone
 
 # Create your models here.
 class Car(models.Model):
-    license_plate = models.CharField(max_length=20, unique=True)
+    license_plate = models.CharField(max_length=20, unique=False)
     brand = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     color = models.CharField(max_length=100)
