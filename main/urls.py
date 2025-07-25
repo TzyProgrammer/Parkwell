@@ -24,6 +24,9 @@ urlpatterns = [
     path('api/admin-home-details/', admin_home_details_json, name='admin_home_details_json'),
     path('api/toggle-spot-disable/', toggle_spot_disable, name='toggle_spot_disable'),
     path('api/admin-turn-off-buzzer/', admin_turn_off_buzzer, name='admin_turn_off_buzzer'),
+    path('api/reservation/', api_reservation_view, name='api_reservation'),
+    path('api/test-turn-off-buzzer/', api_admin_turn_off_buzzer, name='api_test_turn_off_buzzer'),
+
     # admin
     path('adminlogin/', adminlogin_view, name='adminlogin'),
     path('adminlogout/', adminlogout_view, name='adminlogout'),

@@ -19,13 +19,14 @@ import json
 logger = logging.getLogger(__name__)
 
 # Create your views here.
+@csrf_exempt
 def register_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
-        phone_number = request.POST['phone_number']
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        phone_number = request.POST.get('phone_number')
 
         errors = {}
 
@@ -39,37 +40,54 @@ def register_view(request):
             errors['password'] = "* Passwords do not match."
 
         if errors:
-            return render(request, 'register.html', {
-                'errors': errors,
-                'input': request.POST
-            })
-        
+            # ⛔️ Return error dalam bentuk JSON
+            return JsonResponse({
+                "success": False,
+                "errors": errors
+            }, status=400)
+
+        # ✅ Buat user baru
         user = CustomUser.objects.create_user(
             username=username,
             email=email,
             password=password,
             phone_number=phone_number
         )
-        login(request, user)
-        return redirect('login')
-    return render(request, 'register.html')
 
+        login(request, user)
+
+        # ✅ Return response sukses
+        return JsonResponse({
+            "success": True,
+            "message": "User registered successfully",
+            "username": user.username
+        }, status=201)
+
+    # Jika metode bukan POST
+    return JsonResponse({"error": "Only POST method allowed"}, status=405)
+
+@csrf_exempt
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
-            logger.debug(f"User {user.username} logged in successfully")
-            return redirect('home')
-        else:
-            return render(request, 'login.html', {
-                'error': "* Invalid username or password.",
-                'input': request.POST
+
+            # 🟢 Di sinilah kita kirim response JSON
+            return JsonResponse({
+                "access_token": f"TOKEN_{user.username}",  # ← bisa diganti token asli jika pakai JWT
+                "username": user.username,
             })
-    return render(request, 'login.html')
+
+        # 🔴 Kalau gagal login
+        return JsonResponse({
+            "error": "Invalid username or password"
+        }, status=400)
+
+    return JsonResponse({"error": "Only POST method allowed"}, status=405)
 
 def logout_view(request):
     logout(request)
@@ -78,78 +96,61 @@ def logout_view(request):
 def home_view(request):
     return render(request, 'home.html')
 
+@csrf_exempt
 @login_required(login_url='login')
 def reservation_view(request):
-    today = date.today()
-    two_weeks = today + timedelta(days=14)
-
     if request.method == 'POST':
-        print("POST request received")
-        print("Raw POST data:", request.POST)
-
-        # Ambil data dari form
-        date_str = request.POST.get('date')
-        start_hour = request.POST.get('start_time')
-        end_hour = request.POST.get('end_time')
-        spot_number = request.POST.get('slot')  # name="slot" di HTML
-
-        # Validasi form kosong
-        if not all([date_str, start_hour, end_hour, spot_number]):
-            return render(request, 'reservation.html', {
-                'error': 'Please fill all fields',
-                'today': today.strftime('%Y-%m-%d'),
-                'two_weeks': two_weeks.strftime('%Y-%m-%d')
-            })
-
-        # Validasi tipe spot_number
         try:
-            spot_number = int(spot_number)
-        except ValueError:
-            messages.error(request, "Invalid slot selected.")
-            return redirect('reservation')
+            # parsing JSON dari body request
+            data = json.loads(request.body)
 
-        # Ambil objek Spot
-        try:
-            spot = Spot.objects.get(spot_number=spot_number)
-        except Spot.DoesNotExist:
-            messages.error(request, "Selected slot not found.")
-            return redirect('reservation')
+            date_str = data.get('date')
+            start_hour = data.get('start_time')
+            end_hour = data.get('end_time')
+            spot_number = data.get('slot')
 
-        # Cek apakah spot dinonaktifkan
-        if spot.is_disabled:
-            return render(request, 'reservation.html', {
-                'error': 'This parking slot is currently disabled by admin.',
-                'today': today.strftime('%Y-%m-%d'),
-                'two_weeks': two_weeks.strftime('%Y-%m-%d')
-            })
+            if not all([date_str, start_hour, end_hour, spot_number]):
+                return JsonResponse({'success': False, 'error': 'Please fill all fields'}, status=400)
 
-        # Konversi waktu
-        try:
-            date_obj = datetime.strptime(date_str, "%m/%d/%Y")
-            formatted_date = date_obj.strftime("%Y-%m-%d")
-            start_datetime = datetime.strptime(f"{formatted_date} {start_hour}:00", "%Y-%m-%d %H:%M:%S")
-            end_datetime = datetime.strptime(f"{formatted_date} {end_hour}:00", "%Y-%m-%d %H:%M:%S")
-        except ValueError:
-            messages.error(request, "Invalid date or time format.")
-            return redirect('reservation')
+            try:
+                spot_number = int(spot_number)
+                spot = Spot.objects.get(spot_number=spot_number)
+            except (ValueError, Spot.DoesNotExist):
+                return JsonResponse({'success': False, 'error': 'Invalid slot selected'}, status=400)
 
-        # Simpan reservasi
-        reservation = Reservation.objects.create(
-            user=request.user,
-            spot=spot,
-            start_time=start_datetime,
-            end_time=end_datetime,
-        )
+            if spot.is_disabled:
+                return JsonResponse({'success': False, 'error': 'This parking slot is currently disabled.'}, status=400)
 
-        return redirect('reservationdetails', reservation_id=reservation.id)
+            try:
+                date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+                start_datetime = datetime.strptime(f"{date_str} {start_hour}:00", "%Y-%m-%d %H:%M:%S")
+                end_datetime = datetime.strptime(f"{date_str} {end_hour}:00", "%Y-%m-%d %H:%M:%S")
+            except ValueError:
+                return JsonResponse({'success': False, 'error': 'Invalid date or time format.'}, status=400)
 
-    # GET request: tampilkan form kosong
-    return render(request, 'reservation.html', {
-        'today': today.strftime('%Y-%m-%d'),
-        'two_weeks': two_weeks.strftime('%Y-%m-%d'),
-    })
+            reservation = Reservation.objects.create(
+                user=request.user,
+                spot=spot,
+                start_time=start_datetime,
+                end_time=end_datetime,
+            )
 
-latest_data = {"distance": "Belum ada data"}
+            return JsonResponse({
+                'success': True,
+                'message': 'Reservation created successfully',
+                'reservation_id': reservation.id
+            }, status=201)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
+
+    return JsonResponse({'error': 'Only POST method allowed'}, status=405)
+
+@csrf_exempt
+def api_reservation_view(request):
+    # Gunakan user dummy untuk testing
+    request.user = CustomUser.objects.first()
+    return reservation_view(request)
 
 def status_view(request):
     spots = Spot.objects.all()
@@ -446,6 +447,7 @@ def admin_home_details_json(request):
 
     return JsonResponse(result, safe=False)
 
+@csrf_exempt
 @require_POST
 def toggle_spot_disable(request):
     """
@@ -474,7 +476,7 @@ def toggle_spot_disable(request):
             publish.single(
                 topic,
                 payload,
-                hostname="192.168.12.151",  # ganti ke IP broker kamu
+                hostname="192.168.18.11",  # ganti ke IP broker kamu
                 port=1883
             )
 
@@ -486,27 +488,55 @@ def toggle_spot_disable(request):
 @admin_login_required
 @csrf_exempt
 def admin_turn_off_buzzer(request):
-    if request.method == "POST":
+    if request.method != "POST":
+        return JsonResponse({"success": False, "error": "Method not allowed"}, status=405)
+
+    try:
         data = json.loads(request.body)
         slot_number = data.get("slot_number")
 
-        try:
-            spot = Spot.objects.get(spot_number=slot_number)
-            spot.buzzer_active = False
-            spot.save()
+        spot = Spot.objects.get(spot_number=slot_number)
+        spot.buzzer_active = False
+        spot.save()
 
-            topic = f"parkir/slot{slot_number}/buzzer"
-            publish.single(
-                topic,
-                "off",
-                hostname="192.168.12.151",  # IP broker laptop
-                port=1883
-            )
-            print(f"✅ Buzzer untuk slot {slot_number} dimatikan oleh admin.")
-            return JsonResponse({"success": True})
+        topic = f"parkir/slot{slot_number}/buzzer"
+        publish.single(topic, "off", hostname="192.168.12.151", port=1883)
 
-        except Spot.DoesNotExist:
-            return JsonResponse({"success": False, "error": "Slot tidak ditemukan"})
+        return JsonResponse({"success": True})
 
-    return JsonResponse({"success": False, "error": "Metode bukan POST"})
+    except Spot.DoesNotExist:
+        return JsonResponse({"success": False, "error": "Slot not found"}, status=404)
 
+    except Exception as e:
+        return JsonResponse({"success": False, "error": str(e)}, status=400)
+
+logger = logging.getLogger(__name__)
+
+@csrf_exempt
+def api_admin_turn_off_buzzer(request):
+    logger.info("===> Endpoint dipanggil")
+
+    if request.method != "POST":
+        return JsonResponse({"success": False, "error": "Method not allowed"}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        slot_number = data.get("slot_number")
+        logger.info(f"Slot: {slot_number}")
+
+        spot = Spot.objects.get(spot_number=slot_number)
+        spot.buzzer_active = False
+        spot.save()
+
+        # topic = f"parkir/slot{slot_number}/buzzer"
+        # publish.single(topic, "off", hostname="192.168.12.151", port=1883)
+
+        return JsonResponse({"success": True})
+
+    except Spot.DoesNotExist:
+        logger.warning("Slot not found")
+        return JsonResponse({"success": False, "error": "Slot not found"}, status=404)
+
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        return JsonResponse({"success": False, "error": str(e)}, status=400)
