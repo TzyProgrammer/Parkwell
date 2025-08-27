@@ -37,7 +37,7 @@
                     </div>
 
                 <ul class=" grid grid-cols-4 md:gap-8 gap-2">
-                    
+
                         <!-- Slot 1 -->
                     <li>
                       <label for="slot1" class="flex justify-center text-sm font-semibold text-[#141E61]">Slot 1</label>
@@ -135,7 +135,7 @@
                 <div class="ml-6">
                     <button onclick="updateSelectedColors()" class="bg-[#141E61] md:text-md text-sm text-white md:px-20 px-12 md:py-2 py-1.5 rounded hover:bg-blue-700 hover:focus:ring-blue-300">Update</button>
                 </div>
-                
+
               </div>
             </div>
             </div>
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());  // konversi ke waktu lokal
     return now.toISOString().slice(0, 10);
   };
-  function getCookie(name) {                // ambil CSRF utk fetch POST
+  function getCookie(name) { // ambil CSRF utk fetch POST
     const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
     return v ? v.pop() : '';
   }
@@ -173,34 +173,39 @@ document.addEventListener('DOMContentLoaded', () => {
     label.style.color         = COLORS[status].text;
     label.textContent         = COLORS[status].label;
 
-    // Tampilkan tombol jika occupied dan buzzer masih aktif
     if (btn) {
       if (status === 'occupied' && buzzerActive) {
         btn.classList.remove("hidden");
         btn.disabled = false;
         btn.textContent = "Matikan Buzzer";
+        btn.classList.remove("bg-gray-400");
+        btn.classList.add("bg-red-600");
       } else {
         btn.classList.add("hidden");
       }
     }
   }
 
-
-  /* ───────────────── POLL STATUS ───────────────── */
+  /* ───────────────── POLL STATUS ───────────────── */
   function poll(){
     fetch(`/api/spots-dynamic-status/?date=${todayISO()}`)
       .then(r => r.json())
       .then(data => data.forEach(s => {
-        const slotNum = s.spot_number.replace("slot", "");
+        const slotNum = s.spot_number;  // pakai langsung tanpa replace
         renderSlot(slotNum, s.status, s.buzzer_active);
       }))
+      .catch(err => {
+        console.error("Polling error:", err);
+      });
   }
 
-  /* langsung panggil & set interval */
+  // Panggil saat halaman pertama kali dibuka
   poll();
-  const pollInterval = setInterval(poll, 3000);
+  const pollInterval = setInterval(() => {
+    if (document.visibilityState === 'visible') poll();
+  }, 3000);  // polling setiap 3 detik
 
-  /* ───────────────── UPDATE SELECTED ───────────────── */
+  /* ───────────────── UPDATE SELECTED SPOTS ───────────────── */
   window.updateSelectedColors = function () {
     const disableOption = document.getElementById('colorSelect').value === 'bg-gray-300';
     const selectedSlots = [...document.querySelectorAll('.box-checkbox')]
@@ -220,17 +225,15 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(r => r.json())
     .then(data => {
       if (data.success){
-        /* refresh tampilan dengan memanggil poll sekali */
-        poll();
-        /* kosongkan centang supaya admin jelas update selesai */
+        poll();  // refresh tampilan
         document.querySelectorAll('.box-checkbox').forEach(cb => cb.checked = false);
       } else {
-        alert('Update failed: ' + (data.error || 'Unknown error'));
+        alert('Gagal mengupdate status: ' + (data.error || 'Unknown error'));
       }
     })
     .catch(err => {
       console.error(err);
-      alert('Request failed. Check console.');
+      alert('Request gagal. Silakan cek koneksi.');
     });
   };
 
@@ -239,6 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.box-checkbox').forEach(cb => cb.checked = this.checked);
   });
 
+  /* ───────────────── BUZZER CONTROL ───────────────── */
   window.turnOffBuzzer = function(slotNumber) {
     fetch("/api/admin-turn-off-buzzer/", {
       method: "POST",
@@ -256,21 +260,19 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.disabled = true;
         btn.classList.remove("bg-red-600");
         btn.classList.add("bg-gray-400");
-        console.log(`✅ Buzzer slot ${slotNumber} berhasil dimatikan.`);
+        alert(`✅ Buzzer slot ${slotNumber} berhasil dimatikan.`);
       } else {
-        alert("Gagal mematikan buzzer: " + data.error);
+        alert("❌ Gagal mematikan buzzer: " + data.error);
       }
     })
     .catch(err => {
       console.error(err);
-      alert("Terjadi kesalahan saat mematikan buzzer.");
+      alert("❌ Terjadi kesalahan saat mematikan buzzer.");
     });
   };
-
 
 });
 </script>
 
         </div>
 {% endblock %}
-            
